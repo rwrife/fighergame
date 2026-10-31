@@ -1,0 +1,4 @@
+Pillow>=12.0,<14
+python-dotenv>=1.0,<2
+requests>=2.32,<3
+tripo3d>=1.0,<2

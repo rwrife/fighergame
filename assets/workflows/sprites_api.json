@@ -1,0 +1,32 @@
+{
+  "1": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "DreamShaper_8_pruned.safetensors"}},
+  "2": {"class_type": "LoadImage", "inputs": {"image": "__REFERENCE__"}},
+  "3": {"class_type": "IPAdapterModelLoader", "inputs": {"ipadapter_file": "ip-adapter-plus_sd15.safetensors"}},
+  "4": {"class_type": "CLIPVisionLoader", "inputs": {"clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"}},
+  "5": {"class_type": "IPAdapterAdvanced", "inputs": {
+    "model": ["1", 0], "ipadapter": ["3", 0], "image": ["2", 0], "clip_vision": ["4", 0],
+    "weight": 1.0, "weight_type": "style and composition", "combine_embeds": "concat",
+    "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V only"}},
+  "6": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["1", 1], "text": "__PROMPT__"}},
+  "7": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["1", 1],
+    "text": "single full body character, side view facing right, plain solid flat white background, no shadow, no floor, no ground, no scenery"}},
+  "8": {"class_type": "ConditioningConcat", "inputs": {"conditioning_to": ["6", 0], "conditioning_from": ["7", 0]}},
+  "9": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["1", 1],
+    "text": "blurry, photo, realistic, 3d render, shadow, drop shadow, cast shadow, floor, ground, gradient background, vignette, scenery, text, watermark, multiple characters, cropped, extra limbs, deformed hands"}},
+  "10": {"class_type": "ControlNetLoader", "inputs": {"control_net_name": "control_v11f1p_sd15_depth_fp16.safetensors"}},
+  "11": {"class_type": "ControlNetLoader", "inputs": {"control_net_name": "control_v11p_sd15_openpose_fp16.safetensors"}},
+  "12": {"class_type": "LoadImage", "inputs": {"image": "__DEPTH__"}},
+  "13": {"class_type": "LoadImage", "inputs": {"image": "__POSE__"}},
+  "14": {"class_type": "ControlNetApplyAdvanced", "inputs": {
+    "positive": ["8", 0], "negative": ["9", 0], "control_net": ["10", 0], "image": ["12", 0],
+    "strength": 0.9, "start_percent": 0.0, "end_percent": 0.9}},
+  "15": {"class_type": "ControlNetApplyAdvanced", "inputs": {
+    "positive": ["14", 0], "negative": ["14", 1], "control_net": ["11", 0], "image": ["13", 0],
+    "strength": 0.8, "start_percent": 0.0, "end_percent": 0.8}},
+  "16": {"class_type": "EmptyLatentImage", "inputs": {"width": 512, "height": 512, "batch_size": 1}},
+  "17": {"class_type": "KSampler", "inputs": {
+    "model": ["5", 0], "positive": ["15", 0], "negative": ["15", 1], "latent_image": ["16", 0],
+    "seed": "__SEED__", "steps": 28, "cfg": 6.5, "sampler_name": "dpmpp_2m", "scheduler": "karras", "denoise": 1.0}},
+  "18": {"class_type": "VAEDecode", "inputs": {"samples": ["17", 0], "vae": ["1", 2]}},
+  "19": {"class_type": "SaveImage", "inputs": {"images": ["18", 0], "filename_prefix": "sprite"}}
+}
