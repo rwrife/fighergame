@@ -35,13 +35,14 @@ Append the following strict style guidelines to all image generation prompts to 
 
 ### Step 2: T-Pose Reference Generation
 *   **Goal:** Create the pipeline-ready orthographic reference required by the 3D meshing agent.
-*   **Identity Locking:** Use the image generated in Step 1 as an image-to-image reference. Preserve its face, hair, skin tone, proportions, clothing, palette and equipment explicitly in the prompt. Use Tripo's T-pose option when supported by the current API schema.
+*   **Unarmed Combat:** Fighters use fists and feet. T-pose references must have empty hands with visible fingers, no held props, and no weapons or scabbards, even when the source photo or promotional scene includes cosplay accessories. Keep wearable costume details that do not obstruct the pose.
+*   **Identity Locking:** Use the image generated in Step 1 as an image-to-image reference. Preserve its face, hair, skin tone, proportions, clothing, palette and wearable costume details explicitly in the prompt while removing held props and weapons. Use Tripo's T-pose option when supported by the current API schema.
 *   **Prompt Structure:** Combine the character's visual description with the Global Art Style Injection.
-*   **Strict Pose Override:** Explicitly append: "Pure white background, completely flat lighting, front-facing orthographic camera angle, strict T-pose with arms extended straight to the sides, feet shoulder-width apart, no background elements, no weapons blocking the body, symmetrical stance."
+*   **Strict Pose Override:** Explicitly append: "Pure white background, completely flat lighting, front-facing orthographic camera angle, strict T-pose with arms extended straight to the sides, feet shoulder-width apart, no background elements, empty hands with clearly visible fingers, no held props, no weapons or scabbards, symmetrical stance."
 *   **Output:** Generate the image using Tripo's verified Nano Banana image-generation API and save it as `{OUTPUT_DIR}/{CHARACTER_NAME}_tpose.png`.
 
 ### Step 3: Handoff
-*   **Validation:** Check that both files decode as PNG images. Inspect the T-pose for identity consistency, a white background, front-facing orthographic presentation, straight horizontal arms, symmetrical stance and an uncropped body with visible hands and feet. Correct failed requirements before declaring completion.
+*   **Validation:** Check that both files decode as PNG images. Inspect the T-pose for identity consistency, a white background, front-facing orthographic presentation, straight horizontal arms, symmetrical stance, empty hands, no props or weapons, and an uncropped body with visible fingers and feet. Correct failed requirements before declaring completion.
 *   **Action:** Show the saved images, confirm their exact paths, and provide a `/sprite-sheet-generator` command with `CHARACTER_NAME`, `REFERENCE_IMG_PATH` pointing to the saved T-pose, and the intended `ANIMATION_TYPE`.
 
 ## 4. Verified Submit/Poll/Download Process
