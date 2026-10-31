@@ -124,12 +124,20 @@ is a visual/color reference, not physical lighting in this 2D viewer. The curren
 animation lab stays unchanged. A future export preset must explicitly include
 the stage JSON/palette files and PNG resources.
 
-## Godot animation test template
+## Godot fighting-game template
 
-Open the root `project.godot` in **Godot 4.3 or newer** and press **F6** on
-`scenes/animation_lab.tscn`, or **F5** to run the project. This is a minimal 2D
-animation viewer, not a combat game: it starts with the bright Mixamo Bruiser idle
-loop, using nearest-neighbor filtering to keep the sprites crisp.
+Open the root `project.godot` in **Godot 4.3 or newer** and press **F5** for
+Title -> Character Select -> Stage Select -> Fight. The template includes
+local versus/training modes, combat states, hitboxes, blocking, and three
+procedural stages. Bruiser's additional moves are explicitly marked placeholder
+sprites, not a completed Mixamo animation set. See `docs\EXTENDING.md` for
+controls and character, move, and stage registration.
+
+### Animation lab
+
+Choose the animation lab from the title screen or press **F6** on
+`scenes/animation_lab.tscn`. It is a standalone animation viewer using
+nearest-neighbor filtering to keep the sprites crisp. **Esc** returns to the title.
 
 Select an animation, adjust playback speed and zoom, or flip its facing with the
 on-screen controls. **Space** plays/pauses, **Right** pauses and advances one
@@ -147,8 +155,8 @@ and in Godot's debugger. Raw FBX animation/cache and reference-image folders are
 excluded from Godot import; the viewer only needs the compiled sprites.
 
 For a packaged build, include `assets/spritesheets/*.json` in the export preset's
-non-resource file filter, and include all sprite-sheet PNG resources. No export
-preset or gameplay systems are configured yet.
+non-resource file filter, and include all sprite-sheet PNG resources. Also include
+`characters/**/*.json` and `stages/**/*.json`. No export preset is configured yet.
 
 Run the viewer smoke check after importing the project (replace `godot` with
 your Godot executable path if it is not on `PATH`):
@@ -156,6 +164,7 @@ your Godot executable path if it is not on `PATH`):
 ```powershell
 godot --headless --editor --path . --import
 godot --headless --path . --script tests\test_animation_lab.gd
+godot --headless --path . --script tests\test_game_flow.gd
 ```
 
 This repository contains a resumable 3D-to-2D sprite-sheet pipeline and the
@@ -228,8 +237,9 @@ animation (for example `preset:idle`), exporting a skinned, in-place FBX to
 
 For moves that are not Tripo presets, retarget the local
 `assets\custom_moves\<move>.fbx` or `.bvh` onto the character in Blender/Rigify and
-bake/export the combined skinned animation to that path first. Automatic
-arbitrary-skeleton retargeting is not implemented.
+bake/export the combined skinned animation to
+`assets\animations\<character>_<move>.fbx`, or specify it with `--animated`.
+Automatic arbitrary-skeleton retargeting is not implemented.
 
 ## Optional: inspect depth and pose
 
@@ -362,6 +372,56 @@ guard-to-jump and landing-to-guard. Compare joint discontinuities, foot sliding,
 silhouette changes, and added input latency. Shared framing and palette are
 already implemented; baked bridges, phase metadata, input expiry, and
 physics-driven jumps are not.
+
+## Historical ComfyUI setup lessons
+
+These notes preserve the earlier AI-rendering work; ComfyUI is **not** a
+prerequisite for the current deterministic renderer, and the archived workflow
+must not be used to generate new sprites.
+
+The historical `assets\workflows\sprites_api.json` used SaveImage node `19`,
+DreamShaper 8, IP-Adapter plus SD15 with ViT-H CLIP vision, and depth/OpenPose
+ControlNets via ComfyUI_IPAdapter_plus. Tested filenames were
+`DreamShaper_8_pruned.safetensors`, `ip-adapter-plus_sd15.safetensors`,
+`CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors`,
+`control_v11f1p_sd15_depth_fp16.safetensors`, and
+`control_v11p_sd15_openpose_fp16.safetensors`. The graph required exact
+`__REFERENCE__`, `__DEPTH__`, `__POSE__`, `__PROMPT__`, and `__SEED__`
+placeholders; checking their presence did not prove correct wiring.
+
+The tested Windows ARM64 setup used a separate native Python 3.12 environment
+with NVIDIA CUDA PyTorch `2.15.0+cu134` and torchvision `0.29.0+cu134` from
+`https://pypi.nvidia.com/nvtorch_oot/`. ComfyUI 0.43.0 used mirror-available
+frontend 1.57.5, templates 0.11.96, and embedded docs 0.5.14. Those local changes
+are not repository dependencies or portable installation requirements; package
+architecture, GPU, driver, licenses, and version compatibility must be checked.
+An emulated x64 repository environment does not establish GPU support. The
+historical GPU check, from the ComfyUI directory, was:
+
+```powershell
+.\venv\Scripts\python.exe -c "import torch; print(torch.cuda.is_available())"
+```
+
+The historical server listened only on localhost (`COMFYUI_URL`):
+
+```powershell
+.\venv\Scripts\python.exe main.py --listen 127.0.0.1 --port 8188 --disable-auto-launch
+```
+
+Windows Application Control blocked SciPy/PyAV DLLs on that machine. The old
+run used SciPy 1.16.3 and nonstandard local PyAV/image-loader changes outside
+this repository; these are unsupported and may be lost on updates. Use
+administrator-approved binaries when security policy blocks a dependency.
+Never disable security controls, stub dependencies, silence load failures, or
+disable TLS verification to reproduce an old run.
+
+The historical diffusion frames were opaque and required border-connected
+chroma keying plus a padded depth-silhouette mask. White interior highlights
+were preserved, but shadows or stray pixels could remain inside the mask,
+and a tight mask could crop the fighter. Fixed seeds and ControlNets did not
+guarantee identity consistency or seamless loops. Inspect archived sprites on
+light and dark backgrounds rather than treating transparent corners as proof
+of clean output; current shader rendering produces real alpha instead.
 
 ## Local checks
 

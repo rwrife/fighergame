@@ -49,9 +49,10 @@ and an orthographic T-pose suitable for mesh generation and rigging. Preserve th
 original design image as the identity reference for all rendered animations.
 Keep proportions, costume details, and colors consistent across the full set.
 
-The reference art skill is not currently included in this repository. If it is
-not available in the agent's installed skills, report the missing prerequisite
-before generating reference art; do not claim it was used.
+The reference art skill is included at
+`.github\skills\reference-art-generator\SKILL.md`. Read it before generating
+reference art. If the required generation capability is unavailable, report the
+missing prerequisite rather than claiming the skill was executed.
 
 ## Minimum animation set
 

@@ -18,6 +18,10 @@ virtual-environment Python. Stages are `doctor`, `base`, `capture`, `render`,
 same renderer after model/animation preparation. Use Blender 4.5 LTS. Never print API
 keys or upload references without explicit approval; paid Tripo calls additionally
 require `--allow-paid-api`. Check the FBX cache before generating another model.
+`run` can invoke uncached paid T-pose or animation stages even with a cached base;
+use individual stages to inspect their outputs and costs before proceeding.
+Confirm cached assets and persisted task IDs belong to the intended reference.
+Do not blindly delete failed task state or automatically pay for a replacement.
 
 A non-T-pose reference (e.g., a fighting stance) is converted by the `tpose` stage;
 retain the original as the character design reference. Mixamo has no public API, so
@@ -29,11 +33,11 @@ Cleanup must target only the current character/move's temporary directory.
 
 For a complete new character, follow the minimum animation set, source and
 transition requirements in the repository's `AGENTS.md`. The three Bruiser clips
-are a demo, not a complete character. The reference-art skill described there is
-not currently included; report it as missing if it is unavailable before
-generating new reference art. Clarify `block_idle` if its intended pose is unclear.
+are a demo, not a complete character. The reference-art skill is included at
+`.github\skills\reference-art-generator\SKILL.md`; read it before generating new
+reference art. Clarify `block_idle` if its intended pose is unclear.
 
-For sprites from an existing animated FBX, use `render --fps 8
+For sprites from an existing animated FBX, use `render --fps 8 --colors 32
 --azimuth 30 --sprite-size 160`. It preserves FBX colors with a bright four-band
 shader and a modest saturation/value boost, adds a one-pixel outline, and compiles
 a shared palette with real transparency. No AI service is used in this stage.
@@ -48,9 +52,10 @@ The files under `assets\animations\mixamo` and `*_mixamo.blend` are local and
 ignored. `scripts\mixamo_demo.py` specifically retargets the three supplied
 idle/jump/punch clips onto textured Bruiser with shared framing; it is not a
 general-purpose retargeter for the complete character set.
-Compile with `spritesheet.py mixamo-sheet --clip-set temp\Bruiser_mixamo\manifest.json`.
+Compile with `spritesheet.py mixamo-sheet --clip-set temp\Bruiser_mixamo\manifest.json --fps 8 --colors 32`.
 `demos\bruiser_moves.html` tests queued transitions and a matched AI/shader punch.
-Do not regenerate the historical AI punch. See README for shader rebuild commands.
+Do not regenerate the historical AI punch. See README for shader rebuild commands
+and historical ComfyUI setup lessons, which are not current rendering prerequisites.
 
 ## 1. Top-Level Parameters
 Configure these parameters before execution:
@@ -114,7 +119,7 @@ Configure these parameters before execution:
     Verify clean idle loop endpoints rather than assuming they are seamless.
 *   The current browser lab is a hard-cut, queued-transition testbed. Baked
     bridges, cancel windows, and physics-driven jump phases are the next stage,
-    not features already implemented.
+    not features already implemented in that lab.
 
 ### Step 5: Post-Processing & Sheet Compilation
 *   Use the repository's Pillow compiler.
@@ -127,3 +132,7 @@ Configure these parameters before execution:
 *   **Final Output:** Save the PNG and timing/rectangle JSON to `assets\spritesheets`.
     Idle loops; jump and punch are one-shots including their final recovery pose.
     Keep archived comparisons out of the active Godot animation picker.
+*   Inspect every frame on light and dark backgrounds for clipping, shadows,
+    stray marks, identity drift, and requested colors. Check JSON timing and
+    rectangles and visually review loop and transition endpoints; transparent
+    corners alone do not prove the entire sprite is clean.
