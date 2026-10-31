@@ -3,3 +3,7 @@
 __pycache__/
 temp/
 .godot/
+# Mixamo's raw animation files and editable retargeted actions remain local.
+assets/animations/mixamo/
+assets/animations/*_mixamo.blend
+assets/animations/*_mixamo.blend[0-9]

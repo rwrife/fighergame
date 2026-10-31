@@ -1,0 +1,85 @@
+{
+  "image": "Bruiser_idle_retro_sheet.png",
+  "fps": 8,
+  "loop": true,
+  "frame_width": 160,
+  "frame_height": 160,
+  "frame_count": 12,
+  "palette_colors": 32,
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 160,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 320,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 480,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 640,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 800,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 960,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 1120,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 1280,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 1440,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 1600,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 1760,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    }
+  ],
+  "archived": true,
+  "renderer": "cel-shaded"
+}

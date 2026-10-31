@@ -1,4 +1,4 @@
-"""Resumable Tripo -> animated FBX -> Blender -> ComfyUI sprite pipeline."""
+"""Resumable Tripo/animated FBX to bright, deterministic cel-shaded sprites."""
 
 import argparse
 import asyncio
@@ -21,6 +21,7 @@ import requests
 
 
 ROOT = Path(__file__).resolve().parents[1]
+MODEL_FACE_LIMIT = 20000
 PROMPT = (
     "90s 2D fighting game arcade sprite, pixel art style, distinct dark outlines, "
     "cel-shaded, flat lighting, transparent background."
@@ -170,11 +171,26 @@ async def generate_base(args):
     require_paid_api(args, "Model generation")
 
     async def work(client, task, fetch, state):
-        await task("generation", lambda: client.image_to_model(image=str(reference)))
+        await task("generation", lambda: client.image_to_model(
+            image=str(reference), face_limit=MODEL_FACE_LIMIT,
+        ))
         converted = await task(
-            "conversion", lambda: client.convert_model(state["generation"], "FBX")
+            "conversion", lambda: client.convert_model(
+                state["generation"], "FBX", face_limit=MODEL_FACE_LIMIT,
+            )
         )
-        await fetch(converted, target, ".fbx")
+        candidate = target.with_name(f"{args.character}_base_pending.fbx")
+        try:
+            await fetch(converted, candidate, ".fbx")
+            subprocess.run([
+                blender_path(), "-b", "--factory-startup", "--python-exit-code", "1",
+                "-P", str(ROOT / "scripts" / "check_model.py"), "--",
+                "--model", str(candidate.resolve()), "--max-faces", str(MODEL_FACE_LIMIT),
+            ], check=True, cwd=ROOT)
+            candidate.replace(target)
+        finally:
+            if candidate.exists():
+                candidate.unlink()
 
     await tripo_session(args, work)
 
@@ -235,10 +251,49 @@ def capture(args):
     ]
     if args.bone_map:
         command.extend(["--bone-map", str(args.bone_map.resolve())])
+    if args.clip_set:
+        command.extend(["--clip-set", str(args.clip_set.resolve()),
+                        "--clip-name", args.clip_name])
     subprocess.run(command, check=True, cwd=ROOT)
     manifest = json.loads((capture_dir / "manifest.json").read_text(encoding="utf-8"))
     for frame in manifest["frames"]:
         draw_pose(frame["joints"], args.size).save(capture_dir / frame["pose"])
+
+
+def outline_sprite(frame):
+    frame = frame.convert("RGBA")
+    alpha = frame.getchannel("A").point(lambda value: 255 if value >= 128 else 0)
+    frame.putalpha(alpha)
+    outline = Image.new("RGBA", frame.size, (20, 16, 28, 255))
+    outline.putalpha(alpha.filter(ImageFilter.MaxFilter(3)))
+    return Image.alpha_composite(outline, frame)
+
+
+def retro(args):
+    animated = animated_path(args)
+    if not animated.is_file():
+        raise RuntimeError(f"Animated FBX missing: {animated}. Supply a baked animation.")
+    output = args.work / "renders"
+    if output.exists():
+        shutil.rmtree(output)
+    subprocess.run([
+        blender_path(), "-b", "--factory-startup", "--python-exit-code", "1",
+        "-P", str(ROOT / "scripts" / "capture_frames.py"), "--",
+        "--animated", str(animated.resolve()), "--output", str(output),
+        "--fps", str(args.fps), "--size", str(args.sprite_size or args.size),
+        "--azimuth", str(args.azimuth), "--frames", str(args.frames), "--mode", "retro",
+    ], check=True, cwd=ROOT)
+    manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+    for name in manifest["frames"]:
+        with Image.open(output / name) as frame:
+            outlined = outline_sprite(frame)
+        outlined.save(output / name)
+    destination = ROOT / "assets" / "spritesheets" / (
+        f"{args.character}_{args.animation}_retro_sheet.png"
+    )
+    compile_sheet(output, destination, args.colors, None, args.tolerance)
+    if not args.keep_temp:
+        shutil.rmtree(args.work)
 
 
 def draw_pose(joints, size):
@@ -298,7 +353,8 @@ def validate_workflow(workflow, output_node):
         raise ValueError("--output-node must identify a SaveImage node.")
 
 
-def render(args):
+def render_ai(args):
+    """Historical ComfyUI comparison helper; not exposed by the active CLI."""
     if not args.reference or not args.reference.is_file():
         raise ValueError("--reference must name an existing identity reference image.")
     if not args.workflow or not args.workflow.is_file() or not args.output_node:
@@ -373,7 +429,7 @@ def render(args):
             rendered.append(filename)
             print(f"Rendered {filename}")
         write_json(output / "manifest.json", {
-            "fps": manifest["fps"], "frames": rendered,
+            "fps": manifest["fps"], "frames": rendered, "loop": manifest.get("loop", True),
         })
 
 
@@ -413,8 +469,21 @@ def remove_background(frame, key, tolerance, silhouette=None, pad=0):
     return frame
 
 
+def learn_palette(frames, colors):
+    if not 2 <= colors <= 256:
+        raise ValueError("Palette colors must be between 2 and 256, including transparency.")
+    opaque = [(r, g, b) for frame in frames for r, g, b, a in frame.getdata() if a >= 128]
+    if not opaque:
+        raise ValueError("No opaque pixels remain after masking.")
+    samples = Image.new("RGB", (len(opaque), 1))
+    samples.putdata(opaque)
+    palette = samples.quantize(colors=colors-1, method=Image.Quantize.MEDIANCUT)
+    rgb = palette.getpalette()[:(colors-1)*3]
+    return [tuple(rgb[i:i+3]) for i in range(0, len(rgb), 3)]
+
+
 def compile_sheet(directory, destination, colors, key, tolerance, size=None,
-                  capture=None, pad=0):
+                  capture=None, pad=0, shared_palette=None):
     if not 2 <= colors <= 256:
         raise ValueError("Palette colors must be between 2 and 256, including transparency.")
     if not 0 <= tolerance <= 255:
@@ -455,16 +524,14 @@ def compile_sheet(directory, destination, colors, key, tolerance, size=None,
     atlas = Image.new("RGBA", (width * len(frames), height))
     for index, frame in enumerate(frames):
         atlas.paste(frame, (width * index, 0))
-    # Learn one palette from opaque pixels, so colors stay consistent across frames.
-    opaque = [(r, g, b) for r, g, b, a in atlas.getdata() if a >= 128]
-    if not opaque:
-        raise ValueError("No opaque pixels remain after masking.")
-    samples = Image.new("RGB", (len(opaque), 1))
-    samples.putdata(opaque)
-    palette = samples.quantize(colors=colors-1, method=Image.Quantize.MEDIANCUT)
-    rgb_palette = palette.getpalette()[:(colors-1)*3]
+    # Learn once per animation, or reuse a palette locked across a whole move set.
+    entries = list(shared_palette) if shared_palette is not None else learn_palette([atlas], colors)
+    if not entries or len(entries) > colors - 1 or any(
+            len(entry) != 3 or any(not isinstance(value, int) or not 0 <= value <= 255
+                                  for value in entry) for entry in entries):
+        raise ValueError("Shared palette must contain RGB byte triples within the color limit.")
+    entries = [tuple(entry) for entry in entries]
     palette_image = Image.new("P", (1, 1))
-    entries = [tuple(rgb_palette[i:i+3]) for i in range(0, len(rgb_palette), 3)]
     entries.extend([entries[0]] * (256-len(entries)))
     palette_image.putpalette([component for entry in entries for component in entry])
     indexed = atlas.convert("RGB").quantize(
@@ -485,7 +552,8 @@ def compile_sheet(directory, destination, colors, key, tolerance, size=None,
             raise RuntimeError("Compiled sheet failed dimension or palette validation.")
     temporary.replace(destination)
     write_json(destination.with_suffix(".json"), {
-        "image": destination.name, "fps": manifest["fps"], "loop": True,
+        "image": destination.name, "fps": manifest["fps"], "loop": manifest.get("loop", True),
+        "renderer": manifest.get("renderer", "unknown"),
         "frame_width": width, "frame_height": height,
         "frame_count": len(frames), "palette_colors": colors,
         "frames": [{"x": index * width, "y": 0, "width": width, "height": height}
@@ -494,11 +562,45 @@ def compile_sheet(directory, destination, colors, key, tolerance, size=None,
     print(f"Sprite sheet: {destination}")
 
 
+def compile_mixamo(args):
+    if not args.clip_set:
+        raise ValueError("mixamo-sheet requires --clip-set pointing to its render manifest.")
+    manifest = json.loads(args.clip_set.read_text(encoding="utf-8"))
+    root = args.clip_set.parent
+    clips = {}
+    all_frames = []
+    for name in ("idle", "jump", "punch"):
+        frames = []
+        for filename in manifest["clips"][name]["frames"]:
+            if Path(filename).name != filename:
+                raise ValueError("Frame names must not contain directory components.")
+            with Image.open(root / name / filename) as frame:
+                frames.append(outline_sprite(frame))
+        clips[name] = frames
+        all_frames.extend(frames)
+    palette = learn_palette(all_frames, args.colors)
+    destination = ROOT / "assets" / "spritesheets"
+    metadata = {"source": "Mixamo", "camera": manifest["camera"], "clips": {}}
+    for name, frames in clips.items():
+        # Keep Blender's source pixels intact so recompiling never thickens outlines.
+        directory = root / f"{name}_outlined"
+        directory.mkdir(parents=True, exist_ok=True)
+        clip = manifest["clips"][name]
+        write_json(directory / "manifest.json", clip)
+        for filename, frame in zip(clip["frames"], frames):
+            frame.save(directory / filename)
+        target = destination / f"{args.character}_{name}_mixamo_sheet.png"
+        compile_sheet(directory, target, args.colors, None, 0, shared_palette=palette)
+        metadata["clips"][name] = target.with_suffix(".json").name
+    write_json(destination / f"{args.character}_mixamo_set.json", metadata)
+
+
 def main():
     load_dotenv(ROOT / ".env")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("stage", choices=[
-        "doctor", "tpose", "base", "animate", "capture", "render", "sheet", "run",
+        "doctor", "tpose", "base", "animate", "capture", "render", "retro",
+        "mixamo-sheet", "sheet", "run",
     ])
     parser.add_argument("--character", type=identifier, default="Bruiser")
     parser.add_argument("--animation", type=identifier, default="idle")
@@ -508,7 +610,10 @@ def main():
     parser.add_argument("--cache", type=Path, default=ROOT / "assets" / "shared_fbx_cache")
     parser.add_argument("--animated", type=Path)
     parser.add_argument("--bone-map", type=Path)
-    parser.add_argument("--fps", type=positive, default=12)
+    parser.add_argument("--clip-set", type=Path,
+                        help="Shared Mixamo render manifest for compilation or matched guide capture.")
+    parser.add_argument("--clip-name", choices=("idle", "jump", "punch"))
+    parser.add_argument("--fps", type=positive, default=8)
     parser.add_argument("--size", type=positive, default=512)
     parser.add_argument("--azimuth", type=float, default=0)
     parser.add_argument("--frames", type=int, default=0,
@@ -529,11 +634,14 @@ def main():
                         help="Character details (colors, outfit) appended to the render prompt.")
     parser.add_argument("--keep-temp", action="store_true")
     args = parser.parse_args()
-    args.work = ROOT / "temp" / f"{args.character}_{args.animation}"
+    suffix = "_retro" if args.stage in ("retro", "render", "run") else ""
+    args.work = ROOT / "temp" / f"{args.character}_{args.animation}{suffix}"
     if not math.isfinite(args.azimuth):
         parser.error("--azimuth must be finite.")
     if args.frames < 0 or args.frames == 1:
         parser.error("--frames must be 0 or at least 2.")
+    if args.stage in ("capture", "run") and args.clip_set and not args.clip_name:
+        parser.error("--clip-set capture requires --clip-name.")
     if args.chroma_key and args.chroma_key != "auto" and not re.fullmatch(
             r"[0-9a-fA-F]{6}", args.chroma_key):
         parser.error("--chroma-key must be six hexadecimal digits or 'auto'.")
@@ -541,6 +649,12 @@ def main():
         key = "auto"
     else:
         key = tuple(bytes.fromhex(args.chroma_key)) if args.chroma_key else None
+    if args.stage in ("retro", "render"):
+        retro(args)
+        return
+    if args.stage == "mixamo-sheet":
+        compile_mixamo(args)
+        return
     if args.stage == "doctor":
         executable = blender_path()
         version = subprocess.run(
@@ -550,9 +664,7 @@ def main():
             raise RuntimeError(f"Capture requires Blender 4.5 LTS, found {version}.")
         print(f"Blender: {executable} ({version})")
         print(f"Tripo key configured: {bool(os.getenv('TRIPO_API_KEY'))}")
-        response = requests.get(local_comfy_url() + "/system_stats", timeout=10)
-        response.raise_for_status()
-        print("ComfyUI: responsive")
+        print("Renderer: local cel-shading (no ComfyUI required)")
         return
     if args.stage in ("tpose", "run"):
         asyncio.run(generate_tpose(args))
@@ -560,11 +672,12 @@ def main():
         asyncio.run(generate_base(args))
     if args.stage in ("animate", "run"):
         asyncio.run(animate(args))
-    if args.stage in ("capture", "run"):
+    if args.stage == "run":
+        retro(args)
+        return
+    if args.stage == "capture":
         capture(args)
-    if args.stage in ("render", "run"):
-        render(args)
-    if args.stage in ("sheet", "run"):
+    if args.stage == "sheet":
         destination = ROOT / "assets" / "spritesheets" / (
             f"{args.character}_{args.animation}_sheet.png"
         )

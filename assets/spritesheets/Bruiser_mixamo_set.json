@@ -1,0 +1,27 @@
+{
+  "source": "Mixamo",
+  "camera": {
+    "center": [
+      0.11956202983856201,
+      -0.1218792200088501,
+      0.565082848072052
+    ],
+    "ortho_scale": 1.3863033056259155,
+    "azimuth": 0,
+    "minimum": [
+      -0.27446937561035156,
+      -0.5740928649902344,
+      -0.03765776753425598
+    ],
+    "maximum": [
+      0.5135934352874756,
+      0.3303344249725342,
+      1.1678234338760376
+    ]
+  },
+  "clips": {
+    "idle": "Bruiser_idle_mixamo_sheet.json",
+    "jump": "Bruiser_jump_mixamo_sheet.json",
+    "punch": "Bruiser_punch_mixamo_sheet.json"
+  }
+}
