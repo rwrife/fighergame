@@ -1,5 +1,37 @@
 # Fighting game sprite pipeline
 
+## Godot animation test template
+
+Open the root `project.godot` in **Godot 4.3 or newer** and press **F6** on
+`scenes/animation_lab.tscn`, or **F5** to run the project. This is a minimal 2D
+animation viewer, not a combat game: it starts with the existing Bruiser idle
+loop, using nearest-neighbor filtering to keep the sprites crisp.
+
+Select an animation, adjust playback speed and zoom, or flip its facing with the
+on-screen controls. **Space** plays/pauses, **Right** pauses and advances one
+frame, and **R** restarts the selected animation. Clicking **Next frame** does
+the same thing; looping animations wrap, while non-looping ones stop on their
+last frame.
+
+The viewer discovers `assets\spritesheets\*_sheet.json` at startup and builds
+`AnimatedSprite2D` animations from each file's `image`, `fps`, `loop`, and
+`frames` rectangles. To test another move, copy its generated PNG and matching
+JSON there and restart the scene. Invalid sheets are reported both on screen
+and in Godot's debugger. Raw FBX animation/cache and reference-image folders are
+excluded from Godot import; the viewer only needs the compiled sprites.
+
+For a packaged build, include `assets/spritesheets/*.json` in the export preset's
+non-resource file filter, and include all sprite-sheet PNG resources. No export
+preset or gameplay systems are configured yet.
+
+Run the viewer smoke check after importing the project (replace `godot` with
+your Godot executable path if it is not on `PATH`):
+
+```powershell
+godot --headless --editor --path . --import
+godot --headless --path . --script tests\test_animation_lab.gd
+```
+
 This repository contains a resumable 3D-to-2D sprite-sheet pipeline and the
 Copilot skill at `.github\skills\sprite-sheet-generator\SKILL.md`.
 Defaults are **Bruiser**, **idle**, **12 FPS**, **32 colors including transparency**,

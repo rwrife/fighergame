@@ -1,0 +1,17 @@
+; Engine configuration file.
+config_version=5
+
+[application]
+config/name="Fighter Animation Lab"
+run/main_scene="res://scenes/animation_lab.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[display]
+window/size/viewport_width=960
+window/size/viewport_height=640
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.055, 0.065, 0.09, 1)
