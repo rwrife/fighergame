@@ -1,0 +1,73 @@
+{
+  "recipe_version": 1,
+  "notes": "Coordinates are reference pixels (1999x848) unless stated. lane_anchor_y is the reference row where the dirt path begins; it maps to the lane top (y=544). Foreground and placement x/base values are game-world pixels.",
+  "lane_anchor_y": 655,
+  "camera_travel": 600,
+  "sky": {
+    "land_hue": [40, 170],
+    "land_value_max": 0.8,
+    "ink_value_max": 0.3,
+    "halo_passes": 3,
+    "margin": 3,
+    "blur": 6
+  },
+  "far_bands": [
+    {"x": [0, 590], "crest": [[0, 272], [200, 279], [355, 292], [430, 298], [530, 305], [585, 312]]},
+    {"x": [1465, 1999], "crest": [[1465, 310], [1522, 318], [1640, 302], [1715, 290], [1800, 279], [1999, 268]]}
+  ],
+  "lane_patches": [
+    {"rect": [0, 664, 178, 780], "dx": 820},
+    {"rect": [238, 714, 347, 780], "dx": 760},
+    {"rect": [353, 646, 467, 780], "dx": 560},
+    {"rect": [593, 646, 657, 680], "dx": 420},
+    {"rect": [1373, 646, 1457, 680], "dx": -340},
+    {"rect": [180, 755, 232, 780], "dx": 700},
+    {"rect": [1235, 738, 1700, 780], "dx": -520},
+    {"rect": [1683, 730, 1847, 780], "dx": -780},
+    {"rect": [1838, 674, 1999, 780], "dx": -900}
+  ],
+  "props": {
+    "cut": {"ink_value_max": 0.3, "opening": 2},
+    "harvest": [
+      {"id": "boulder", "box": [1340, 745, 1620, 848], "seed_sides": ["top", "left", "right"]},
+      {"id": "rock_pair", "box": [466, 776, 646, 846]},
+      {"id": "rock_flat", "box": [252, 724, 332, 764]},
+      {"id": "stone_flat", "box": [1696, 744, 1770, 776]},
+      {"id": "stone_round", "box": [1786, 746, 1832, 772]}
+    ],
+    "tufts": [
+      {"id": "tuft_large", "size": [40, 28], "seed": 11},
+      {"id": "tuft_medium", "size": [32, 22], "seed": 23},
+      {"id": "tuft_small", "size": [24, 16], "seed": 37}
+    ]
+  },
+  "foreground": [
+    {"prop": "tuft_large", "x": 4, "base": 543},
+    {"prop": "tuft_small", "x": 52, "base": 541},
+    {"prop": "tuft_medium", "x": 112, "base": 543},
+    {"prop": "tuft_medium", "x": 1506, "base": 543},
+    {"prop": "tuft_small", "x": 1566, "base": 541},
+    {"prop": "tuft_large", "x": 1612, "base": 543}
+  ],
+  "placements": [
+    {"prop": "rock_pair", "layer": "midground", "x": 380, "base": 543},
+    {"prop": "rock_flat", "layer": "midground", "x": 700, "base": 541},
+    {"prop": "stone_flat", "layer": "midground", "x": 930, "base": 542},
+    {"prop": "boulder", "layer": "midground", "x": 1120, "base": 543},
+    {"prop": "stone_round", "layer": "midground", "x": 560, "base": 540},
+    {"prop": "tuft_medium", "layer": "midground", "x": 330, "base": 543},
+    {"prop": "tuft_small", "layer": "midground", "x": 640, "base": 543},
+    {"prop": "tuft_large", "layer": "midground", "x": 860, "base": 543},
+    {"prop": "tuft_small", "layer": "midground", "x": 1040, "base": 542},
+    {"prop": "tuft_medium", "layer": "midground", "x": 1340, "base": 543}
+  ],
+  "palette": {"sky": 12, "scenery": 11, "ground": 6, "reserved": [[254, 246, 170]]},
+  "layer_plan": {
+    "sky": ["sunset gradient", "purple and orange clouds", "pale glow at the horizon"],
+    "far_background": ["left distant treeline", "right distant treeline"],
+    "midground": ["hills and central mound", "stone circle with glowing gaps", "post-and-rail fence", "grass field and edge grass band"],
+    "ground": ["flat dirt path lane"],
+    "foreground": ["edge grass tufts"],
+    "props": ["boulder", "rock pair", "flat rock", "small stones", "grass tufts"]
+  }
+}

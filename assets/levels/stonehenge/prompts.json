@@ -1,0 +1,22 @@
+{
+  "workflow_version": 1,
+  "canvas": {
+    "viewport": [
+      960,
+      640
+    ],
+    "world_width": 1660,
+    "camera_travel": 600,
+    "play_area_fraction": 0.15,
+    "decoration_zone_fraction": 0.3,
+    "feet_baseline_fraction": 0.9,
+    "palette_colors_including_transparency": 32
+  },
+  "prompts": {
+    "style": "Match the approved game character sheet: 1990s arcade fighting-game pixel art, bright saturated exaggerated and embellished colors, bold readable silhouettes, crisp dark outlines, three hard cel-shaded light bands, consistent pixel density. Use one approved shared stage palette, nearest-neighbor scaling, no dithering, no photographic PBR, text, watermark or UI. Preserve the landscape reference's identity without importing its painterly rendering style.",
+    "sky": "EDIT THE ORIGINAL LANDSCAPE REFERENCE WITH NANO BANANA OR AN IMAGE EDITOR. Remove everything from the foreground, leaving the sky, distant skyline and only a subtle low-contrast landscape underlay. Keep the vibrant clouds, sunset glow, atmospheric horizon colors and distant silhouette rhythm. Remove the stone-circle landmark, nearby detailed hills, fences, rocks, grass tufts, flowers and other reusable scene props, including their shadows; inpaint all footprints without ghosts. The subtle foreground means an atmospheric underlay, not a playable floor or detailed foreground objects. Recompose/outpaint to the configured viewport aspect ratio; do not stretch or leave cutout holes. Fill the whole canvas, including areas hidden behind moving scenery, with plausible continuous sky, haze and subdued distant terrain. Distant silhouettes intentionally retained here stay screen-locked and must not be duplicated in the Tripo/parallax layers. No text, transparency, watermark, people, invented landmark or foreground distractions. Apply the approved game style.",
+    "geometry": "EDIT A COPY OF THE SAME LANDSCAPE REFERENCE, NOT THE SKY OUTPUT. First-pass Nano Banana instruction: remove the sky from the image and replace it with a solid blue sky. Use one completely uniform blue swatch, no clouds, gradient, lighting or shadows in the blue area. Preserve all non-sky landmark geometry, terrain, fence wires, thin vegetation and scenery color identity. Include the sky gaps between stones. Save the actual sampled blue RGB and produce separate verified object/sky masks and object crops. Blue is an isolation backdrop, not a physical scene object. Do not globally remove blue from legitimate objects. Create alpha cutouts only when supported/needed by the selected Tripo mode. Exclude the protected combat strip from the subsequent geometry request; its floor will be built deterministically. No people, sky dome, text, watermark or invented scenery.",
+    "tripo": "Create an independently editable multi-object environment from the approved solid-blue-isolated or alpha-masked scene reference and its object masks. Ignore all uniform blue backdrop pixels: do not create a blue plane, sky dome or blue textures on the objects. Exclude distant silhouettes already assigned to the static lightbox by the layer plan; each scene feature belongs to exactly one rendering layer. Preserve the central landmark silhouette and relative scale. Separate landmark components, terrain sections, fence modules, rocks and vegetation into selectable meshes with useful ground-level pivots. No fused scene slab, characters or combat floor. Keep texture colors simple for local three-band cel shading. This text is a generation brief, not an API payload; verify the provider's supported scene/segmentation mode before submitting.",
+    "props": "Produce independent reusable scene props consistent with the approved stage and fighter style: rocks, grass tufts, flowers and fence modules. Each output contains one clearly isolated prop, matching outline weight, pixel density, palette and sunset lighting. Export verified transparent cutouts with ground-contact pivots. No floor, scene backdrop, text or shadows outside the object mask. Place props only outside the protected full-width combat lane."
+  }
+}

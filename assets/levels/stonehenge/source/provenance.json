@@ -1,0 +1,25 @@
+{
+  "workflow_version": 1,
+  "inputs": {
+    "reference": {
+      "file": "source\\reference.jpg",
+      "sha256": "9f64c8054a07fcbfc78b66714f2018cb094d506b534c80ff7d4ba3e9e7064b0a"
+    },
+    "style_reference": {
+      "file": "source\\style_reference.png",
+      "sha256": "50b816a3592aba0e1cf4cdb12071a63ee10c12cf69cec52d976cd0e619b1eb23"
+    }
+  },
+  "generation": [
+    {
+      "method": "local_2d_derivation",
+      "tool": "scripts/level_derive.py",
+      "tool_sha256": "442cab9549f21f4f8be0e852769d55bc9a515ae76bb025ef3cb0b9dd3a015722",
+      "recipe_sha256": "63ab0654a4d4112e2edb21ced9e505a53b31db093baebe50a126135f3cd1a846",
+      "reference_sha256": "9f64c8054a07fcbfc78b66714f2018cb094d506b534c80ff7d4ba3e9e7064b0a",
+      "remote_services": [],
+      "limitations": "Deterministic 2D segmentation of the reference; not Nano Banana, Tripo or Blender output. Artistic review gates remain false."
+    }
+  ],
+  "render_settings": {}
+}
