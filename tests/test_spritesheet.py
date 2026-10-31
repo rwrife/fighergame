@@ -3,8 +3,10 @@ import asyncio
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
+from unittest.mock import AsyncMock, patch
 
 from PIL import Image
 
@@ -17,6 +19,176 @@ SPEC.loader.exec_module(pipeline)
 
 
 class SheetTests(unittest.TestCase):
+    def test_render_and_run_use_only_cel_shading_at_eight_fps(self):
+        for stage in ("render", "run"):
+            with patch.object(sys, "argv", ["spritesheet.py", stage]), \
+                    patch.object(pipeline, "retro") as shader, \
+                    patch.object(pipeline, "render_ai") as ai, \
+                    patch.object(pipeline, "generate_tpose", new_callable=AsyncMock), \
+                    patch.object(pipeline, "generate_base", new_callable=AsyncMock), \
+                    patch.object(pipeline, "animate", new_callable=AsyncMock):
+                pipeline.main()
+                shader.assert_called_once()
+                self.assertEqual(shader.call_args.args[0].fps, 8)
+                self.assertTrue(shader.call_args.args[0].work.name.endswith("_retro"))
+                ai.assert_not_called()
+
+    def test_new_generation_requests_and_verifies_twenty_thousand_faces(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            reference = root / "tpose.png"
+            Image.new("RGB", (8, 8)).save(reference)
+            args = argparse.Namespace(cache=root, character="Bruiser", tpose=reference)
+            client = argparse.Namespace(
+                image_to_model=AsyncMock(return_value="generated"),
+                convert_model=AsyncMock(return_value="converted"),
+            )
+
+            async def fake_session(_args, work):
+                state = {}
+
+                async def task(stage, create):
+                    result = await create()
+                    state[stage] = result
+                    return result
+
+                async def fetch(_result, target, _suffix):
+                    target.write_bytes(b"verified-mesh")
+
+                return await work(client, task, fetch, state)
+
+            with patch.object(pipeline, "require_paid_api"), \
+                    patch.object(pipeline, "tripo_session", side_effect=fake_session), \
+                    patch.object(pipeline, "blender_path", return_value="blender"), \
+                    patch.object(pipeline.subprocess, "run") as verify:
+                asyncio.run(pipeline.generate_base(args))
+            client.image_to_model.assert_awaited_once_with(
+                image=str(reference), face_limit=20000,
+            )
+            client.convert_model.assert_awaited_once_with(
+                "generated", "FBX", face_limit=20000,
+            )
+            command = verify.call_args.args[0]
+            self.assertEqual(command[command.index("--max-faces") + 1], "20000")
+            self.assertTrue(verify.call_args.kwargs["check"])
+            self.assertEqual((root / "Bruiser_base.fbx").read_bytes(), b"verified-mesh")
+            self.assertFalse((root / "Bruiser_base_pending.fbx").exists())
+
+    def test_locked_palette_is_reused_and_one_shot_flag_survives(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            frame = Image.new("RGBA", (12, 12))
+            pipeline.ImageDraw.Draw(frame).rectangle((3, 3, 8, 8), fill=(200, 45, 25, 255))
+            frame.save(root / "0.png")
+            pipeline.write_json(root / "manifest.json", {
+                "fps": 12, "loop": False, "frames": ["0.png"],
+            })
+            palette = [(180, 30, 20), (30, 40, 150), (20, 16, 28)]
+            target = root / "sheet.png"
+            pipeline.compile_sheet(root, target, 4, None, 0, shared_palette=palette)
+            with Image.open(target) as sheet:
+                self.assertEqual(sheet.getpalette()[:9], [value for rgb in palette for value in rgb])
+                self.assertEqual(sheet.convert("RGBA").getpixel((6, 6)), (180, 30, 20, 255))
+            self.assertFalse(json.loads(target.with_suffix(".json").read_text())["loop"])
+            with self.assertRaisesRegex(ValueError, "Shared palette"):
+                pipeline.compile_sheet(root, target, 4, None, 0, shared_palette=[(999, 0, 0)])
+
+    def test_mixamo_compilation_locks_palette_and_is_repeatable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            renders = root / "renders"
+            manifest = {"camera": {"azimuth": 0}, "clips": {}}
+            for name, color in zip(("idle", "jump", "punch"),
+                                   ((200, 45, 25, 255), (45, 200, 25, 255), (25, 45, 200, 255))):
+                directory = renders / name
+                directory.mkdir(parents=True)
+                frame = Image.new("RGBA", (12, 12))
+                pipeline.ImageDraw.Draw(frame).rectangle((3, 3, 8, 8), fill=color)
+                frame.save(directory / "0.png")
+                manifest["clips"][name] = {
+                    "fps": 12, "loop": name == "idle", "frames": ["0.png"],
+                }
+            pipeline.write_json(renders / "manifest.json", manifest)
+            args = argparse.Namespace(clip_set=renders / "manifest.json", colors=8,
+                                      character="Bruiser")
+            with patch.object(pipeline, "ROOT", root):
+                pipeline.compile_mixamo(args)
+                sheets = root / "assets" / "spritesheets"
+                before = [(sheets / f"Bruiser_{name}_mixamo_sheet.png").read_bytes()
+                          for name in ("idle", "jump", "punch")]
+                pipeline.compile_mixamo(args)
+                after = [(sheets / f"Bruiser_{name}_mixamo_sheet.png").read_bytes()
+                         for name in ("idle", "jump", "punch")]
+            self.assertEqual(before, after)
+            palettes = []
+            for name in ("idle", "jump", "punch"):
+                with Image.open(sheets / f"Bruiser_{name}_mixamo_sheet.png") as image:
+                    palettes.append(image.getpalette())
+            self.assertEqual(palettes[0], palettes[1])
+            self.assertEqual(palettes[0], palettes[2])
+            with Image.open(renders / "idle" / "0.png") as raw:
+                self.assertEqual(raw.getpixel((2, 4))[3], 0)
+
+    def test_retro_outline_is_one_pixel_and_preserves_white_details(self):
+        frame = Image.new("RGBA", (12, 12))
+        for y in range(4, 8):
+            for x in range(4, 8):
+                frame.putpixel((x, y), (255, 255, 255, 255))
+        frame.putpixel((1, 1), (200, 50, 20, 127))
+        outlined = pipeline.outline_sprite(frame)
+        self.assertEqual(outlined.getpixel((5, 5)), (255, 255, 255, 255))
+        self.assertEqual(outlined.getpixel((3, 5)), (20, 16, 28, 255))
+        self.assertEqual(outlined.getpixel((2, 5))[3], 0)
+        self.assertEqual(outlined.getpixel((1, 1))[3], 0)
+        self.assertEqual(set(outlined.getchannel("A").getdata()), {0, 255})
+
+    def test_retro_compiles_separate_sheet_without_ai_or_background_key(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            animated = root / "idle.fbx"
+            animated.write_bytes(b"cached")
+            work = root / "temp" / "Bruiser_idle_retro"
+            ai_work = root / "temp" / "Bruiser_idle"
+            ai_work.mkdir(parents=True)
+            preserved = ai_work / "original.png"
+            preserved.write_bytes(b"keep")
+            args = argparse.Namespace(
+                animated=animated, work=work, fps=12, size=512, sprite_size=16,
+                azimuth=30, frames=2, character="Bruiser", animation="idle",
+                colors=32, tolerance=40, keep_temp=False,
+            )
+
+            def fake_blender(command, **kwargs):
+                self.assertIn("--mode", command)
+                self.assertEqual(command[command.index("--mode") + 1], "retro")
+                self.assertEqual(command[command.index("--size") + 1], "16")
+                output = work / "renders"
+                output.mkdir(parents=True)
+                names = []
+                for index in range(2):
+                    frame = Image.new("RGBA", (16, 16))
+                    pipeline.ImageDraw.Draw(frame).rectangle((5, 5, 10, 10), fill="white")
+                    name = f"{index:04d}.png"
+                    frame.save(output / name)
+                    names.append(name)
+                pipeline.write_json(output / "manifest.json", {"fps": 12, "frames": names})
+
+            with patch.object(pipeline, "ROOT", root), \
+                    patch.object(pipeline, "blender_path", return_value="blender"), \
+                    patch.object(pipeline.subprocess, "run", side_effect=fake_blender), \
+                    patch.object(pipeline, "render_ai") as ai_render, \
+                    patch.object(pipeline, "generate_base") as generate:
+                pipeline.retro(args)
+                ai_render.assert_not_called()
+                generate.assert_not_called()
+            target = root / "assets" / "spritesheets" / "Bruiser_idle_retro_sheet.png"
+            with Image.open(target) as sheet:
+                self.assertEqual(sheet.size, (32, 16))
+                self.assertEqual(sheet.convert("RGBA").getpixel((8, 8)), (255, 255, 255, 255))
+                self.assertLessEqual(len(sheet.getcolors()), 32)
+            self.assertFalse(work.exists())
+            self.assertEqual(preserved.read_bytes(), b"keep")
+
     def test_palette_transparency_order_and_metadata(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

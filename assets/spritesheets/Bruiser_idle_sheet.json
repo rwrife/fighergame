@@ -1,6 +1,6 @@
 {
   "image": "Bruiser_idle_sheet.png",
-  "fps": 12,
+  "fps": 8,
   "loop": true,
   "frame_width": 160,
   "frame_height": 160,
@@ -79,5 +79,7 @@
       "width": 160,
       "height": 160
     }
-  ]
+  ],
+  "archived": true,
+  "renderer": "ai"
 }

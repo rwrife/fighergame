@@ -128,7 +128,7 @@ the stage JSON/palette files and PNG resources.
 
 Open the root `project.godot` in **Godot 4.3 or newer** and press **F6** on
 `scenes/animation_lab.tscn`, or **F5** to run the project. This is a minimal 2D
-animation viewer, not a combat game: it starts with the existing Bruiser idle
+animation viewer, not a combat game: it starts with the bright Mixamo Bruiser idle
 loop, using nearest-neighbor filtering to keep the sprites crisp.
 
 Select an animation, adjust playback speed and zoom, or flip its facing with the
@@ -140,7 +140,9 @@ last frame.
 The viewer discovers `assets\spritesheets\*_sheet.json` at startup and builds
 `AnimatedSprite2D` animations from each file's `image`, `fps`, `loop`, and
 `frames` rectangles. To test another move, copy its generated PNG and matching
-JSON there and restart the scene. Invalid sheets are reported both on screen
+JSON there and restart the scene. Sheets marked `archived: true` are skipped, so
+historical AI comparisons do not enter the active animation picker.
+Invalid sheets are reported both on screen
 and in Godot's debugger. Raw FBX animation/cache and reference-image folders are
 excluded from Godot import; the viewer only needs the compiled sprites.
 
@@ -158,8 +160,9 @@ godot --headless --path . --script tests\test_animation_lab.gd
 
 This repository contains a resumable 3D-to-2D sprite-sheet pipeline and the
 Copilot skill at `.github\skills\sprite-sheet-generator\SKILL.md`.
-Defaults are **Bruiser**, **idle**, **12 FPS**, **32 colors including transparency**,
-and **256 x 256 pixels per frame**. Sprite sheets are horizontal PNG strips with
+Defaults are **Bruiser**, **idle**, **8 FPS**, **32 colors including transparency**,
+and **cel-shaded rendering only**. The Mixamo demo uses 192 x 192 frames;
+`--sprite-size` chooses the native output resolution. Sprite sheets are horizontal PNG strips with
 adjacent JSON timing and frame-rectangle metadata.
 
 ## Install
@@ -184,10 +187,9 @@ In the existing, ignored `.env`, configure these variables without committing ke
 ```dotenv
 TRIPO_API_KEY=your_key_here
 BLENDER_EXE=C:\Program Files\Blender Foundation\Blender 4.5\blender.exe
-COMFYUI_URL=http://127.0.0.1:8188
 ```
 
-`OPENAI_API_KEY` is not needed for this pipeline. Tripo uses its official 1.x SDK
+ComfyUI and `OPENAI_API_KEY` are not needed. Tripo uses its official 1.x SDK
 and API v3 rather than the retiring API v2. Generation is opt-in: it uploads the
 reference to Tripo and may incur charges. Task IDs are persisted locally so a
 retry can resume without automatically paying for a new model.
@@ -207,6 +209,11 @@ Pass `--tpose <path>` to use an existing T-pose image instead.
 The model is cached at `assets\shared_fbx_cache\Bruiser_base.fbx`. A nonempty cached
 file bypasses the API entirely. Failed task IDs remain in `Bruiser_tasks.json`;
 inspect the failure before deliberately removing that file to create another task.
+New models request `face_limit=20000` at generation and conversion. Blender then
+checks the actual total mesh polygon count before the FBX enters the cache.
+Over-budget output is rejected without automatically purchasing another model.
+Older cached Bruiser assets are preserved; the new budget does not silently
+decimate or replace them.
 
 ## 2. Rig and animate
 
@@ -224,7 +231,7 @@ For moves that are not Tripo presets, retarget the local
 bake/export the combined skinned animation to that path first. Automatic
 arbitrary-skeleton retargeting is not implemented.
 
-## 3. Capture depth and pose
+## Optional: inspect depth and pose
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\spritesheet.py capture --frames 12 --azimuth 30
@@ -245,80 +252,129 @@ require `--bone-map <json>` mapping these keys to actual bone names:
 `left_elbow`, `left_wrist`, `right_hip`, `right_knee`, `right_ankle`, `left_hip`,
 `left_knee`, `left_ankle`. Maps contain body joints, not fabricated face/hand detail.
 
-## 4. Configure local ComfyUI and render
+## 3. Render sprites
 
-Install and start [ComfyUI](https://docs.comfy.org/installation) locally using its
-instructions for your GPU. Install a compatible checkpoint, IP-Adapter and its
-CLIP vision model, and depth/OpenPose ControlNet models. Model licenses, hardware
-requirements and downloads must be checked before installing them.
+### Deterministic shader rendering (no AI)
 
-`assets\workflows\sprites_api.json` is a working API-format workflow (output node
-`19`) for DreamShaper 8, `ip-adapter-plus_sd15` with the ViT-H CLIP vision model,
-and the `control_v11f1p_sd15_depth` / `control_v11p_sd15_openpose` ControlNets via
-[ComfyUI_IPAdapter_plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus). Adjust
-model filenames to match your installation, or build your own workflow that combines:
-
-- An identity reference loaded into IP-Adapter.
-- A depth image and a pose image applied through two ControlNets.
-- A positive text prompt, a KSampler, and one single-image SaveImage output.
-
-Export the workflow in **API format**. Replace the appropriate input values with
-these exact strings (not substrings): `__REFERENCE__`, `__DEPTH__`, `__POSE__`,
-`__PROMPT__`, and `__SEED__`. The runner supplies uploaded image names, the skill's
-sprite prompt, and a stable integer seed. Record the SaveImage node's ID.
-
-The workflow must genuinely wire IP-Adapter and both ControlNets into sampling;
-the runner checks node types and placeholders, not the semantic correctness of
-every possible custom graph.
-
-Sprites must have **no shadows, floor, or background**. Diffusion output is never
-transparent, so prompt a plain flat backdrop (the supplied workflow uses white and
-negative-prompts shadows, floor, gradients and scenery); the `sheet` stage then
-removes it. Use `--description` to append character details (colors, outfit) to the
-prompt so palette details from the reference are not lost.
+With the cached animated FBX available, this single stage renders and compiles a
+separate sheet without Tripo, ComfyUI, reference uploads, or paid API calls:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\spritesheet.py doctor
-.\.venv\Scripts\python.exe scripts\spritesheet.py render --reference assets\references\Bruiser.png --workflow assets\workflows\sprites_api.json --output-node 19 --description "gold boxing gloves, gold boxing shorts, brown spiky hair, short beard"
+.\.venv\Scripts\python.exe scripts\spritesheet.py render --fps 8 --azimuth 30 --sprite-size 160
 ```
 
-The runner uses local `/upload/image`, `/prompt`, `/history`, and `/view` endpoints.
-It reports execution failures and timeouts rather than substituting missing frames.
-Frames are written to `temp\Bruiser_idle\renders`; retry rendering starts that
-stage over. A timed-out ComfyUI prompt may still be queued: inspect it first.
+This reuses the fixed camera and animation sampling, preserves FBX base-color
+textures, and replaces material lighting with four bright normal-based shading
+bands (0.60, 0.78, 0.93, 1.00) and a 1.10 saturation/value boost.
+Rendering happens directly at the sprite resolution with a fixed single sample,
+then binary transparency, a one-pixel dark outline, and one shared undithered
+palette are applied. There is no diffusion or randomized frame generation.
+Geometry, texture defects, and shading changes caused by moving normals remain;
+this is stylized 3D pixel art, not a hand-drawn reconstruction of the reference.
+Reproducibility assumes the same FBX, options, Blender version, and rendering hardware.
 
-## 5. Compile the sprite sheet
+Output is `assets\spritesheets\Bruiser_idle_retro_sheet.png` and adjacent JSON.
+Historical AI sheets are retained as archived comparisons, not active animations.
+Retro temporary files use a separate character/move directory.
+`retro` is an alias for the same renderer. `run` prepares the cached model and
+animation, then renders cel-shaded sprites; neither path calls ComfyUI.
+`doctor` checks Blender without requiring an AI server.
+
+To compare both idle loops in a browser:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\spritesheet.py sheet --sprite-size 160
+.\.venv\Scripts\python.exe -m http.server 8765 --bind 127.0.0.1
 ```
 
-Background removal runs in two passes by default:
+Open `http://127.0.0.1:8765/demos/bruiser_idle.html`. The demo includes playback,
+frame stepping, speed, and facing controls. Stop the server with Ctrl+C when done.
 
-1. `--chroma-key auto` flood-fills the backdrop from the frame borders (within
-   `--tolerance`, default 40), so interior highlights matching the backdrop survive.
-   Pass an `RRGGBB` color to key a specific color everywhere instead.
-2. Each render is masked to its captured 3D silhouette (depth-pass alpha) dilated by
-   `--silhouette-pad` pixels (default 6; `-1` disables). The 3D capture has no
-   shadows or ground, so floor shadows are removed.
+## Mixamo move and transition demo
 
-The compiler fails if any frame corner is still opaque, rejects empty frames, uses
-a shared palette across the entire strip, and disables dithering.
-`--sprite-size` sets the output frame size (box-downsampled from `--size`).
-It writes `assets\spritesheets\Bruiser_idle_sheet.png` and `.json`, then removes
-only this character/move's temporary directory after successful compilation.
-Pass `--keep-temp` to retain intermediate images.
+Open `http://127.0.0.1:8765/demos/bruiser_moves.html` using the local server above.
+The **Transition lab** runs the shader-rendered Mixamo Fighting Idle, Jumping
+(Jumping From Action Idle), and Punching (Jab Punch) clips. **J** jumps and **P**
+punches. The active clips are resampled at **8 FPS**, preserving source motion
+duration: 27 idle frames, 16 jump frames, and 9 punch frames. One-shot clips play through landing/recovery and return to idle.
+Requests during an action queue the newest move and pass through two idle frames.
+Pause and frame stepping allow inspection of each switch. These are sprite hard
+cuts, not runtime skeletal blends; **Reset to idle** deliberately cancels a move.
 
-Once the model, animated export and ComfyUI workflow are ready, `run` executes
-all stages with the same options. A cached base does not require the paid-API flag.
-Review the final loop visually: ControlNet and a fixed seed reduce drift, but
-do not guarantee temporal consistency or a seamless idle transition.
+**Archived punch comparison** preserves the earlier AI/cel-shaded comparison on
+the same 13 poses, now replayed at 8 FPS. It is not regenerated and does not use
+the newly brightened shader. Open it directly
+with `demos/bruiser_moves.html?mode=compare`. The three shader sheets use one palette
+learned across the entire move set; the AI punch uses its own shared frame palette.
+The original animated FBX is unchanged. Historical idle sheets are also replayed
+at 8 FPS and excluded from the active Godot picker.
+
+Mixamo has no public animation-download API. The source clips in
+`assets\animations\mixamo` were downloaded through the signed-in Mixamo website
+on Bruiser's existing character, as FBX Binary, **With Skin**, **30 FPS**, with no
+keyframe reduction. That site's character has no textures and a different skeleton
+orientation; its geometry is not used for rendering. `scripts\mixamo_demo.py`
+transfers rotation deltas onto the textured rig, aligns facing using the shoulder
+line, preserves target bone lengths, scales hip movement by leg length, and
+keeps jump elevation while removing the initial horizontal offset.
+It supports this named Mixamo biped, not arbitrary skeletons. Adobe's
+[Mixamo licensing FAQ](https://community.adobe.com/questions-696/mixamo-faq-licensing-royalties-ownership-eula-and-tos-589400)
+prohibits free distribution of raw animation files. The downloaded FBXs and
+editable `Bruiser_mixamo.blend` are therefore ignored and remain local; they are
+not included in this public repository. Download the three clips yourself to
+rebuild them. The finished sprite sheets and browser demo remain available.
+
+To rebuild locally, download **Fighting Idle** (Male Fight Idle Boxing Stance),
+**Jumping** (Jumping From Action Idle), and **Punching** (Jab Punch) from Mixamo
+using the settings above. Save them as `assets\animations\mixamo\fighting_idle.fbx`,
+`jump.fbx`, and `punch.fbx`, respectively. Set `$env:BLENDER_EXE` to your Blender
+4.5 executable, then run:
+
+```powershell
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\mixamo_demo.py -- --character assets\animations\Bruiser_idle.fbx --idle assets\animations\mixamo\fighting_idle.fbx --jump assets\animations\mixamo\jump.fbx --punch assets\animations\mixamo\punch.fbx --output temp\Bruiser_mixamo --blend assets\animations\Bruiser_mixamo.blend
+.\.venv\Scripts\python.exe scripts\spritesheet.py mixamo-sheet --clip-set temp\Bruiser_mixamo\manifest.json
+```
+
+The Blender stage saves packed, baked actions before applying the sprite shader.
+It fits one camera over all three clips, so jumping never triggers a per-move
+resize or recenter. Idle loops; jump and punch include their final recovery pose
+and have `loop: false`. Both the browser and existing Godot viewer read those
+flags from generated metadata.
+The optional Blender retarget tests require those local Mixamo files and the
+generated `.blend`; they are skipped until those inputs are present.
+
+## Transition strategy
+
+Use **offline skeletal blending, then crisp runtime sprite switches**. Never
+alpha-crossfade the sprite images: overlapping limbs look like ghosting.
+This strategy is planned; the current lab still uses hard cuts and a simple queue.
+
+| Surface | Strategy |
+|---|---|
+| Common pose | Author a canonical boxing guard and match each grounded clip's entry and exit to it. Match an idle phase to that guard rather than always jumping to idle frame zero. |
+| Mismatched poses | Bake a short 3D bridge in Blender, using quaternion rotation interpolation and root-position interpolation with planted-foot constraints. Render it with the same camera, palette, and bright shader. |
+| Timing | At 8 FPS, one frame is 125 ms. Prefer matching-pose cuts; use one bridge frame only where needed. Two bridge frames cost 250 ms, so do not add them to every attack's startup. Longer settles belong to explicit recovery or landing states. |
+| Punch | Split startup, active, and recovery. Start promptly from guard, protect active frames from ordinary cancellation, then return to guard or enter an explicitly allowed cancel. |
+| Jump | Separate anticipation, airborne, and landing phases. For a game, drive vertical displacement from physics and choose ascent/apex/descent poses from motion; do not let imported root translation and game physics both apply jump height. |
+| Input | Use a short expiring buffer (initial target: 200 ms), consumed only in allowed transition windows. Track expiry in simulation time, independently of sprite frames, and keep input updates faster than the 8 FPS visual cadence. Define cancel rules before adding combat or airborne chaining. |
+
+The first authoring pass should cover guard-to-punch and punch-to-guard, then
+guard-to-jump and landing-to-guard. Compare joint discontinuities, foot sliding,
+silhouette changes, and added input latency. Shared framing and palette are
+already implemented; baked bridges, phase metadata, input expiry, and
+physics-driven jumps are not.
 
 ## Local checks
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests
+node --test tests\test_animation_player.mjs
 ```
 
 Checks cover workflow placeholders, pose maps, shared palette limits, frame
 ordering, transparency and rejected inputs without contacting external services.
+The JavaScript checks cover idle looping, final action frames, queued moves,
+recovery boundaries, frame stepping, and resets. For the Blender retarget checks:
+
+```powershell
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P tests\test_mixamo_retarget.py
+```

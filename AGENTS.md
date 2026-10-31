@@ -90,7 +90,10 @@ the required Mixamo source or claim automated Mixamo retrieval is implemented.
 Use legitimately obtained Mixamo clips and Blender retargeting/baking; report
 missing clips or unavailable access instead of silently substituting another
 source. If a required move needs editing or combining clips, retain its Mixamo
-source and describe the adaptation.
+source locally and describe the adaptation. Adobe's Mixamo licensing prohibits
+free distribution of raw character or animation files, so do not commit the
+downloaded FBXs or editable retargeted animation projects to this public
+repository. See the [Mixamo licensing FAQ](https://community.adobe.com/questions-696/mixamo-faq-licensing-royalties-ownership-eula-and-tos-589400).
 
 Include transitions between animations wherever they make sense. At minimum,
 account for standing-to-crouched idle and back, attack/block entry and recovery
@@ -113,10 +116,9 @@ frame transition.
   while retaining intentional airborne movement. Keep backgrounds transparent
   and exclude floors, cast/drop shadows, scenery, text, and stray marks.
 
-These requirements override the pipeline/skill's existing 12 FPS default for new
-characters. Pass `--fps 8 --colors 32` explicitly to every relevant pipeline stage;
-do not rely on defaults. Use `--description` to reinforce the character's bright
-palette and embellished 90s styling.
+Pass `--fps 8 --colors 32` explicitly to the pipeline stages that accept those
+options. Use the bright deterministic cel shader, not AI or diffusion, for
+sprite rendering. The legacy `--description` prompt does not affect that shader.
 
 ## Deliverables and checks
 

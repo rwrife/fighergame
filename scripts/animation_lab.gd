@@ -131,6 +131,8 @@ func _load_sheet(path: String) -> void:
 	if not data is Dictionary:
 		_report_error(path + ": metadata must be a JSON object.")
 		return
+	if data.get("archived", false) == true:
+		return
 	if not data.get("image") is String or not data.get("fps") is float \
 			or not data.get("loop") is bool or not data.get("frames") is Array:
 		_report_error(path + ": expected image, numeric fps, boolean loop and frames array.")
