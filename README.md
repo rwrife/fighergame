@@ -3,7 +3,7 @@
 This repository contains a resumable 3D-to-2D sprite-sheet pipeline and the
 Copilot skill at `.github\skills\sprite-sheet-generator\SKILL.md`.
 Defaults are **Bruiser**, **idle**, **12 FPS**, **32 colors including transparency**,
-and **256 x 256 pixels per frame**. Sprite sheets are horizontal PNG strips with
+and **512 x 512 pixels per frame**. Sprite sheets are horizontal PNG strips with
 adjacent JSON timing and frame-rectangle metadata.
 
 ## Install
@@ -65,8 +65,9 @@ animation (for example `preset:idle`), exporting a skinned, in-place FBX to
 
 For moves that are not Tripo presets, retarget the local
 `assets\custom_moves\<move>.fbx` or `.bvh` onto the character in Blender/Rigify and
-bake/export the combined skinned animation to that path first. Automatic
-arbitrary-skeleton retargeting is not implemented.
+bake/export the combined skinned animation to
+`assets\animations\<character>_<move>.fbx`, or specify it with `--animated`.
+Automatic arbitrary-skeleton retargeting is not implemented.
 
 ## 3. Capture depth and pose
 
@@ -115,11 +116,11 @@ The workflow must genuinely wire IP-Adapter and both ControlNets into sampling;
 the runner checks node types and placeholders, not the semantic correctness of
 every possible custom graph.
 
-Sprites must have **no shadows, floor, or background**. Diffusion output is never
-transparent, so prompt a plain flat backdrop (the supplied workflow uses white and
-negative-prompts shadows, floor, gradients and scenery); the `sheet` stage then
-removes it. Use `--description` to append character details (colors, outfit) to the
-prompt so palette details from the reference are not lost.
+Sprites must have **no shadows, floor, or background**. The supplied diffusion
+workflow does not output transparency, so prompt a plain flat backdrop (it uses
+white and negative-prompts shadows, floor, gradients and scenery); the `sheet`
+stage then removes it. Use `--description` to append character details (colors,
+outfit) to the prompt, then check them against the reference.
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\spritesheet.py doctor
@@ -144,7 +145,7 @@ Background removal runs in two passes by default:
    Pass an `RRGGBB` color to key a specific color everywhere instead.
 2. Each render is masked to its captured 3D silhouette (depth-pass alpha) dilated by
    `--silhouette-pad` pixels (default 6; `-1` disables). The 3D capture has no
-   shadows or ground, so floor shadows are removed.
+   shadows or ground, so floor shadows outside the padded silhouette are removed.
 
 The compiler fails if any frame corner is still opaque, rejects empty frames, uses
 a shared palette across the entire strip, and disables dithering.
@@ -154,7 +155,8 @@ only this character/move's temporary directory after successful compilation.
 Pass `--keep-temp` to retain intermediate images.
 
 Once the model, animated export and ComfyUI workflow are ready, `run` executes
-all stages with the same options. A cached base does not require the paid-API flag.
+all stages with the same options. A cached base does not require the paid-API flag,
+but uncached T-pose or animation stages still do.
 Review the final loop visually: ControlNet and a fixed seed reduce drift, but
 do not guarantee temporal consistency or a seamless idle transition.
 
