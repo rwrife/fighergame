@@ -2,36 +2,35 @@
   "image": "Bruiser_block_idle_sheet.png",
   "fps": 8,
   "loop": true,
-  "frame_width": 160,
-  "frame_height": 160,
+  "renderer": "cel-shaded",
+  "frame_width": 192,
+  "frame_height": 192,
   "frame_count": 4,
   "palette_colors": 32,
-  "placeholder": true,
-  "animation": "block_idle",
   "frames": [
     {
       "x": 0,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 160,
+      "x": 192,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 320,
+      "x": 384,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 480,
+      "x": 576,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     }
   ]
 }

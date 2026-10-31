@@ -1,0 +1,14 @@
+{
+  "id": "stonehenge",
+  "name": "Stonehenge",
+  "description": "Misty standing stones at dusk. Draft art from the reference-level workflow.",
+  "width": 1660,
+  "floor_y": 576,
+  "layers": [
+    {"name": "sky", "ratio": 0.0, "image": "res://assets/levels/stonehenge/sky.png"},
+    {"name": "far_background", "ratio": 0.2, "image": "res://assets/levels/stonehenge/far_background.png"},
+    {"name": "midground", "ratio": 0.5, "image": "res://assets/levels/stonehenge/midground.png"},
+    {"name": "ground", "ratio": 1.0, "image": "res://assets/levels/stonehenge/ground.png"},
+    {"name": "foreground", "ratio": 1.15, "front": true, "image": "res://assets/levels/stonehenge/foreground.png"}
+  ]
+}

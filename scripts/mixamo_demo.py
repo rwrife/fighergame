@@ -123,11 +123,15 @@ def retarget(target, source, name):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--character", type=Path, required=True)
-    parser.add_argument("--idle", type=Path, required=True)
-    parser.add_argument("--jump", type=Path, required=True)
-    parser.add_argument("--punch", type=Path, required=True)
+    parser.add_argument("--idle", type=Path)
+    parser.add_argument("--jump", type=Path)
+    parser.add_argument("--punch", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--blend", type=Path, required=True)
+    parser.add_argument("--clip", action="append", default=[], help="NAME=PATH")
+    parser.add_argument("--loop", action="append", default=[], help="clip names that loop")
+    parser.add_argument("--shift", action="append", default=[], help="NAME=dx camera X shift")
+    parser.add_argument("--camera", type=Path, help="reuse camera/framing from a manifest")
     parser.add_argument("--fps", type=int, default=8)
     parser.add_argument("--size", type=int, default=192)
     parser.add_argument("--azimuth", type=float, default=0)
@@ -144,8 +148,12 @@ def main():
     if not meshes:
         raise ValueError("Textured character has no mesh.")
     actions = {}
-    for name in ("idle", "jump", "punch"):
-        source, objects = import_fbx(getattr(args, name))
+    sources = {n: getattr(args, n) for n in ("idle", "jump", "punch") if getattr(args, n)}
+    for item in args.clip:
+        key, _, value = item.partition("=")
+        sources[key] = Path(value)
+    for name, path in sources.items():
+        source, objects = import_fbx(path)
         actions[name] = retarget(target, source, name)
         for obj in objects:
             bpy.data.objects.remove(obj, do_unlink=True)
@@ -164,10 +172,10 @@ def main():
         count = math.ceil(duration * args.fps)
         frames = [min(end, start + index * 30 / args.fps) for index in range(count)]
         # Include the recovery/landing endpoint for one-shot moves.
-        if name != "idle":
+        if name not in args.loop and name != "idle":
             frames[-1] = end
         samples[name] = frames
-        for frame in frames:
+        for frame in (frames if not args.camera else ()):
             scene.frame_set(math.floor(frame), subframe=frame % 1)
             graph = bpy.context.evaluated_depsgraph_get()
             for obj in meshes:
@@ -177,6 +185,10 @@ def main():
                     for axis in range(3):
                         minimum[axis] = min(minimum[axis], point[axis])
                         maximum[axis] = max(maximum[axis], point[axis])
+    if args.camera:
+        saved = json.loads(args.camera.read_text(encoding="utf-8"))["camera"]
+        minimum, maximum = Vector(saved["minimum"]), Vector(saved["maximum"])
+        args.azimuth = saved["azimuth"]
     extent = maximum - minimum
     diameter = extent.length
     if not math.isfinite(diameter) or diameter <= 0:
@@ -190,7 +202,7 @@ def main():
     camera.location = center + direction * diameter * 3
     camera.rotation_euler = (center - camera.location).to_track_quat("-Z", "Y").to_euler()
     camera_data.type = "ORTHO"
-    camera_data.ortho_scale = max(
+    camera_data.ortho_scale = saved["ortho_scale"] if args.camera else max(
         extent.z, abs(math.cos(angle)) * extent.x + abs(math.sin(angle)) * extent.y
     ) * 1.15
     camera_data.clip_start, camera_data.clip_end = diameter * .01, diameter * 10
@@ -216,11 +228,14 @@ def main():
                    "maximum": list(maximum)},
         "clips": {},
     }
+    base_location = camera.location.copy()
+    shifts = {k: float(v) for k, _, v in (s.partition("=") for s in args.shift)}
     for name, frames in samples.items():
         target.animation_data.action = actions[name]
+        camera.location = base_location + Vector((shifts.get(name, 0), 0, 0))
         directory = args.output / name
         directory.mkdir(parents=True, exist_ok=True)
-        clip = {"fps": args.fps, "loop": name == "idle", "frames": [],
+        clip = {"fps": args.fps, "loop": name == "idle" or name in args.loop, "frames": [],
                 "renderer": "cel-shaded",
                 "source_frames": frames}
         for index, frame in enumerate(frames):

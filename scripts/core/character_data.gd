@@ -26,6 +26,8 @@ var animations := {}
 var fallbacks := {}
 var moves := {}
 var sprite_frames := SpriteFrames.new()
+var sprite_offsets := {} # animation -> sprite offset that puts the feet on the origin
+var playback_speed := {} # animation -> speed multiplier from character.json
 var placeholder_animations: Array[StringName] = []
 var missing_animations: Array[StringName] = []
 var errors: Array[String] = []
@@ -59,16 +61,27 @@ func _build(data: Dictionary) -> void:
 	fallbacks = data.get("animation_fallbacks", {})
 	sprite_frames.remove_animation(&"default")
 	for animation_id in animations:
-		var sheet := SpriteSheetLoader.load_sheet(SHEET_DIR.path_join(animations[animation_id] + "_sheet.json"))
+		# An animation is a sheet stem, or {"sheet", "frames": [from, to], "speed"} to trim/retime a sheet.
+		var entry: Variant = animations[animation_id]
+		var stem: String = entry if entry is String else entry.get("sheet", "")
+		var sheet := SpriteSheetLoader.load_sheet(SHEET_DIR.path_join(stem + "_sheet.json"))
 		if not sheet.ok:
 			errors.append(sheet.error)
 			continue
 		var key := StringName(animation_id)
+		var first := 0
+		var last: int = sheet.frames.size() - 1
+		if entry is Dictionary:
+			first = clampi(int(entry.get("frames", [0, last])[0]), 0, last)
+			last = clampi(int(entry.get("frames", [0, last])[1]), first, last)
+			playback_speed[key] = float(entry.get("speed", 1.0))
 		sprite_frames.add_animation(key)
 		sprite_frames.set_animation_speed(key, sheet.fps)
 		sprite_frames.set_animation_loop(key, sheet.loop)
-		for frame in sheet.frames:
-			sprite_frames.add_frame(key, frame)
+		for i in range(first, last + 1):
+			sprite_frames.add_frame(key, sheet.frames[i])
+		sprite_offsets[key] = Vector2(float(entry.get("offset_x", 0)) if entry is Dictionary else 0.0,
+				-(sheet.frame_height / 2.0 - sheet.feet_inset))
 		if sheet.placeholder:
 			placeholder_animations.append(key)
 	for required in REQUIRED_ANIMATIONS:

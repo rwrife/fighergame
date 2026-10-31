@@ -569,7 +569,7 @@ def compile_mixamo(args):
     root = args.clip_set.parent
     clips = {}
     all_frames = []
-    for name in ("idle", "jump", "punch"):
+    for name in manifest["clips"]:
         frames = []
         for filename in manifest["clips"][name]["frames"]:
             if Path(filename).name != filename:
@@ -580,7 +580,7 @@ def compile_mixamo(args):
         all_frames.extend(frames)
     palette = learn_palette(all_frames, args.colors)
     destination = ROOT / "assets" / "spritesheets"
-    metadata = {"source": "Mixamo", "camera": manifest["camera"], "clips": {}}
+    metadata = {"source": manifest.get("source", "Mixamo"), "camera": manifest["camera"], "clips": {}}
     for name, frames in clips.items():
         # Keep Blender's source pixels intact so recompiling never thickens outlines.
         directory = root / f"{name}_outlined"
@@ -589,10 +589,10 @@ def compile_mixamo(args):
         write_json(directory / "manifest.json", clip)
         for filename, frame in zip(clip["frames"], frames):
             frame.save(directory / filename)
-        target = destination / f"{args.character}_{name}_mixamo_sheet.png"
+        target = destination / clip.get("sheet", f"{args.character}_{name}_mixamo_sheet.png")
         compile_sheet(directory, target, args.colors, None, 0, shared_palette=palette)
         metadata["clips"][name] = target.with_suffix(".json").name
-    write_json(destination / f"{args.character}_mixamo_set.json", metadata)
+    write_json(destination / manifest.get("set_file", f"{args.character}_mixamo_set.json"), metadata)
 
 
 def main():

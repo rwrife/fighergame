@@ -2,36 +2,47 @@
   "image": "Bruiser_jump_punch_sheet.png",
   "fps": 8,
   "loop": false,
-  "frame_width": 160,
-  "frame_height": 160,
-  "frame_count": 4,
+  "renderer": "cel-shaded",
+  "frame_width": 192,
+  "frame_height": 192,
+  "frame_count": 6,
   "palette_colors": 32,
-  "placeholder": true,
-  "animation": "jump_punch",
   "frames": [
     {
       "x": 0,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 160,
+      "x": 192,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 320,
+      "x": 384,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 480,
+      "x": 576,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 768,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 960,
+      "y": 0,
+      "width": 192,
+      "height": 192
     }
   ]
 }

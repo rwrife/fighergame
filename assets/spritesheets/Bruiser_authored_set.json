@@ -1,0 +1,37 @@
+{
+  "source": "Authored pose adaptation of the Mixamo skeleton",
+  "camera": {
+    "center": [
+      0.11956202983856201,
+      -0.1218792200088501,
+      0.565082848072052
+    ],
+    "ortho_scale": 1.3863033056259155,
+    "azimuth": 0,
+    "minimum": [
+      -0.27446937561035156,
+      -0.5740928649902344,
+      -0.03765776753425598
+    ],
+    "maximum": [
+      0.5135934352874756,
+      0.3303344249725342,
+      1.1678234338760376
+    ]
+  },
+  "clips": {
+    "crouched_idle": "Bruiser_crouched_idle_sheet.json",
+    "stand_to_crouch": "Bruiser_stand_to_crouch_sheet.json",
+    "crouch_to_stand": "Bruiser_crouch_to_stand_sheet.json",
+    "crouched_punch": "Bruiser_crouched_punch_sheet.json",
+    "standing_kick": "Bruiser_standing_kick_sheet.json",
+    "crouched_kick": "Bruiser_crouched_kick_sheet.json",
+    "standing_block": "Bruiser_standing_block_sheet.json",
+    "block_idle": "Bruiser_block_idle_sheet.json",
+    "jump_punch": "Bruiser_jump_punch_sheet.json",
+    "jump_kick": "Bruiser_jump_kick_sheet.json",
+    "knocked_back_air": "Bruiser_knocked_back_air_sheet.json",
+    "fall_on_back": "Bruiser_fall_on_back_sheet.json",
+    "hit_stun": "Bruiser_hit_stun_sheet.json"
+  }
+}

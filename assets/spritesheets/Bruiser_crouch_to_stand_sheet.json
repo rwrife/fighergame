@@ -1,0 +1,30 @@
+{
+  "image": "Bruiser_crouch_to_stand_sheet.png",
+  "fps": 8,
+  "loop": false,
+  "renderer": "cel-shaded",
+  "frame_width": 192,
+  "frame_height": 192,
+  "frame_count": 3,
+  "palette_colors": 32,
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 192,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 384,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    }
+  ]
+}

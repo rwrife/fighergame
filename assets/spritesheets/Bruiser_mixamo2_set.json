@@ -1,0 +1,31 @@
+{
+  "source": "Mixamo",
+  "camera": {
+    "center": [
+      0.11956202983856201,
+      -0.1218792200088501,
+      0.565082848072052
+    ],
+    "ortho_scale": 1.3863033056259155,
+    "azimuth": 0,
+    "minimum": [
+      -0.27446937561035156,
+      -0.5740928649902344,
+      -0.03765776753425598
+    ],
+    "maximum": [
+      0.5135934352874756,
+      0.3303344249725342,
+      1.1678234338760376
+    ]
+  },
+  "clips": {
+    "crouch_idle": "Bruiser_crouched_idle_sheet.json",
+    "mma_kick": "Bruiser_standing_kick_sheet.json",
+    "roundhouse": "Bruiser_roundhouse_kick_sheet.json",
+    "block_react": "Bruiser_block_hit_sheet.json",
+    "stomach_hit": "Bruiser_hit_stun_sheet.json",
+    "falling_down": "Bruiser_fall_on_back_sheet.json",
+    "getting_up": "Bruiser_get_up_sheet.json"
+  }
+}

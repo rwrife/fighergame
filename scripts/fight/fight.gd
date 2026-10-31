@@ -226,7 +226,7 @@ func _update_hud() -> void:
 	hud.set_health(1, float(p2.health) / float(p2.data.stats.health))
 	hud.set_timer("--" if _training else str(ceili(maxf(time_left, 0.0))))
 	if _training:
-		hud.set_training_text("P1 %s\nP1 missing animations: %s\nF1: hitboxes   R: reset   ESC: pause" % [
+		hud.set_training_text("P1 %s\nP1 missing animations: %s\nKeys: WASD + J punch / K kick / L block   Pad: stick/D-pad + X punch / A kick / B block\nF1: hitboxes   R: reset   ESC: pause" % [
 			p1.debug_summary(), ", ".join(PackedStringArray(p1.data.missing_animations)) if not p1.data.missing_animations.is_empty() else "none"])
 
 

@@ -15,6 +15,7 @@ var data: CharacterData
 var input := FighterInput.new()
 var opponent: Fighter
 var floor_y := 596.0
+var _base_offset := Vector2.ZERO
 var min_x := 0.0
 var max_x := 1920.0
 var facing := 1
@@ -43,7 +44,6 @@ func setup(character: CharacterData, player_input: FighterInput) -> void:
 	health = int(data.stats.health)
 	sprite.sprite_frames = data.sprite_frames
 	sprite.scale = Vector2.ONE * data.sprite_scale
-	sprite.offset = Vector2(0, -(data.frame_size / 2.0 - data.feet_inset))
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.animation_finished.connect(_on_animation_finished)
 	add_child(sprite)
@@ -77,7 +77,7 @@ func tick(delta: float) -> void:
 		_freeze -= delta
 		sprite.speed_scale = 0.0
 		return
-	sprite.speed_scale = _anim_speed
+	sprite.speed_scale = _anim_speed * float(data.playback_speed.get(sprite.animation, 1.0))
 	state_time += delta
 	if not controls_enabled:
 		input.clear_buffer()
@@ -201,7 +201,11 @@ func _face_opponent() -> void:
 	if opponent != null and not is_airborne():
 		facing = 1 if opponent.position.x >= position.x else -1
 	sprite.flip_h = facing < 0
+	_apply_offset()
 
+
+func _apply_offset() -> void:
+	sprite.offset = Vector2(_base_offset.x * facing, _base_offset.y)
 
 func _ground_control() -> void:
 	if _held(&"block"):
@@ -267,6 +271,8 @@ func _play(animation_id: StringName, speed := 1.0) -> void:
 	if resolved == &"":
 		return
 	_anim_id = animation_id
+	_base_offset = data.sprite_offsets.get(resolved, Vector2.ZERO)
+	_apply_offset()
 	sprite.play(resolved)
 
 

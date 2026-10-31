@@ -18,30 +18,25 @@ var _time := 0.0
 func _ready() -> void:
 	Arcade.backdrop(self)
 	var title := Arcade.label(self, Game.TITLE, 96, Arcade.YELLOW)
-	title.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	title.position = Vector2(-480, 70)
+	title.position = Vector2(0, 70)
 	title.custom_minimum_size = Vector2(960, 0)
 	var sub := Arcade.label(self, "PLACEHOLDER EDITION", 28, Arcade.CYAN)
-	sub.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	sub.position = Vector2(-480, 190)
+	sub.position = Vector2(0, 190)
 	sub.custom_minimum_size = Vector2(960, 0)
 
 	_prompt = Arcade.label(self, "PRESS ENTER", 40, Arcade.WHITE)
-	_prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	_prompt.position = Vector2(-480, -170)
+	_prompt.position = Vector2(0, 470)
 	_prompt.custom_minimum_size = Vector2(960, 0)
 
 	for i in ITEMS.size():
 		var item := Arcade.label(self, ITEMS[i][0], 44)
-		item.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-		item.position = Vector2(-480, 280 + i * 62)
+		item.position = Vector2(0, 280 + i * 62)
 		item.custom_minimum_size = Vector2(960, 0)
 		item.visible = false
 		_menu_labels.append(item)
 
 	var help := Arcade.label(self, "P1: WASD + J/K/L    P2: ARROWS + , . /    ENTER: select    ESC: back", 18, Arcade.WHITE)
-	help.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	help.position = Vector2(-480, -50)
+	help.position = Vector2(0, 590)
 	help.custom_minimum_size = Vector2(960, 0)
 	_refresh()
 
