@@ -1,0 +1,14 @@
+{
+  "id": "neon_docks",
+  "name": "Neon Docks",
+  "description": "Purple night harbor. Placeholder art.",
+  "width": 1920,
+  "floor_y": 596,
+  "layers": [
+    {"name": "sky", "ratio": 0.0, "kind": "gradient", "colors": ["#10002b", "#7b2cbf"]},
+    {"name": "far_background", "ratio": 0.2, "kind": "skyline", "color": "#3c096c", "seed": 23},
+    {"name": "midground", "ratio": 0.5, "kind": "hills", "color": "#240046", "seed": 29},
+    {"name": "ground", "ratio": 1.0, "kind": "floor", "color": "#5a189a", "stripe": "#ff9e00"},
+    {"name": "foreground", "ratio": 1.15, "kind": "banners", "color": "#00f5d4", "front": true}
+  ]
+}

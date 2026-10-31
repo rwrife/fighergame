@@ -1,0 +1,14 @@
+{
+  "id": "training_grounds",
+  "name": "Training Grounds",
+  "description": "Cool blue gym. Placeholder art.",
+  "width": 1920,
+  "floor_y": 596,
+  "layers": [
+    {"name": "sky", "ratio": 0.0, "kind": "gradient", "colors": ["#1a2a6c", "#4aa3df"]},
+    {"name": "far_background", "ratio": 0.2, "kind": "skyline", "color": "#2d4f91", "seed": 3},
+    {"name": "midground", "ratio": 0.5, "kind": "hills", "color": "#1f7a8c", "seed": 5},
+    {"name": "ground", "ratio": 1.0, "kind": "floor", "color": "#c9a46a", "stripe": "#a98450"},
+    {"name": "foreground", "ratio": 1.15, "kind": "banners", "color": "#e63946", "front": true}
+  ]
+}

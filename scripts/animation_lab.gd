@@ -51,6 +51,10 @@ func _build_ui() -> void:
 	flip_button.text = "Face left"
 	flip_button.toggled.connect(func(enabled: bool) -> void: sprite.flip_h = enabled)
 	controls.add_child(flip_button)
+	var back_button := Button.new()
+	back_button.text = "Back (Esc)"
+	back_button.pressed.connect(func() -> void: Game.goto("title"))
+	controls.add_child(back_button)
 
 	var settings := HBoxContainer.new()
 	settings.add_theme_constant_override("separation", 12)
@@ -221,6 +225,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_toggle_playback()
 		KEY_RIGHT:
 			_step_frame()
+		KEY_ESCAPE:
+			Game.goto("title")
 		KEY_R:
 			if animation_picker.item_count > 0:
 				_select_animation(animation_picker.selected)

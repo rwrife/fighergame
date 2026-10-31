@@ -13,6 +13,11 @@ func _run() -> void:
 	await process_frame
 	assert(lab.error_label.text.is_empty(), lab.error_label.text)
 	assert(lab.animation_picker.item_count >= 1)
+	var idle_index := 0
+	for i in lab.animation_picker.item_count:
+		if lab.animation_picker.get_item_metadata(i) == &"Bruiser_idle":
+			idle_index = i
+	lab._select_animation(idle_index)
 	var frames: SpriteFrames = lab.sprite.sprite_frames
 	assert(frames.has_animation(&"Bruiser_idle"))
 	assert(frames.get_frame_count(&"Bruiser_idle") == 12)
@@ -25,7 +30,7 @@ func _run() -> void:
 	assert(lab.sprite.is_playing())
 	await create_timer(0.25).timeout
 	assert(lab.sprite.frame > 0, "Playback must advance through the idle frames.")
-	lab._select_animation(0)
+	lab._select_animation(idle_index)
 	lab._toggle_playback()
 	assert(not lab.sprite.is_playing())
 	await create_timer(0.2).timeout
@@ -39,7 +44,7 @@ func _run() -> void:
 	lab.sprite.frame = 11
 	lab._step_frame()
 	assert(lab.sprite.frame == 11)
-	lab._select_animation(0)
+	lab._select_animation(idle_index)
 	assert(lab.sprite.frame == 0)
 	assert(lab.sprite.is_playing())
 	var settings := lab.find_children("*", "SpinBox", true, false)

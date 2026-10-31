@@ -1,0 +1,43 @@
+{
+  "image": "Bruiser_crouched_punch_sheet.png",
+  "fps": 8,
+  "loop": false,
+  "frame_width": 160,
+  "frame_height": 160,
+  "frame_count": 5,
+  "palette_colors": 32,
+  "placeholder": true,
+  "animation": "crouched_punch",
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 160,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 320,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 480,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 640,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    }
+  ]
+}

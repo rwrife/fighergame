@@ -1,0 +1,14 @@
+{
+  "id": "sunset_boulevard",
+  "name": "Sunset Boulevard",
+  "description": "Hot orange skyline. Placeholder art.",
+  "width": 2200,
+  "floor_y": 596,
+  "layers": [
+    {"name": "sky", "ratio": 0.0, "kind": "gradient", "colors": ["#ff6b35", "#ffd166"]},
+    {"name": "far_background", "ratio": 0.2, "kind": "skyline", "color": "#8e2c48", "seed": 11},
+    {"name": "midground", "ratio": 0.5, "kind": "skyline", "color": "#5a1a3a", "seed": 17},
+    {"name": "ground", "ratio": 1.0, "kind": "floor", "color": "#3b3b4f", "stripe": "#f4d35e"},
+    {"name": "foreground", "ratio": 1.15, "kind": "banners", "color": "#2ec4b6", "front": true}
+  ]
+}

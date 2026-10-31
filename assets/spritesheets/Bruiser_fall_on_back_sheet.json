@@ -1,0 +1,37 @@
+{
+  "image": "Bruiser_fall_on_back_sheet.png",
+  "fps": 8,
+  "loop": false,
+  "frame_width": 160,
+  "frame_height": 160,
+  "frame_count": 4,
+  "palette_colors": 32,
+  "placeholder": true,
+  "animation": "fall_on_back",
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 160,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 320,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    },
+    {
+      "x": 480,
+      "y": 0,
+      "width": 160,
+      "height": 160
+    }
+  ]
+}
