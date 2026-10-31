@@ -1,3 +1,40 @@
+# Project goals and agent guidance
+
+## Game vision
+
+The goal is to build a **90s-style arcade fighting game in Godot** with bright,
+vibrant colors, fast action, and smooth transitions between character animations
+and gameplay states. Levels should be vibrant and animated, with layered
+backgrounds that use **parallax scrolling** to create depth and bring each arena
+to life. Keep combat readable and responsive while maintaining this energetic
+retro arcade presentation.
+
+## Asset generation
+
+## Reference-derived levels
+
+For landscape-to-stage work, read
+`.github\skills\reference-level-generator\SKILL.md` and
+`assets\workflows\reference_level.json`. Use `scripts\level_pipeline.py` for local
+job initialization, image/manifest checks and three-position camera previews.
+Do not describe image-model editing, Tripo multi-object generation, Blender
+assembly or a Godot stage loader as automated by this script.
+`scripts\level_derive.py` builds an offline, recipe-driven 2D **draft** (no
+remote services); label it as such and not as Tripo/Blender output.
+
+Keep the lightbox screen-locked: sky, distant skyline and an optional subtle
+landscape underlay with nearby foreground detail removed. Do not duplicate its
+static silhouettes in moving geometry. Nano Banana's
+solid-blue sky replacement is a geometry-isolation intermediate, not final sky
+art; exclude that blue backdrop from Tripo meshes. Require separable scene
+objects, shared cel-shaded arcade styling, reusable prop sprites, parallax
+overscan, and a straight full-width protected lane occupying the bottom 15% by
+default. Never use sloping reference terrain as the combat collision surface.
+No scenery or prop alpha may intrude into that lane. Preserve source hashes,
+model task IDs and render settings, and obtain approval before remote uploads
+or paid generation. Technical validation does not replace the four visual/game
+review gates or authorize setting them to true.
+
 # Character and sprite-sheet generation
 
 New characters can be created using the reference art skill to establish their

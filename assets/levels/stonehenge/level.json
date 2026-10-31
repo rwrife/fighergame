@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "workflow_version": 1,
+  "viewport": [
+    960,
+    640
+  ],
+  "world_width": 1660,
+  "camera_travel": 600,
+  "play_area_fraction": 0.15,
+  "decoration_zone_fraction": 0.3,
+  "feet_baseline_fraction": 0.9,
+  "palette_colors_including_transparency": 32,
+  "sky": {
+    "image": "sky.png",
+    "factor": 0.0,
+    "z": -100
+  },
+  "palette": "palette.json",
+  "layers": [
+    {
+      "id": "far_background",
+      "factor": 0.2,
+      "z": -30,
+      "image": "far_background.png"
+    },
+    {
+      "id": "midground",
+      "factor": 0.5,
+      "z": -20,
+      "image": "midground.png"
+    },
+    {
+      "id": "ground",
+      "factor": 1.0,
+      "z": -10,
+      "image": "ground.png"
+    },
+    {
+      "id": "foreground",
+      "factor": 1.15,
+      "z": 10,
+      "image": "foreground.png"
+    }
+  ],
+  "props": [
+    {
+      "id": "rock_pair_1",
+      "layer": "midground",
+      "image": "props/rock_pair.png",
+      "size": [
+        149,
+        54
+      ],
+      "position": [
+        380,
+        490
+      ],
+      "pivot": [
+        74,
+        53
+      ],
+      "collision": false
+    },
+    {
+      "id": "rock_flat_1",
+      "layer": "midground",
+      "image": "props/rock_flat.png",
+      "size": [
+        61,
+        26
+      ],
+      "position": [
+        700,
+        516
+      ],
+      "pivot": [
+        30,
+        25
+      ],
+      "collision": false
+    },
+    {
+      "id": "stone_flat_1",
+      "layer": "midground",
+      "image": "props/stone_flat.png",
+      "size": [
+        54,
+        22
+      ],
+      "position": [
+        930,
+        521
+      ],
+      "pivot": [
+        27,
+        21
+      ],
+      "collision": false
+    },
+    {
+      "id": "boulder_1",
+      "layer": "midground",
+      "image": "props/boulder.png",
+      "size": [
+        233,
+        77
+      ],
+      "position": [
+        1120,
+        467
+      ],
+      "pivot": [
+        116,
+        76
+      ],
+      "collision": false
+    },
+    {
+      "id": "stone_round_1",
+      "layer": "midground",
+      "image": "props/stone_round.png",
+      "size": [
+        30,
+        15
+      ],
+      "position": [
+        560,
+        526
+      ],
+      "pivot": [
+        15,
+        14
+      ],
+      "collision": false
+    },
+    {
+      "id": "tuft_medium_1",
+      "layer": "midground",
+      "image": "props/tuft_medium.png",
+      "size": [
+        32,
+        22
+      ],
+      "position": [
+        330,
+        522
+      ],
+      "pivot": [
+        16,
+        21
+      ],
+      "collision": false
+    },
+    {
+      "id": "tuft_small_1",
+      "layer": "midground",
+      "image": "props/tuft_small.png",
+      "size": [
+        24,
+        16
+      ],
+      "position": [
+        640,
+        528
+      ],
+      "pivot": [
+        12,
+        15
+      ],
+      "collision": false
+    },
+    {
+      "id": "tuft_large_1",
+      "layer": "midground",
+      "image": "props/tuft_large.png",
+      "size": [
+        40,
+        28
+      ],
+      "position": [
+        860,
+        516
+      ],
+      "pivot": [
+        20,
+        27
+      ],
+      "collision": false
+    },
+    {
+      "id": "tuft_small_2",
+      "layer": "midground",
+      "image": "props/tuft_small.png",
+      "size": [
+        24,
+        16
+      ],
+      "position": [
+        1040,
+        527
+      ],
+      "pivot": [
+        12,
+        15
+      ],
+      "collision": false
+    },
+    {
+      "id": "tuft_medium_2",
+      "layer": "midground",
+      "image": "props/tuft_medium.png",
+      "size": [
+        32,
+        22
+      ],
+      "position": [
+        1340,
+        522
+      ],
+      "pivot": [
+        16,
+        21
+      ],
+      "collision": false
+    }
+  ],
+  "review": {
+    "style": false,
+    "sky_clean": false,
+    "composition": false,
+    "in_game": false
+  }
+}

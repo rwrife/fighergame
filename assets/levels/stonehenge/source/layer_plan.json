@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "method": "local_2d_derivation",
+  "assignments": {
+    "sky": [
+      "sunset gradient",
+      "purple and orange clouds",
+      "pale glow at the horizon"
+    ],
+    "far_background": [
+      "left distant treeline",
+      "right distant treeline"
+    ],
+    "midground": [
+      "hills and central mound",
+      "stone circle with glowing gaps",
+      "post-and-rail fence",
+      "grass field and edge grass band"
+    ],
+    "ground": [
+      "flat dirt path lane"
+    ],
+    "foreground": [
+      "edge grass tufts"
+    ],
+    "props": [
+      "boulder",
+      "rock pair",
+      "flat rock",
+      "small stones",
+      "grass tufts"
+    ]
+  }
+}
