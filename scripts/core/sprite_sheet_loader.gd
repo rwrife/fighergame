@@ -5,7 +5,8 @@ extends RefCounted
 
 
 static func load_sheet(json_path: String) -> Dictionary:
-	var result := {"ok": false, "error": "", "fps": 8.0, "loop": false, "placeholder": false, "frames": []}
+	var result := {"ok": false, "error": "", "fps": 8.0, "loop": false, "placeholder": false, "frames": [],
+			"frame_height": 160, "feet_inset": 0}
 	if not FileAccess.file_exists(json_path):
 		result.error = "missing sheet metadata " + json_path
 		return result
@@ -42,9 +43,30 @@ static func load_sheet(json_path: String) -> Dictionary:
 		atlas.atlas = texture
 		atlas.region = rect
 		frames.append(atlas)
+	result.frame_height = int(frames[0].region.size.y)
+	result.feet_inset = _feet_inset(texture, frames)
 	result.ok = true
 	result.fps = data.fps
 	result.loop = data.loop
 	result.placeholder = bool(data.get("placeholder", false))
 	result.frames = frames
 	return result
+
+## Transparent rows below the lowest opaque pixel across all frames, so the feet sit on the floor.
+static func _feet_inset(texture: Texture2D, frames: Array[AtlasTexture]) -> int:
+	var image := texture.get_image()
+	var inset := 1 << 20
+	for frame in frames:
+		var region := Rect2i(frame.region)
+		var bottom := region.end.y - 1
+		while bottom >= region.position.y and not _row_has_pixels(image, region.position.x, region.size.x, bottom):
+			bottom -= 1
+		inset = mini(inset, region.end.y - 1 - bottom)
+	return inset
+
+
+static func _row_has_pixels(image: Image, x: int, width: int, y: int) -> bool:
+	for px in range(x, x + width):
+		if image.get_pixel(px, y).a > 0.1:
+			return true
+	return false

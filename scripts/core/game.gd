@@ -119,3 +119,15 @@ func _register_input() -> void:
 			button.device = device
 			button.button_index = PAD_BUTTONS[action]
 			InputMap.action_add_event(name, button)
+			var stick := InputEventJoypadMotion.new()
+			stick.device = device
+			match action:
+				"left", "right":
+					stick.axis = JOY_AXIS_LEFT_X
+					stick.axis_value = -1.0 if action == "left" else 1.0
+				"up", "down":
+					stick.axis = JOY_AXIS_LEFT_Y
+					stick.axis_value = -1.0 if action == "up" else 1.0
+				_:
+					continue
+			InputMap.action_add_event(name, stick)

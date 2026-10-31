@@ -2,48 +2,95 @@
   "image": "Bruiser_standing_kick_sheet.png",
   "fps": 8,
   "loop": false,
-  "frame_width": 160,
-  "frame_height": 160,
-  "frame_count": 6,
+  "renderer": "cel-shaded",
+  "frame_width": 192,
+  "frame_height": 192,
+  "frame_count": 14,
   "palette_colors": 32,
-  "placeholder": true,
-  "animation": "standing_kick",
   "frames": [
     {
       "x": 0,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 160,
+      "x": 192,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 320,
+      "x": 384,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 480,
+      "x": 576,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 640,
+      "x": 768,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 800,
+      "x": 960,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1152,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1344,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1536,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1728,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1920,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2112,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2304,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2496,
+      "y": 0,
+      "width": 192,
+      "height": 192
     }
   ]
 }

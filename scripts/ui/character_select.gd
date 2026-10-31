@@ -3,7 +3,7 @@ extends Control
 
 const SLOTS := 6
 const COLUMNS := 3
-const TILE := Vector2(150, 170)
+const TILE := Vector2(130, 130)
 
 var _picking := 1
 var _cursor := 0

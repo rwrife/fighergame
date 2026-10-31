@@ -2,36 +2,95 @@
   "image": "Bruiser_crouched_idle_sheet.png",
   "fps": 8,
   "loop": true,
-  "frame_width": 160,
-  "frame_height": 160,
-  "frame_count": 4,
+  "renderer": "cel-shaded",
+  "frame_width": 192,
+  "frame_height": 192,
+  "frame_count": 14,
   "palette_colors": 32,
-  "placeholder": true,
-  "animation": "crouched_idle",
   "frames": [
     {
       "x": 0,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 160,
+      "x": 192,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 320,
+      "x": 384,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
     },
     {
-      "x": 480,
+      "x": 576,
       "y": 0,
-      "width": 160,
-      "height": 160
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 768,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 960,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1152,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1344,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1536,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1728,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 1920,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2112,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2304,
+      "y": 0,
+      "width": 192,
+      "height": 192
+    },
+    {
+      "x": 2496,
+      "y": 0,
+      "width": 192,
+      "height": 192
     }
   ]
 }
