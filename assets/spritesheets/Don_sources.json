@@ -1,0 +1,261 @@
+{
+  "character": "Don",
+  "model_sha256": "c7a9fe13c8eada6949f4187cda38fa8b267b48b0c4a8123dcf489235b1bd2632",
+  "reference_sha256": "ceed40d53e9174980b4780c54692947349d7aa578b3b6e97c99da297c8e008ce",
+  "rigging": "Local Blender rest-skeleton fitting and automatic skin weights",
+  "airborne_pose_frame": 5,
+  "sources": {
+    "Fighting Idle.fbx": "e158e95dbdd97b412a26bc7b67416cd3d1656caf1f135d46e7ae34c138d887f6",
+    "Crouch Idle.fbx": "8a4bcaf554b9f22f11d34bc1109ca9925667491b84498af562600a9fe839abc7",
+    "Punching.fbx": "195d3c90da392f275865ce9f50904cad56c70b7a9f977f0091ac8e3df6c87654",
+    "Mma Kick.fbx": "bcaa52f2cf7b9bdafbbaa134f4d0c41c633bc3293fb4d67f1d9180c42a4d8b2a",
+    "roudhouse kick.fbx": "91b68e3c3f942a913a7cd1b3eecc89f16d1b8b0ea7a87bcbfd7830f1d41d31f3",
+    "Standing Block React Large.fbx": "31dd5abb8b2ea500a6d5b0f6ca70792987565fdfe1f0e6d11823c96482a984a2",
+    "Jumping.fbx": "4b300a20dfc8d228af4aba208ce5bb395193fb0e33570cbbd12ecf5c141722dd",
+    "Stomach Hit.fbx": "9a533ecb18bbf2d817e6a3e4b28b8cc75bb965628b8d3843c94d669010124638",
+    "Falling Down.fbx": "72f9f1c6399eff3a4a17cd6536f268c6a1064cce20223146b5db6a44a4cf61d0"
+  },
+  "clips": {
+    "standing_idle": {
+      "action": "Don_standing_idle",
+      "loop": true,
+      "fps": 12,
+      "source_clips": [
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Closed Mixamo guard loop"
+    },
+    "crouched_idle": {
+      "action": "Don_crouched_idle",
+      "loop": true,
+      "fps": 6,
+      "source_clips": [
+        "Crouch Idle.fbx"
+      ],
+      "adaptation": "Closed Mixamo crouch loop"
+    },
+    "standing_punch": {
+      "action": "Don_standing_punch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Punching.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Source world-space strike rotations on the matching stance, with peak extension captured and complete entry/recovery"
+    },
+    "crouched_punch": {
+      "action": "Don_crouched_punch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Punching.fbx",
+        "Crouch Idle.fbx"
+      ],
+      "adaptation": "Source world-space strike rotations on the matching stance, with peak extension captured and complete entry/recovery"
+    },
+    "standing_kick": {
+      "action": "Don_standing_kick",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Mma Kick.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Mirrored source world-space kick on the stance's front (left) leg, turned out towards the opponent, with peak extension and chambered recovery"
+    },
+    "crouched_kick": {
+      "action": "Don_crouched_kick",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Mma Kick.fbx",
+        "Crouch Idle.fbx"
+      ],
+      "adaptation": "Mirrored source world-space kick on the stance's front (left) leg, turned out towards the opponent, with peak extension and chambered recovery"
+    },
+    "jump_punch": {
+      "action": "Don_jump_punch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Punching.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Source world-space strike rotations on the matching stance, with peak extension captured and complete entry/recovery"
+    },
+    "jump_kick": {
+      "action": "Don_jump_kick",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Mma Kick.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Source world-space strike rotations on the matching stance, with peak extension captured and complete entry/recovery"
+    },
+    "heavy_punch": {
+      "action": "Don_heavy_punch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Punching.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Mirrored source world-space back-hand punch with deliberate wind-up, held full extension and matched recovery"
+    },
+    "heavy_kick": {
+      "action": "Don_heavy_kick",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "roudhouse kick.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Mixamo roundhouse kick with matched guard recovery"
+    },
+    "standing_block": {
+      "action": "Don_standing_block",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Standing Block React Large.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Baked entry into the Mixamo standing block pose"
+    },
+    "block_idle": {
+      "action": "Don_block_idle",
+      "loop": true,
+      "fps": 6,
+      "source_clips": [
+        "Standing Block React Large.fbx"
+      ],
+      "adaptation": "Held standing blocking idle, separate from block entry"
+    },
+    "jump": {
+      "action": "Don_jump",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Jumping.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Mixamo jump with takeoff, elevation and landing/recovery"
+    },
+    "knocked_back_air": {
+      "action": "Don_knocked_back_air",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Stomach Hit.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Mixamo hit reaction on the airborne jump pose, with backwards root travel"
+    },
+    "fall_on_back": {
+      "action": "Don_fall_on_back",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Falling Down.fbx",
+        "Stomach Hit.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Mixamo back fall bridged from airborne knockback and settled flat on the back; no get-up"
+    },
+    "stand_to_crouch": {
+      "action": "Don_stand_to_crouch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Fighting Idle.fbx",
+        "Crouch Idle.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "crouch_to_stand": {
+      "action": "Don_crouch_to_stand",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Crouch Idle.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "block_to_stand": {
+      "action": "Don_block_to_stand",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Standing Block React Large.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "jump_to_punch": {
+      "action": "Don_jump_to_punch",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Jumping.fbx",
+        "Punching.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "punch_to_jump": {
+      "action": "Don_punch_to_jump",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Punching.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "jump_to_kick": {
+      "action": "Don_jump_to_kick",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Jumping.fbx",
+        "Mma Kick.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    },
+    "kick_to_jump": {
+      "action": "Don_kick_to_jump",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Mma Kick.fbx",
+        "Jumping.fbx"
+      ],
+      "adaptation": "Baked skeletal pose bridge; no sprite crossfade"
+    }
+  },
+  "render_size": 346,
+  "palette_colors": 32,
+  "outline_px": 0,
+  "blender_version": "4.5.3 LTS",
+  "camera": {
+    "center": [
+      -0.10352887958288193,
+      0.07865551114082336,
+      0.5317004919052124
+    ],
+    "ortho_scale": 1.4038695096969604,
+    "azimuth": -30.0,
+    "minimum": [
+      -0.7375285625457764,
+      -0.5721455812454224,
+      -0.053829580545425415
+    ],
+    "maximum": [
+      0.4496139585971832,
+      0.7761393189430237,
+      1.1172305345535278
+    ]
+  }
+}
