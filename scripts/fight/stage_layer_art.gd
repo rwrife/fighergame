@@ -2,6 +2,8 @@ class_name StageLayerArt
 extends Node2D
 ## Draws one stage layer. Uses the layer's "image" if present, otherwise a
 ## procedural placeholder chosen by "kind" (gradient, skyline, hills, floor, banners).
+## An optional "region" [x, y, w, h] draws only that part of the image, still placed
+## relative to the full image's "offset", so one image can be split into depth bands.
 ## The bottom 15% of the screen (y >= 544) is the protected combat lane: only the
 ## floor layer may draw there.
 
@@ -11,6 +13,7 @@ var layer := {}
 var art_size := Vector2(960, 640)
 var _texture: Texture2D
 var _texture_offset := Vector2.ZERO
+var _region := Rect2()
 
 
 func setup(layer_data: Dictionary, size: Vector2) -> void:
@@ -19,6 +22,9 @@ func setup(layer_data: Dictionary, size: Vector2) -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var offset: Array = layer.get("offset", [0, 0])
 	_texture_offset = Vector2(float(offset[0]), float(offset[1])).round()
+	var region: Array = layer.get("region", [])
+	_region = Rect2(float(region[0]), float(region[1]), float(region[2]), float(region[3])) \
+			if region.size() == 4 else Rect2()
 	var path: String = layer.get("image", "")
 	if path != "" and ResourceLoader.exists(path, "Texture2D"):
 		_texture = load(path)
@@ -27,7 +33,11 @@ func setup(layer_data: Dictionary, size: Vector2) -> void:
 
 func _draw() -> void:
 	if _texture != null:
-		draw_texture(_texture, _texture_offset)
+		if _region.has_area():
+			draw_texture_rect_region(_texture,
+					Rect2(_texture_offset + _region.position, _region.size), _region)
+		else:
+			draw_texture(_texture, _texture_offset)
 		return
 	var color := Color(layer.get("color", "#888888"))
 	var rng := RandomNumberGenerator.new()

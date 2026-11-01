@@ -1072,5 +1072,18 @@
       ]
     ],
     "tree_depth_reason": "User reported trees standing on the fence plane; near trees moved back onto the lawn behind the fence with a slight perspective scale-down."
+  },
+  "parallax": {
+    "reason": "User requested more levels of parallax scrolling. Instead of one 0.5 midground plane, each yard prop scrolls at a depth derived from where it touches the ground, and the flat midground is split into lawn and sidewalk bands.",
+    "layer": "midground",
+    "far": {
+      "y": 316,
+      "ratio": 0.3
+    },
+    "near": {
+      "y": 448,
+      "ratio": 0.7
+    },
+    "step": 0.05
   }
 }
