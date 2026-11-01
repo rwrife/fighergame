@@ -1,0 +1,46 @@
+{
+  "source": "Mixamo with local Tomoe-specific rigging and adaptations",
+  "camera": {
+    "center": [
+      -0.05371829867362976,
+      0.1667858064174652,
+      0.6113864779472351
+    ],
+    "ortho_scale": 1.7797834873199463,
+    "azimuth": -30,
+    "minimum": [
+      -0.8174378275871277,
+      -0.6040171384811401,
+      -0.10312655568122864
+    ],
+    "maximum": [
+      0.4441879987716675,
+      1.0910561084747314,
+      1.3258994817733765
+    ]
+  },
+  "clips": {
+    "standing_idle": "Tomoe_standing_idle_sheet.json",
+    "crouched_idle": "Tomoe_crouched_idle_sheet.json",
+    "standing_punch": "Tomoe_standing_punch_sheet.json",
+    "crouched_punch": "Tomoe_crouched_punch_sheet.json",
+    "standing_kick": "Tomoe_standing_kick_sheet.json",
+    "crouched_kick": "Tomoe_crouched_kick_sheet.json",
+    "jump_punch": "Tomoe_jump_punch_sheet.json",
+    "jump_kick": "Tomoe_jump_kick_sheet.json",
+    "heavy_punch": "Tomoe_heavy_punch_sheet.json",
+    "heavy_kick": "Tomoe_heavy_kick_sheet.json",
+    "standing_block": "Tomoe_standing_block_sheet.json",
+    "block_idle": "Tomoe_block_idle_sheet.json",
+    "jump": "Tomoe_jump_sheet.json",
+    "knocked_back_air": "Tomoe_knocked_back_air_sheet.json",
+    "fall_on_back": "Tomoe_fall_on_back_sheet.json",
+    "stand_to_crouch": "Tomoe_stand_to_crouch_sheet.json",
+    "crouch_to_stand": "Tomoe_crouch_to_stand_sheet.json",
+    "block_to_stand": "Tomoe_block_to_stand_sheet.json",
+    "jump_to_punch": "Tomoe_jump_to_punch_sheet.json",
+    "punch_to_jump": "Tomoe_punch_to_jump_sheet.json",
+    "jump_to_kick": "Tomoe_jump_to_kick_sheet.json",
+    "kick_to_jump": "Tomoe_kick_to_jump_sheet.json"
+  }
+}

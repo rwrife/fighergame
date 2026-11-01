@@ -244,6 +244,81 @@ godot --headless --path . --script tests\test_animation_lab.gd
 godot --headless --path . --script tests\test_game_flow.gd
 ```
 
+### Agent-led reference-to-character workflow
+
+Supply a character image and request a complete character. The agent follows
+`AGENTS.md`, `reference-art-generator` and `sprite-sheet-generator` as one chain:
+**reference image -> arcade-style action shot -> matching T-pose -> Tripo model
+(at most 20,000 actual mesh polygons) -> Blender rigging and local Mixamo FBX
+retargeting/baking -> deterministic sprite sheets -> pose/motion and Godot
+validation**. Both reference-art stages use image-to-image: the source feeds the
+action shot, and the accepted action shot feeds the T-pose.
+
+Once credentials/tools, the local licensed FBX library and scoped upload/paid
+generation permission are ready, the agent drives the stages without manual
+skill handoffs. **Preview-and-review is the default:** it shows the actual
+output of each stage and always offers **Retry this stage**, **Stop**, and
+**Continue to the next step** before advancing. Preview the action shot, T-pose, model front/side/back
+views, rig deformation and all baked animations, compiled sprite playback on
+light/dark backgrounds, and the playable character in Godot. Contact sheets
+support frame inspection; animation review also requires actual playback.
+An explicit unattended request skips decision waits, not previews or checks.
+Authorize the specific inputs/derived uploads, paid
+stages, spend ceiling and any paid correction attempts before execution.
+This documentation change does not grant upload permission or spend credits.
+Tool-specific confirmations still apply. Missing sources/access or exhausted
+correction allowances are reported as blockers, not silently bypassed.
+`block_idle` defaults to a held standing guard; explicitly requested poses win.
+Back-fall validation uses pelvis/back support geometry, not the lowest hand or
+opaque pixel. Hands and accessories must not prop up the torso or cross the
+floor. Any local contact corrective must be fall-only, export with the animation,
+and remain correct in the mirrored Godot preview; sprite offsets cannot repair
+an incorrect 3D pose.
+
+Before any upload or paid task, the agent checks the active repository root's
+`.env` exists, is readable, ignored and untracked, and contains nonempty,
+non-placeholder `TRIPO_API_KEY` and `BLENDER_EXE` settings. It verifies Blender
+4.5 LTS and Godot run and checks API access without submitting a generation.
+Secrets are never printed. Every required move/transition must map to a readable,
+nonempty local Mixamo FBX/action or a documented source-derived adaptation.
+Each distinct source is import-checked in Blender for its armature, required
+bones, selected action and real keyframes/frame range; filenames alone do not
+count as validated animations. Missing settings, corrupt/static FBXs or
+uncovered moves stop the workflow before credits are spent. See `AGENTS.md` for
+the full preflight contract. Art-only requests do not require Blender or FBXs.
+
+The agent compares identity and T-pose images, checks the actual mesh budget and
+skin deformation, checks front/side joint placement and isolated limb/spine bends
+before full animation baking, inspects every move frame and normal-speed playback, reviews
+loop/transition boundaries and previews sheets in Godot on light/dark backgrounds.
+Automatic weights or successful numerical checks do not pass the deformation
+gate; joints must fit the actual mesh, with no opposite-limb/torso weight
+contamination or compounded rest-pose rotations.
+Failed gates trigger bounded upstream repair and downstream revalidation.
+Visual quality warnings do not remove the Continue option: the user may direct
+continued work from a usable output, with unresolved findings retained for
+downstream review rather than falsely marked passed. Hard blockers such as
+unreadable inputs, failed tasks, over-budget meshes or missing authorization
+still prevent execution even if Continue is selected. Accepted
+outputs are recorded by hash; rejected attempts are retained and upstream
+changes invalidate affected downstream acceptance. A retry does not authorize
+additional spending beyond the existing budget or paid correction allowance.
+Evidence, hashes, settings, task IDs and pass/fail/blocked outcomes are retained
+locally; numeric checks alone cannot certify correct-looking poses or animation.
+New characters require all 15 moves and applicable transitions, 6 FPS except
+12 FPS standing idle, one shared 32-color palette including transparency,
+consistent framing and hard alpha without a baked outline.
+
+**Implementation boundary:** this is an agent execution procedure, not a new
+single-command automated service. `spritesheet.py run` does not generate the
+styled action shot, fetch Mixamo clips, generally retarget arbitrary rigs or
+perform semantic visual review. The existing local Blender scripts have
+character/skeleton-specific assumptions. The agent must perform and verify the
+missing steps with available tools; if it cannot, it must report the blocker.
+No new end-to-end runner or automatic visual judge is implemented by these
+instruction changes. The legacy CLI defaults/examples below are not the timing
+requirements for new complete characters.
+
 This repository contains a resumable 3D-to-2D sprite-sheet pipeline and the
 Copilot skill at `.github\skills\sprite-sheet-generator\SKILL.md`.
 Defaults are **Bruiser**, **idle**, **8 FPS**, **32 colors including transparency**,
@@ -428,6 +503,22 @@ and have `loop: false`. Both the browser and existing Godot viewer read those
 flags from generated metadata.
 The optional Blender retarget tests require those local Mixamo files and the
 generated `.blend`; they are skipped until those inputs are present.
+
+## Tomoe's playable preview
+
+Tomoe is available in versus, training and the animation lab through
+`characters\tomoe\character.json`. Her 22 sheets cover all 15 required moves and
+seven transitions, at 346 px with one 32-color palette (standing idle 12 FPS,
+other clips 6 FPS). Normal/heavy attacks use measured, scaled combat geometry.
+Godot owns airborne travel; sprite offsets compensate baked root motion.
+
+The locally adapted back fall settles face-up with near-straight knees and
+pelvis/back contact, rather than balancing the torso on a low hand. A worn-hat
+tilt and fall-only soft hair/clothing corrective provide floor clearance without
+changing the other sprite sheets. The baked FBX is reimport-checked with
+preserve-volume skinning reapplied. Tomoe stays down until match reset: no
+unrequested get-up is added. Grouped fingers and guard clearance remain known
+preview-quality warnings, so the character is not visually complete.
 
 ## Don's complete locally retargeted set
 
