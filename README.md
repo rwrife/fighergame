@@ -1,5 +1,17 @@
 # Fighting game sprite pipeline
 
+## Gameplay screenshots
+
+Captured from the running Godot game at 960 x 640, with Bruiser versus Don.
+
+### White House
+
+![Bruiser and Don fighting in front of the White House, with health bars and the round timer visible.](docs/screenshots/white_house.png)
+
+### Stonehenge (offline draft art)
+
+![Bruiser and Don fighting on the Stonehenge stage at sunset, with health bars and the round timer visible.](docs/screenshots/stonehenge.png)
+
 ## Reference-to-level art workflow
 
 Use `.github\skills\reference-level-generator\SKILL.md` with the versioned
