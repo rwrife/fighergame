@@ -25,12 +25,22 @@ Create `stages/<id>/stage.json` (copy an existing one). Layers can use procedura
 P1: WASD + J punch / K kick / U heavy punch / I heavy kick / L block. P2: arrows + `,` `.` `;` `'` `/`. Esc pauses.
 Gamepad (device 0 = P1, device 1 = P2): left stick or D-pad, X punch, A kick, Y heavy punch, RB heavy kick, B block. Heavy moves are `heavy_punch` / `heavy_kick` (input button `heavy_punch`/`heavy_kick`); Bruiser's reuse the Punching clip (slowed) and the roundhouse clip.
 
-Animation entries can be a sheet stem or `{"sheet", "frames": [from, to], "speed", "offset_x"}` to trim, retime or
-horizontally center a sheet. Each sheet's foot anchor is detected from its pixels, so frame sizes can differ.
+Animation entries can be a sheet stem or `{"sheet", "frames": [from, to], "speed", "offset_x", "offset_y"}` to trim, retime or
+center a sheet. Each sheet's foot anchor is detected from its pixels by default, so frame sizes can differ.
+Use `offset_y` for an explicit shared-camera ground origin. Optional `frame_offsets`
+contains one unscaled `[x, y]` correction per played frame (after trimming);
+it is added to the origin and mirrored with the fighter. Don's generated
+corrections cancel baked airborne root travel so only gameplay physics moves him.
+Hitboxes and hurtboxes are world-space rectangles: scale them when changing `sprite_scale`.
+An optional `air_idle` animation holds the appropriate pose after jump takeoff or
+an aerial attack until physical landing. Trim the gameplay `jump` to its takeoff
+and apex frames; retain the full non-looping source sheet for the animation lab.
+`recover_from_knockdown` defaults to `true` for existing characters; set it to
+`false` when no recovery was authored. Don then holds his final back-fall pose
+until the round/training reset rather than inventing a get-up.
 Move hitbox `frames` index into the (trimmed) animation.
 
 ## Tests
 `godot --headless --path . --import`, then `--script res://tests/test_animation_lab.gd` and `res://tests/test_game_flow.gd`.
 
 To rebuild every Bruiser sheet at once: `powershell -ExecutionPolicy Bypass -File scripts\rebuild_bruiser.ps1 -Fps 6 -Size 346` (needs `BLENDER_EXE`). Re-check each animation's `frames` trim and hitbox `frames` in `character.json` afterward.
-

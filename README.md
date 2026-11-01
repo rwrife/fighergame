@@ -352,6 +352,73 @@ flags from generated metadata.
 The optional Blender retarget tests require those local Mixamo files and the
 generated `.blend`; they are skipped until those inputs are present.
 
+## Don's complete locally retargeted set
+
+`assets\spritesheets\Don_*_sheet.png` and their matching JSON files contain
+all 15 required moves, plus seven skeletal transition bridges. Standing idle
+uses 12 FPS; other moves use 6 FPS. All frames are rendered natively at
+346 x 346 with the same orthographic camera, ground alignment, 32-color palette
+including transparency, and hard alpha without a baked outline.
+
+`scripts\don_sprites.py` fits a local Mixamo-compatible skeleton to Don's
+cached T-pose model, binds automatic Blender skin weights, and bakes the supplied
+Mixamo clips. Crouched/aerial attacks, the mirrored slow back punch, held standing
+`block_idle`, and the final back-fall settle are explicit local adaptations,
+not additional downloaded clips. `Don_sources.json` records source hashes and
+each adaptation. The fall remains down; no get-up animation is added.
+
+Raw baked FBXs are kept in the ignored `assets\animations\mixamo\Don` folder,
+and the editable `assets\animations\Don_mixamo.blend` is also ignored. Keep these
+licensed animation files local. Don's cached base model is reused, with no
+additional uploads, paid rigging, or AI sprite rendering.
+
+Don is registered by `characters\don\character.json` in both versus and training.
+His eight attacks have frame-matched hitboxes and normal/heavy timing. Walk and
+grounded hit reactions use explicit animation fallbacks. His 1.2 sprite scale and
+corresponding world-space collision boxes match Bruiser's on-screen height.
+Punches preserve the source upper-body world rotations and capture full extension;
+normal kicks preserve the source kicking-leg rotations on a stable supporting
+stance, so they extend towards the opponent rather than backwards. The standing
+light kick and crouched low kick mirror that rear-leg source onto the stance's
+front (left) leg, turn it out from the hip towards the opponent, and snap back
+through its chamber while the rear foot stays planted.
+Shared origins and baked per-frame root corrections prevent feet/pose jumps and
+keep Godot physics from applying the rendered jump travel twice. Aerial attacks
+recover to the matching airborne pose, not a standing frame.
+Gameplay plays jump takeoff only up to the tucked apex pose, then pauses
+`air_idle` until physics reports landing. The lab's full jump sheet still includes
+the source landing/recovery frames for inspection.
+
+No get-up animation is invented: Don stays down after a non-KO knockdown. Use
+**R** to reset training, or the existing pause/rematch controls. Launch directly
+into Don versus a Bruiser training dummy with:
+
+```powershell
+godot --path . --script tests\play_don.gd
+```
+
+Rebuild with the nine source files named in `SOURCES` in `scripts\don_sprites.py`:
+
+```powershell
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- prepare
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- render --size 346 --azimuth -30
+.\.venv\Scripts\python.exe scripts\spritesheet.py mixamo-sheet --character Don --clip-set temp\Don_mixamo\manifest.json --fps 6 --colors 32 --outline-px 0
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- game-offsets
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_don_sprites.py"
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P tests\test_don_rig.py
+godot --headless --path . --script tests\test_don_lab.gd
+godot --headless --path . --script tests\test_don_game.gd
+```
+
+Preparation creates `temp\.gdignore` so Godot does not import intermediate FBXs.
+Use your Godot executable instead of `godot` if it is not on PATH. The Don lab
+check loads all 22 sheets and every frame; omit `--headless` and append
+`-- <output-directory>` to also capture representative lab screenshots.
+
+The -30-degree camera shows Don's face and torso in his turned fighting guard.
+Restart the Godot animation lab to discover the new sheets. Regenerate gameplay
+offsets after rerendering so they remain matched to the shared camera and poses.
+
 ## Transition strategy
 
 Use **offline skeletal blending, then crisp runtime sprite switches**. Never

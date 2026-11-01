@@ -49,7 +49,7 @@ func _ready() -> void:
 
 	_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_preview.scale = Vector2(1.76, 1.76)
-	_preview.position = Vector2(150, 470)
+	_preview.position = Vector2(150, 590)
 	add_child(_preview)
 	_name = Arcade.label(self, "", 36, Arcade.YELLOW, HORIZONTAL_ALIGNMENT_LEFT)
 	_name.position = Vector2(300, 400)
@@ -114,8 +114,10 @@ func _refresh() -> void:
 			CharacterData.REQUIRED_ANIMATIONS.size(),
 			" (placeholder art)" if not data.placeholder_animations.is_empty() else ""]
 		_preview.sprite_frames = data.sprite_frames
-		_preview.offset = Vector2(0, -78)
-		_preview.play(data.get_animation(&"standing_idle"))
+		var idle := data.get_animation(&"standing_idle")
+		_preview.scale = Vector2.ONE * (200.0 * data.sprite_scale / data.get_hurtbox("standing").size.y)
+		_preview.offset = data.get_sprite_offset(idle, 0)
+		_preview.play(idle)
 		_preview.visible = true
 	else:
 		_name.text = "COMING SOON"
