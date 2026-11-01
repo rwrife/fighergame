@@ -62,6 +62,15 @@ class LevelTests(unittest.TestCase):
         self.save_manifest()
         pipeline.validate(self.job, release=True)
 
+    def test_empty_foreground_keeps_the_lane_clear_without_invented_scenery(self):
+        Image.new("RGBA", (120, 40)).save(self.job / "foreground.png")
+        manifest, images = pipeline.validate(self.job)
+        self.assertIsNone(images["foreground"].getchannel("A").getbbox())
+        self.assertEqual(pipeline.compose(manifest, images, 0).size, (40, 40))
+        Image.new("RGBA", (120, 40)).save(self.job / "midground.png")
+        with self.assertRaisesRegex(ValueError, "empty image"):
+            pipeline.validate(self.job)
+
     def test_fixed_sky_and_moving_scenery_at_camera_endpoints(self):
         manifest, images = pipeline.validate(self.job)
         left = pipeline.compose(manifest, images, 0)

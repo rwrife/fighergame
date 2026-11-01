@@ -28,6 +28,7 @@ var invulnerable := false
 var ko := false
 var move := {}
 var sprite := AnimatedSprite2D.new()
+var shadow := FighterShadow.new()
 
 var _anim_id := &""
 var _anim_speed := 1.0
@@ -46,6 +47,7 @@ func setup(character: CharacterData, player_input: FighterInput) -> void:
 	sprite.scale = Vector2.ONE * data.sprite_scale
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.animation_finished.connect(_on_animation_finished)
+	add_child(shadow)
 	add_child(sprite)
 	_play(&"standing_idle")
 
@@ -63,6 +65,7 @@ func reset(start_position: Vector2, face: int) -> void:
 	_air_attacked = false
 	input.clear_buffer()
 	_to_neutral()
+	_update_shadow(0.0, true)
 
 
 func is_airborne() -> bool:
@@ -108,6 +111,7 @@ func tick(delta: float) -> void:
 		_:
 			pass
 	_move_body(delta)
+	_update_shadow(delta)
 
 
 func freeze(time: float) -> void:
@@ -322,6 +326,15 @@ func _land() -> void:
 		State.JUMP, State.ATTACK:
 			velocity.x = 0.0
 			_to_neutral()
+
+
+## The shadow footprint follows the current hurtbox (wide when knocked down),
+## but is never narrower than the standing stance.
+func _update_shadow(delta: float, snap := false) -> void:
+	var footprint := get_hurtbox()
+	var half_width := maxf(data.get_hurtbox("standing").size.x * 0.8, footprint.size.x * 0.5)
+	shadow.update(Vector2(footprint.get_center().x - position.x, floor_y - position.y),
+			half_width, delta, snap)
 
 
 func _to_world(local: Rect2) -> Rect2:

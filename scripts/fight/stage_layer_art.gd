@@ -10,11 +10,15 @@ const LANE_TOP := 544.0
 var layer := {}
 var art_size := Vector2(960, 640)
 var _texture: Texture2D
+var _texture_offset := Vector2.ZERO
 
 
 func setup(layer_data: Dictionary, size: Vector2) -> void:
 	layer = layer_data
 	art_size = size
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var offset: Array = layer.get("offset", [0, 0])
+	_texture_offset = Vector2(float(offset[0]), float(offset[1])).round()
 	var path: String = layer.get("image", "")
 	if path != "" and ResourceLoader.exists(path, "Texture2D"):
 		_texture = load(path)
@@ -23,7 +27,7 @@ func setup(layer_data: Dictionary, size: Vector2) -> void:
 
 func _draw() -> void:
 	if _texture != null:
-		draw_texture(_texture, Vector2.ZERO)
+		draw_texture(_texture, _texture_offset)
 		return
 	var color := Color(layer.get("color", "#888888"))
 	var rng := RandomNumberGenerator.new()

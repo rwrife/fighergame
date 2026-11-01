@@ -1,0 +1,1076 @@
+{
+  "recipe_version": 1,
+  "model": "scene_texture_model.glb",
+  "method": "nano_banana_tripo_blender",
+  "world_units_per_pixel": 1,
+  "foreground_layout": {
+    "scene_scale": 0.85,
+    "scene_y_offset": -14,
+    "fountain_scale": 1.8,
+    "sidewalk_top": 448,
+    "lane_top": 512,
+    "road_top": 512,
+    "feet_baseline": 576,
+    "street_lights": {
+      "positions": [
+        486,
+        876,
+        1456,
+        1846
+      ],
+      "base_y": 506,
+      "size": [
+        66,
+        290
+      ]
+    },
+    "reason": "User requested a larger fountain and a wider road and sidewalk to separate the garden scene from the fighters.",
+    "street_lights_reason": "User reported the foreground poles drawing in front of the fighters; streetlights now stand on the sidewalk plane (midground) behind them.",
+    "house_grounding": {
+      "drop": 14,
+      "fill_top": 246,
+      "body_rows": 10,
+      "fill": [
+        70,
+        84,
+        105
+      ],
+      "shadow": [
+        48,
+        60,
+        79
+      ],
+      "reason": "User reported the house floating: sky showed through the open portico and foundation gaps above the hedges. Drop the house and flag behind the hedge row and close those gaps with a recessed porch shade."
+    }
+  },
+  "model_scale": 1050,
+  "lawn_top": 360,
+  "sky_recomposition": {
+    "reference_size": [
+      1264,
+      848
+    ],
+    "monument_box": [
+      616,
+      720,
+      650,
+      848
+    ],
+    "monument_size": [
+      32,
+      120
+    ],
+    "monument_position": [
+      400,
+      90
+    ],
+    "dark_mask_max_channel": 100
+  },
+  "camera": {
+    "projection": "orthographic",
+    "position": [
+      1200,
+      -5000,
+      320
+    ],
+    "target": [
+      1200,
+      0,
+      320
+    ],
+    "world_frame": [
+      2400,
+      640
+    ],
+    "render_scale": 0.5
+  },
+  "far_background": {
+    "1": {
+      "name": "White_House",
+      "base_y": 360
+    },
+    "8": {
+      "name": "North_Portico",
+      "base_y": 360,
+      "height": 214
+    }
+  },
+  "midground": {
+    "2": {
+      "name": "Left_Large_Tree",
+      "base_y": 410
+    },
+    "4": {
+      "name": "Right_Tree_Canopies",
+      "base_y": 474
+    },
+    "6": {
+      "name": "Left_Small_Tree",
+      "base_y": 465
+    },
+    "9": {
+      "name": "Left_Branches",
+      "base_y": 460
+    },
+    "10": {
+      "name": "Right_Small_Tree",
+      "base_y": 490
+    },
+    "12": {
+      "name": "Left_Shrub",
+      "base_y": 450
+    },
+    "18": {
+      "name": "Right_Outer_Tree",
+      "base_y": 500
+    },
+    "19": {
+      "name": "Near_Branches",
+      "base_y": 535
+    }
+  },
+  "props": {
+    "fence": {
+      "part": 14,
+      "base_y": 540,
+      "height": 88
+    },
+    "lamp": {
+      "part": 15,
+      "base_y": 540,
+      "height": 224
+    },
+    "fountain": {
+      "part": 13,
+      "base_y": 450,
+      "height": 40,
+      "tilt_degrees": 18
+    }
+  },
+  "removed_parts": [
+    0,
+    3,
+    5,
+    7,
+    11,
+    16,
+    17
+  ],
+  "repairs": [
+    "Remove the inferred lawn slab and mixed ground/hedge/fence fragments, including floating canopy fragments, rather than importing a sloping combat surface.",
+    "Separate disconnected lamp components from part 15 by their reviewed front-depth region (source x > 0.445); join only the lamp components into a reusable logical prop.",
+    "Reuse part 14 as the permanent fence module instead of retaining the mixed fence fragments in other parts.",
+    "Rebuild clean hedge modules and a restrained fountain jet locally as separate Blender meshes.",
+    "Restore dark permanent-iron fence/lamp materials and warm lamp globes; repair the inferred fountain's water-surface hole with a separate local mesh.",
+    "Recompose the building/lawn/fountain vertically so the fountain jet reads against lawn rather than white architecture.",
+    "Rebuild the omitted rooftop flag locally as a separate reusable striped flag/pole mesh; retain the distant Monument only in the recomposed static lightbox.",
+    "Create a deterministic lawn backing and a new full-width straight street strip. No imported terrain is a gameplay collision."
+  ],
+  "palette": [
+    [
+      16,
+      37,
+      46
+    ],
+    [
+      35,
+      62,
+      74
+    ],
+    [
+      252,
+      250,
+      240
+    ],
+    [
+      213,
+      228,
+      232
+    ],
+    [
+      165,
+      185,
+      201
+    ],
+    [
+      106,
+      130,
+      153
+    ],
+    [
+      189,
+      208,
+      215
+    ],
+    [
+      41,
+      79,
+      96
+    ],
+    [
+      58,
+      127,
+      145
+    ],
+    [
+      115,
+      182,
+      194
+    ],
+    [
+      16,
+      206,
+      8
+    ],
+    [
+      28,
+      101,
+      39
+    ],
+    [
+      54,
+      148,
+      49
+    ],
+    [
+      87,
+      188,
+      54
+    ],
+    [
+      134,
+      213,
+      68
+    ],
+    [
+      108,
+      160,
+      23
+    ],
+    [
+      81,
+      56,
+      41
+    ],
+    [
+      128,
+      88,
+      58
+    ],
+    [
+      206,
+      49,
+      73
+    ],
+    [
+      19,
+      126,
+      152
+    ],
+    [
+      33,
+      189,
+      208
+    ],
+    [
+      124,
+      225,
+      220
+    ],
+    [
+      8,
+      96,
+      199
+    ],
+    [
+      22,
+      141,
+      230
+    ],
+    [
+      80,
+      186,
+      242
+    ],
+    [
+      156,
+      218,
+      239
+    ],
+    [
+      48,
+      60,
+      79
+    ],
+    [
+      70,
+      84,
+      105
+    ],
+    [
+      101,
+      116,
+      138
+    ],
+    [
+      135,
+      149,
+      165
+    ],
+    [
+      16,
+      62,
+      36
+    ]
+  ],
+  "yard_revision": {
+    "method": "reference_textured_2_5d_blender",
+    "reference": "geometry_generated_image.png",
+    "reference_sha256": "ce01d55041d962bb1a4c2719b2c24122c89c9ffc3458091d0b045bf9cce24bfd",
+    "approved_images": {
+      "sky.png": {
+        "source": "approved_sky.png",
+        "sha256": "a6733622ae84d3bb6a69497e92067c0983e0522a4b4f1b64a209d3ddc6434a71"
+      },
+      "far_background.png": {
+        "source": "approved_far_background.png",
+        "sha256": "be11e67a74654bab69dad461a4b4881fc74abb5f3acb46d4091b0d18015ac779"
+      },
+      "ground.png": {
+        "source": "approved_ground.png",
+        "sha256": "84f04db8fa687a58eab2de5cdf78bbb60d067c0ba849e64221caea9ed83b9f9e"
+      },
+      "props/flag.png": {
+        "source": "approved_flag.png",
+        "sha256": "83858edd8ddd2cdc02f44f0c253e08ad9df7a3a2bb261c0d392ca6a95b14370d"
+      }
+    },
+    "approved_flag": {
+      "id": "flag_0",
+      "image": "props/flag.png",
+      "layer": "far_background",
+      "size": [
+        54,
+        84
+      ],
+      "position": [
+        1200,
+        64
+      ],
+      "pivot": [
+        27,
+        82
+      ],
+      "collision": false
+    },
+    "reason": "The original Tripo yard distorted the fountain and foliage. Retain the cached meshes, but replace yard exports with separate reference-textured Blender cards; not a new 3D yard generation.",
+    "components": {
+      "hedge": {
+        "image": "yard_cards/hedge.png",
+        "mask": "yard_cards/hedge_mask.png",
+        "source_box": [
+          385,
+          384,
+          531,
+          431
+        ],
+        "size": [
+          146,
+          47
+        ],
+        "position": [
+          850,
+          343
+        ]
+      },
+      "fountain": {
+        "image": "yard_cards/fountain.png",
+        "mask": "yard_cards/fountain_mask.png",
+        "source_box": [
+          425,
+          424,
+          781,
+          510
+        ],
+        "size": [
+          304,
+          74
+        ],
+        "position": [
+          1048,
+          380
+        ],
+        "repair": "Paint out fence pixels occluding the lower brown surround."
+      },
+      "lamp": {
+        "image": "yard_cards/lamp.png",
+        "mask": "yard_cards/lamp_mask.png",
+        "source_box": [
+          1094,
+          427,
+          1167,
+          749
+        ],
+        "size": [
+          51,
+          224
+        ],
+        "position": [
+          1660,
+          316
+        ],
+        "repair": "Remove the reference tree trunk, vines and stray fringe behind the lamp; fill enclosed pinholes."
+      },
+      "street_lamp": {
+        "image": "yard_cards/street_lamp.png",
+        "mask": "yard_cards/lamp_mask.png",
+        "source_box": [
+          1094,
+          427,
+          1167,
+          749
+        ],
+        "size": [
+          66,
+          290
+        ],
+        "position": [
+          486,
+          216
+        ],
+        "method": "larger reusable reference streetlight on the sidewalk plane, midground parallax behind the fighters; no collision"
+      },
+      "lawn": {
+        "image": "yard_cards/lawn.png",
+        "size": [
+          2400,
+          184
+        ],
+        "position": [
+          0,
+          360
+        ],
+        "method": "locally painted flat lawn backing; no reference collision terrain"
+      }
+    },
+    "render_scale": 1.0
+  },
+  "pixel_art": {
+    "method": "deterministic_procedural_pixel_art",
+    "reason": "Playtest feedback: the reference-card trees were clipped by their source boxes and their thin vector branches did not match the chunky cel-shaded stage, and the fence was too small next to the fighters. Paint complete, palette-locked 2 px pixel-art trees and a larger tiling iron fence instead. Bare reference saplings become small leafy trees; overscan duplicates become distinct variants.",
+    "light": [
+      -0.55,
+      -0.7,
+      0.45
+    ],
+    "fence": {
+      "pixel": 2,
+      "module": [
+        48,
+        62
+      ],
+      "bar_spacing": 4,
+      "curb_rows": 4,
+      "rails": [
+        8,
+        52
+      ],
+      "iron": 0,
+      "iron_lit": 1,
+      "curb": [
+        3,
+        29,
+        28
+      ],
+      "base_y": 448
+    },
+    "trees": {
+      "tree_left_far": {
+        "seed": 101,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          30,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            -2,
+            -42,
+            16,
+            11
+          ]
+        ],
+        "limbs": [
+          [
+            -2,
+            -40,
+            -34,
+            -66,
+            8,
+            3
+          ],
+          [
+            -1,
+            -42,
+            34,
+            -72,
+            8,
+            3
+          ],
+          [
+            -2,
+            -42,
+            2,
+            -88,
+            7,
+            3
+          ],
+          [
+            -24,
+            -58,
+            -50,
+            -64,
+            4,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -96
+            ],
+            "radius": [
+              66,
+              46
+            ],
+            "clump": 21
+          },
+          {
+            "center": [
+              -48,
+              -72
+            ],
+            "radius": [
+              30,
+              22
+            ],
+            "clump": 16
+          },
+          {
+            "center": [
+              48,
+              -76
+            ],
+            "radius": [
+              30,
+              22
+            ],
+            "clump": 16
+          }
+        ]
+      },
+      "tree_left_back": {
+        "seed": 202,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          24,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            1,
+            -36,
+            12,
+            8
+          ]
+        ],
+        "limbs": [
+          [
+            1,
+            -34,
+            -24,
+            -60,
+            6,
+            2
+          ],
+          [
+            1,
+            -34,
+            26,
+            -58,
+            6,
+            2
+          ],
+          [
+            1,
+            -36,
+            0,
+            -80,
+            5,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -86
+            ],
+            "radius": [
+              56,
+              44
+            ],
+            "clump": 20
+          },
+          {
+            "center": [
+              -36,
+              -62
+            ],
+            "radius": [
+              24,
+              18
+            ],
+            "clump": 14
+          }
+        ]
+      },
+      "tree_left_near": {
+        "seed": 303,
+        "tint": "lime",
+        "shadow": [
+          0,
+          0,
+          20,
+          3
+        ],
+        "stems": [
+          [
+            -3,
+            0,
+            -8,
+            -50,
+            6,
+            4
+          ],
+          [
+            2,
+            0,
+            6,
+            -54,
+            6,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            -60,
+            5,
+            3
+          ]
+        ],
+        "limbs": [
+          [
+            -8,
+            -50,
+            -30,
+            -76,
+            4,
+            2
+          ],
+          [
+            6,
+            -54,
+            30,
+            -78,
+            4,
+            2
+          ],
+          [
+            0,
+            -58,
+            -4,
+            -92,
+            3,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -92
+            ],
+            "radius": [
+              50,
+              34
+            ],
+            "clump": 17
+          },
+          {
+            "center": [
+              -30,
+              -76
+            ],
+            "radius": [
+              22,
+              17
+            ],
+            "clump": 13
+          },
+          {
+            "center": [
+              30,
+              -78
+            ],
+            "radius": [
+              22,
+              17
+            ],
+            "clump": 13
+          }
+        ],
+        "scale": 0.85
+      },
+      "tree_right_far": {
+        "seed": 404,
+        "tint": "green",
+        "shadow": [
+          0,
+          0,
+          44,
+          3
+        ],
+        "stems": [
+          [
+            -24,
+            0,
+            -22,
+            -60,
+            9,
+            6
+          ],
+          [
+            22,
+            -4,
+            20,
+            -58,
+            8,
+            5
+          ]
+        ],
+        "limbs": [
+          [
+            -22,
+            -58,
+            -40,
+            -80,
+            4,
+            2
+          ],
+          [
+            -22,
+            -58,
+            -8,
+            -86,
+            4,
+            2
+          ],
+          [
+            20,
+            -56,
+            40,
+            -84,
+            4,
+            2
+          ],
+          [
+            20,
+            -56,
+            8,
+            -90,
+            4,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              -30,
+              -102
+            ],
+            "radius": [
+              40,
+              38
+            ],
+            "clump": 18
+          },
+          {
+            "center": [
+              28,
+              -110
+            ],
+            "radius": [
+              42,
+              40
+            ],
+            "clump": 18
+          },
+          {
+            "center": [
+              0,
+              -134
+            ],
+            "radius": [
+              32,
+              22
+            ],
+            "clump": 16
+          }
+        ],
+        "scale": 0.85
+      },
+      "tree_right_back": {
+        "seed": 505,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          22,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            0,
+            -40,
+            11,
+            7
+          ]
+        ],
+        "limbs": [
+          [
+            0,
+            -38,
+            -22,
+            -62,
+            5,
+            2
+          ],
+          [
+            0,
+            -38,
+            22,
+            -66,
+            5,
+            2
+          ],
+          [
+            0,
+            -40,
+            0,
+            -96,
+            5,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -100
+            ],
+            "radius": [
+              48,
+              54
+            ],
+            "clump": 20
+          }
+        ]
+      },
+      "tree_right_near": {
+        "seed": 606,
+        "tint": "lime",
+        "shadow": [
+          0,
+          0,
+          14,
+          2
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            0,
+            -40,
+            5,
+            3
+          ]
+        ],
+        "limbs": [
+          [
+            0,
+            -36,
+            -12,
+            -52,
+            3,
+            1.5
+          ],
+          [
+            0,
+            -38,
+            12,
+            -56,
+            3,
+            1.5
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -62
+            ],
+            "radius": [
+              25,
+              25
+            ],
+            "clump": 12
+          }
+        ],
+        "scale": 0.9
+      },
+      "tree_right_edge": {
+        "seed": 707,
+        "tint": "green",
+        "shadow": [
+          0,
+          0,
+          32,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            -1,
+            -50,
+            14,
+            10
+          ]
+        ],
+        "limbs": [
+          [
+            -1,
+            -48,
+            -36,
+            -80,
+            7,
+            3
+          ],
+          [
+            -1,
+            -48,
+            36,
+            -84,
+            7,
+            3
+          ],
+          [
+            -1,
+            -50,
+            2,
+            -110,
+            6,
+            3
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -112
+            ],
+            "radius": [
+              64,
+              56
+            ],
+            "clump": 22
+          },
+          {
+            "center": [
+              -44,
+              -82
+            ],
+            "radius": [
+              26,
+              20
+            ],
+            "clump": 16
+          },
+          {
+            "center": [
+              44,
+              -86
+            ],
+            "radius": [
+              26,
+              20
+            ],
+            "clump": 16
+          }
+        ],
+        "scale": 0.85
+      }
+    },
+    "tree_placements": [
+      [
+        "tree_left_back",
+        490,
+        334
+      ],
+      [
+        "tree_left_far",
+        851,
+        328
+      ],
+      [
+        "tree_right_back",
+        1963,
+        382
+      ],
+      [
+        "tree_left_near",
+        740,
+        390
+      ],
+      [
+        "tree_right_near",
+        1560,
+        394
+      ],
+      [
+        "tree_right_edge",
+        1800,
+        386
+      ],
+      [
+        "tree_right_far",
+        1690,
+        396
+      ]
+    ],
+    "tree_depth_reason": "User reported trees standing on the fence plane; near trees moved back onto the lawn behind the fence with a slight perspective scale-down."
+  }
+}

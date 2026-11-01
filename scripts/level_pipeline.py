@@ -115,12 +115,12 @@ def initialize(reference, style_reference, target, world_width=None, camera_trav
     return manifest
 
 
-def load_image(root, name, expected_size, palette):
+def load_image(root, name, expected_size, palette, *, allow_empty=False):
     with Image.open(asset_path(root, name)) as source:
         image = source.convert("RGBA")
     if image.size != expected_size:
         raise ValueError(f"{name}: expected {expected_size}, got {image.size}.")
-    if image.getchannel("A").getbbox() is None:
+    if image.getchannel("A").getbbox() is None and not allow_empty:
         raise ValueError(f"{name}: empty image; omit optional props instead.")
     for _, (red, green, blue, alpha) in image.getcolors(image.width * image.height):
         if alpha not in (0, 255):
@@ -183,7 +183,8 @@ def validate(root, release=False):
             raise ValueError(f"{identity}: factor/z differs from the locked workflow.")
         if world < width + math.ceil(travel * factor):
             raise ValueError(f"{identity}: artwork too narrow for the full parallax travel.")
-        image = load_image(root, layer["image"], (world, height), palette)
+        image = load_image(root, layer["image"], (world, height), palette,
+                           allow_empty=identity == "foreground")
         alpha = image.getchannel("A")
         if identity == "ground":
             if alpha.crop((0, lane_top, world, height)).getextrema() != (255, 255):

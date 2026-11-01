@@ -56,6 +56,8 @@ Final layers are `sky.png` (960 x 640, opaque) and `far_background.png`,
 `midground.png`, `ground.png`, `foreground.png` (2400 x 640, binary alpha).
 All non-ground layers and props must be transparent in the protected lane;
 ground must be transparent above it and fully opaque below its straight top.
+The required foreground PNG may be fully transparent when the stage has no
+foreground objects; do not invent obstacles just to populate that layer.
 `palette.json` has the form `{"colors": [[90, 30, 60], [60, 100, 20]]}` with
 the actual approved colors, not these illustrative swatches.
 Props are independently reusable PNGs; add instances to the manifest's `props`
@@ -105,6 +107,59 @@ travel, a heuristic sky lightbox, far, mid, ground and foreground layers, and
 reusable stone and grass-tuft props. Its review gates remain `false`. The
 Nano Banana, Tripo and Blender path was not run for it. See the skill for the
 recipe format and limitations.
+
+`assets\levels\white_house` is a **playable, reference-derived production stage**
+registered by `stages\white_house\stage.json`. Nano Banana removed the people and
+temporary inauguration barricades, produced a daytime lightbox and isolated the
+geometry reference. Tripo generated and textured 20 selectable meshes; Blender
+4.5 LTS assembled/repaired them and rendered the cel-shaded house. Following
+playtest feedback, the distorted 3D yard exports were replaced with independent
+reference-textured **2.5D Blender cards**, preserving the generated reference's
+hedge shapes and level fountain. This is a documented hybrid
+repair, not newly generated 3D yard geometry. A later playtest found the card
+trees clipped by their source boxes and stylistically too thin, and the fence
+too small beside the fighters. `scripts\stage_pixel_props.py` now paints the
+seven trees and a larger 96x124 tiling iron-fence module (spear-tipped bars,
+posts, rails and curb on the sidewalk edge at y=448) as **deterministic,
+palette-locked 2 px procedural pixel art** from the recipe's `pixel_art`
+section. These are not Tripo, Blender or image-model output; no remote service
+is used. The accepted house and sky source
+images are preserved; yard colors cannot replace their palette
+entries. The sky remains byte-identical. A subsequent user-requested depth
+adjustment displays the garden/house at 85% scale, enlarges the fountain to about
+153% of its previous size, and expands the foreground to y=448..639:
+a 64 px decorative sidewalk followed by 128 px of protected fighting road
+(y=512..639). Four larger reusable streetlights stand on the sidewalk plane
+(midground parallax 0.5, drawn over the fence but behind the fighters) and end
+before the road. The lamp sprite is cleaned of the reference tree trunk, vines
+and fringe that stood behind it. The trees nearest the fence stand back on the
+lawn (bases at least 40 px above the fence line) with a slight perspective
+scale-down via the tree spec's optional `scale`. The house and its flag sit 14 px
+lower so the foundation is hidden behind the hedge row, and the open portico and
+foundation gaps in the house art are closed with a recessed porch shade
+(`house_grounding` in the recipe) so no sky shows beneath the building; the
+approved house pixels themselves are unchanged. Fighters retain
+their original scale and y=576 collision baseline. The stage
+retains the permanent iron fence, fountain, rooftop flag and a screen-locked
+distant Monument, with reusable fence, lamp, fountain, hedge and flag sprites.
+Its shared palette has 31 opaque colors plus transparency. The 2400 px artwork
+supports 960 px of camera travel; all scenery ends above the widened flat lane.
+
+Cached GLBs, `source\stage.blend`, raw render passes and provider upload handles
+stay local and are git-ignored; input references, masks, task provenance and the
+assembly recipe are retained with the exported stage. With those local caches
+present, regenerate without remote calls using:
+
+```powershell
+python scripts\white_house_stage.py prepare-yard
+& $env:BLENDER_EXE --background --factory-startup --python-exit-code 1 --python scripts\white_house_stage.py -- render
+python scripts\white_house_stage.py compile
+python scripts\level_pipeline.py validate --level assets\levels\white_house
+godot --headless --path . --script tests\test_white_house.gd
+```
+
+The four human artistic/game review gates remain `false`; successful generation
+and technical/in-engine checks are not release approval.
 
 `validate` checks image dimensions, shared palette, true binary transparency,
 sky locking, layer order/ratios, parallax coverage and pixel-exact flat lane

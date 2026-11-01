@@ -1,0 +1,35 @@
+{
+  "sky": [
+    "blue daytime sky and white clouds",
+    "distant Washington Monument",
+    "subtle atmospheric landscape underlay without nearby detail"
+  ],
+  "far_background": [
+    "White House north facade and columned portico"
+  ],
+  "midground": [
+    "lawn sections",
+    "flat painted lawn backing",
+    "wide decorative sidewalk and paving joints"
+  ],
+  "ground": [
+    "new straight full-width unobstructed street combat lane"
+  ],
+  "foreground": [],
+  "props": [
+    "larger procedurally painted tiling iron-fence modules on the sidewalk edge, assigned to midground",
+    "hedge modules assigned to midground",
+    "double-globe lamp assigned to midground",
+    "four larger reusable sidewalk streetlight instances assigned to midground, behind the fighters",
+    "fountain basin and water assigned to midground",
+    "procedurally painted pixel-art trees on the lawn behind the fence, depth-sorted in midground",
+    "rooftop flag assigned to far_background"
+  ],
+  "excluded": [
+    "all people including foreground personnel and figures near the building",
+    "temporary inauguration barricades and supports",
+    "event signage and logos",
+    "removed people's and temporary barricades' shadows",
+    "geometry-isolation blue backdrop"
+  ]
+}

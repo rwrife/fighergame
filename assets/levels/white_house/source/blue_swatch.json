@@ -1,0 +1,20 @@
+{
+  "sampled_original_rgb": [
+    57,
+    184,
+    254
+  ],
+  "sample_position": [
+    632,
+    20
+  ],
+  "uniform_replacement_rgb": [
+    57,
+    184,
+    254
+  ],
+  "mask": "sky_mask.png",
+  "object_mask": "object_mask.png",
+  "method": "reviewed_color_range_with_authored_architecture_and_water_exclusions",
+  "notes": "Includes enclosed branch gaps; window glass and turquoise fountain are protected."
+}
