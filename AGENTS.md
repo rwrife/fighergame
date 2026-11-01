@@ -73,6 +73,26 @@ Every new character must have sprite sheets for at least these animations:
 | Jump kick | `jump_kick` |
 | Knocked backwards through the air | `knocked_back_air` |
 | Falling to the ground on their back | `fall_on_back` |
+| Heavy (back) punch: slow, strong, long reach | `heavy_punch` |
+| Heavy (back) kick: roundhouse | `heavy_kick` |
+
+### Attack tiers
+
+Each character has two tiers of standing attacks, bound to separate buttons
+(keyboard P1 `J`/`K` normal, `U`/`I` heavy; gamepad X/A normal, Y/RB heavy):
+
+- **Normal punch/kick** (`standing_punch`, `standing_kick`): fast and short
+  range. Keep them to roughly 4-6 played frames (about 0.25-0.4 s at 6 FPS after
+  the move's `speed`), with low damage and short hitstun.
+- **Heavy punch** (`heavy_punch`): slow, strong punch with a visible wind-up,
+  longer reach and higher damage/pushback.
+- **Heavy kick** (`heavy_kick`): a roundhouse kick, slow with long reach, high
+  damage, and launch/knockback.
+
+Trim clips with `frames` and tune `speed` in `character.json` rather than
+re-rendering when only timing needs to change. Characters render at about
+`sprite_scale` 1.065 for 346 px frames (same on-screen size as 192 px at 1.92); when scaling a sprite, scale hurtboxes
+and hitbox rects by the same factor.
 
 Keep `block_idle` as an explicit requirement distinct from `standing_block`.
 Before generating it, clarify the intended pose if the request or reference does
@@ -107,17 +127,17 @@ frame transition.
 
 ## Timing and visual style
 
-- Generate all character animations and transitions at **8 FPS**.
+- Generate all character animations and transitions at **6 FPS** (346 px renders via `--size 346`), except looping idles that need smoothness: `standing_idle` is rendered at **12 FPS** (its own render/compile pass with `--fps 12`).
 - Use a **32-color palette including transparency**, consistent across the
   character's sheets.
 - Aim for **1990s arcade fighting-game pixel art** with bright, saturated,
-  exaggerated and embellished colors, bold readable silhouettes, dark outlines,
+  exaggerated and embellished colors, bold readable silhouettes, no baked-in black outline (hard alpha cutout; `--outline-px N` is opt-in),
   and crisp cel-shaded highlights.
 - Preserve consistent scale, facing, framing, and ground alignment across moves,
   while retaining intentional airborne movement. Keep backgrounds transparent
   and exclude floors, cast/drop shadows, scenery, text, and stray marks.
 
-Pass `--fps 8 --colors 32` explicitly to the pipeline stages that accept those
+Pass `--fps 6 --colors 32` explicitly to the pipeline stages that accept those
 options. Use the bright deterministic cel shader, not AI or diffusion, for
 sprite rendering. The legacy `--description` prompt does not affect that shader.
 
@@ -125,7 +145,7 @@ sprite rendering. The legacy `--description` prompt does not affect that shader.
 
 Save each horizontal PNG strip and its matching JSON metadata under
 `assets\spritesheets`, following the existing `<character>_<animation>_sheet`
-naming convention. JSON timing must specify 8 FPS and valid frame rectangles;
+naming convention. JSON timing must specify 6 FPS (12 FPS for `standing_idle`) and valid frame rectangles;
 idle/held-pose loops should loop, while attacks, jumps, knockback, falls, and
 one-shot transitions should not loop.
 

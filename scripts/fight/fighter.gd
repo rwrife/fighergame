@@ -9,7 +9,7 @@ const FRICTION := 2400.0
 const WAKEUP_TIME := 1.1 # placeholder until a get-up animation exists
 const CHIP_FRACTION := 0.1
 const NEUTRAL := {&"left": false, &"right": false, &"up": false, &"down": false,
-		&"punch": false, &"kick": false, &"block": false}
+		&"punch": false, &"kick": false, &"heavy_punch": false, &"heavy_kick": false, &"block": false}
 
 var data: CharacterData
 var input := FighterInput.new()
@@ -213,7 +213,7 @@ func _ground_control() -> void:
 		velocity.x = 0.0
 		return
 	var crouching := _held(&"down")
-	for button in [&"punch", &"kick"]:
+	for button in FighterInput.BUTTONS:
 		if _consume(button):
 			var found: Dictionary = data.find_move("crouching" if crouching else "standing", String(button))
 			if not found.is_empty():
@@ -241,7 +241,7 @@ func _ground_control() -> void:
 func _air_control() -> void:
 	if _air_attacked:
 		return
-	for button in [&"punch", &"kick"]:
+	for button in FighterInput.BUTTONS:
 		if _consume(button):
 			var found: Dictionary = data.find_move("air", String(button))
 			if not found.is_empty():

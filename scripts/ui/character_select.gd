@@ -48,7 +48,7 @@ func _ready() -> void:
 			locked.custom_minimum_size = Vector2(TILE.x, 0)
 
 	_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_preview.scale = Vector2(2.2, 2.2)
+	_preview.scale = Vector2(1.76, 1.76)
 	_preview.position = Vector2(150, 470)
 	add_child(_preview)
 	_name = Arcade.label(self, "", 36, Arcade.YELLOW, HORIZONTAL_ALIGNMENT_LEFT)

@@ -260,12 +260,17 @@ def capture(args):
         draw_pose(frame["joints"], args.size).save(capture_dir / frame["pose"])
 
 
-def outline_sprite(frame):
+def outline_sprite(frame, radius=None):
+    # Default outline is about 1 px per 192 px of frame; radius 0 keeps only the hard alpha cutout.
+    if radius is None:
+        radius = max(1, round(frame.width / 192))
     frame = frame.convert("RGBA")
     alpha = frame.getchannel("A").point(lambda value: 255 if value >= 128 else 0)
     frame.putalpha(alpha)
+    if radius == 0:
+        return frame
     outline = Image.new("RGBA", frame.size, (20, 16, 28, 255))
-    outline.putalpha(alpha.filter(ImageFilter.MaxFilter(3)))
+    outline.putalpha(alpha.filter(ImageFilter.MaxFilter(radius * 2 + 1)))
     return Image.alpha_composite(outline, frame)
 
 
@@ -575,10 +580,16 @@ def compile_mixamo(args):
             if Path(filename).name != filename:
                 raise ValueError("Frame names must not contain directory components.")
             with Image.open(root / name / filename) as frame:
-                frames.append(outline_sprite(frame))
+                frames.append(outline_sprite(frame, getattr(args, "outline_px", 0)))
         clips[name] = frames
         all_frames.extend(frames)
-    palette = learn_palette(all_frames, args.colors)
+    if getattr(args, "palette_from", None):
+        # Reuse another sheet's palette so separately rendered clips (e.g. 12 FPS idle) stay matched.
+        with Image.open(args.palette_from) as reference:
+            rgb = reference.getpalette()[:(args.colors-1)*3]
+        palette = [tuple(rgb[i:i+3]) for i in range(0, len(rgb), 3)]
+    else:
+        palette = learn_palette(all_frames, args.colors)
     destination = ROOT / "assets" / "spritesheets"
     metadata = {"source": manifest.get("source", "Mixamo"), "camera": manifest["camera"], "clips": {}}
     for name, frames in clips.items():
@@ -612,6 +623,10 @@ def main():
     parser.add_argument("--bone-map", type=Path)
     parser.add_argument("--clip-set", type=Path,
                         help="Shared Mixamo render manifest for compilation or matched guide capture.")
+    parser.add_argument("--outline-px", type=int, default=0,
+                        help="Dark outline radius for mixamo-sheet in pixels (0 = alpha cutout only).")
+    parser.add_argument("--palette-from", type=Path,
+                        help="Existing sheet PNG whose palette mixamo-sheet reuses.")
     parser.add_argument("--clip-name", choices=("idle", "jump", "punch"))
     parser.add_argument("--fps", type=positive, default=8)
     parser.add_argument("--size", type=positive, default=512)
