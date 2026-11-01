@@ -7,3 +7,10 @@ temp/
 assets/animations/mixamo/
 assets/animations/*_mixamo.blend
 assets/animations/*_mixamo.blend[0-9]
+# White House provider upload handles and large editable caches stay local.
+assets/levels/white_house/source/uploads.json
+assets/levels/white_house/source/provider_tasks.json
+assets/levels/white_house/source/*.glb
+assets/levels/white_house/source/*.blend
+assets/levels/white_house/source/*.blend[0-9]
+assets/levels/white_house/source/renders/

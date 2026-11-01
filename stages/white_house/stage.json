@@ -1,0 +1,474 @@
+{
+  "id": "white_house",
+  "name": "White House",
+  "description": "Bright White House lawn and fountain. Production art awaiting artistic review.",
+  "width": 1920,
+  "floor_y": 576,
+  "layers": [
+    {
+      "name": "sky",
+      "ratio": 0.0,
+      "image": "res://assets/levels/white_house/sky.png"
+    },
+    {
+      "name": "far_background",
+      "ratio": 0.2,
+      "image": "res://assets/levels/white_house/far_background.png",
+      "offset": [
+        -624,
+        0
+      ]
+    },
+    {
+      "name": "flag_0",
+      "ratio": 0.2,
+      "image": "res://assets/levels/white_house/props/flag.png",
+      "offset": [
+        576,
+        54
+      ]
+    },
+    {
+      "name": "midground",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/midground.png",
+      "offset": [
+        -480,
+        0
+      ]
+    },
+    {
+      "name": "hedge_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        244,
+        276
+      ]
+    },
+    {
+      "name": "hedge_1",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        363,
+        276
+      ]
+    },
+    {
+      "name": "hedge_2",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        482,
+        276
+      ]
+    },
+    {
+      "name": "hedge_3",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        601,
+        276
+      ]
+    },
+    {
+      "name": "hedge_4",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        720,
+        276
+      ]
+    },
+    {
+      "name": "hedge_5",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        839,
+        276
+      ]
+    },
+    {
+      "name": "hedge_6",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        958,
+        276
+      ]
+    },
+    {
+      "name": "hedge_7",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/hedge.png",
+      "offset": [
+        1077,
+        276
+      ]
+    },
+    {
+      "name": "tree_left_far_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_left_far.png",
+      "offset": [
+        203,
+        30
+      ]
+    },
+    {
+      "name": "tree_left_back_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_left_back.png",
+      "offset": [
+        -120,
+        62
+      ]
+    },
+    {
+      "name": "tree_right_back_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_right_back.png",
+      "offset": [
+        1373,
+        60
+      ]
+    },
+    {
+      "name": "tree_right_edge_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_right_edge.png",
+      "offset": [
+        1190,
+        86
+      ]
+    },
+    {
+      "name": "tree_left_near_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_left_near.png",
+      "offset": [
+        162,
+        164
+      ]
+    },
+    {
+      "name": "tree_right_near_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_right_near.png",
+      "offset": [
+        1024,
+        226
+      ]
+    },
+    {
+      "name": "tree_right_far_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/tree_right_far.png",
+      "offset": [
+        1078,
+        120
+      ]
+    },
+    {
+      "name": "fountain_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fountain.png",
+      "offset": [
+        489,
+        285
+      ]
+    },
+    {
+      "name": "fence_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        -480,
+        324
+      ]
+    },
+    {
+      "name": "fence_1",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        -384,
+        324
+      ]
+    },
+    {
+      "name": "fence_2",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        -288,
+        324
+      ]
+    },
+    {
+      "name": "fence_3",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        -192,
+        324
+      ]
+    },
+    {
+      "name": "fence_4",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        -96,
+        324
+      ]
+    },
+    {
+      "name": "fence_5",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        0,
+        324
+      ]
+    },
+    {
+      "name": "fence_6",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        96,
+        324
+      ]
+    },
+    {
+      "name": "fence_7",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        192,
+        324
+      ]
+    },
+    {
+      "name": "fence_8",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        288,
+        324
+      ]
+    },
+    {
+      "name": "fence_9",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        384,
+        324
+      ]
+    },
+    {
+      "name": "fence_10",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        480,
+        324
+      ]
+    },
+    {
+      "name": "fence_11",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        576,
+        324
+      ]
+    },
+    {
+      "name": "fence_12",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        672,
+        324
+      ]
+    },
+    {
+      "name": "fence_13",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        768,
+        324
+      ]
+    },
+    {
+      "name": "fence_14",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        864,
+        324
+      ]
+    },
+    {
+      "name": "fence_15",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        960,
+        324
+      ]
+    },
+    {
+      "name": "fence_16",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1056,
+        324
+      ]
+    },
+    {
+      "name": "fence_17",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1152,
+        324
+      ]
+    },
+    {
+      "name": "fence_18",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1248,
+        324
+      ]
+    },
+    {
+      "name": "fence_19",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1344,
+        324
+      ]
+    },
+    {
+      "name": "fence_20",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1440,
+        324
+      ]
+    },
+    {
+      "name": "fence_21",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1536,
+        324
+      ]
+    },
+    {
+      "name": "fence_22",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1632,
+        324
+      ]
+    },
+    {
+      "name": "fence_23",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1728,
+        324
+      ]
+    },
+    {
+      "name": "fence_24",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/fence.png",
+      "offset": [
+        1824,
+        324
+      ]
+    },
+    {
+      "name": "lamp_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/lamp.png",
+      "offset": [
+        1114,
+        265
+      ]
+    },
+    {
+      "name": "street_lamp_0",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/street_lamp.png",
+      "offset": [
+        6,
+        235
+      ]
+    },
+    {
+      "name": "street_lamp_1",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/street_lamp.png",
+      "offset": [
+        396,
+        235
+      ]
+    },
+    {
+      "name": "street_lamp_2",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/street_lamp.png",
+      "offset": [
+        976,
+        235
+      ]
+    },
+    {
+      "name": "street_lamp_3",
+      "ratio": 0.5,
+      "image": "res://assets/levels/white_house/props/street_lamp.png",
+      "offset": [
+        1366,
+        235
+      ]
+    },
+    {
+      "name": "ground",
+      "ratio": 1.0,
+      "image": "res://assets/levels/white_house/ground.png",
+      "offset": [
+        -240,
+        0
+      ]
+    },
+    {
+      "name": "foreground",
+      "ratio": 1.15,
+      "image": "res://assets/levels/white_house/foreground.png",
+      "offset": [
+        -168,
+        0
+      ],
+      "front": true
+    }
+  ]
+}

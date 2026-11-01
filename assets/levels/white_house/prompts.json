@@ -1,0 +1,23 @@
+{
+  "workflow_version": 1,
+  "canvas": {
+    "viewport": [
+      960,
+      640
+    ],
+    "world_width": 2400,
+    "camera_travel": 960,
+    "play_area_fraction": 0.15,
+    "decoration_zone_fraction": 0.3,
+    "feet_baseline_fraction": 0.9,
+    "palette_colors_including_transparency": 32
+  },
+  "prompts": {
+    "style": "Recreate the reference's White House north facade, columned portico, fountain, lawn and permanent black iron fence in bright, saturated 1990s arcade fighting-game pixel art matching the supplied Bruiser sheet. Keep blue daytime skies, crisp white architecture, turquoise water and vivid green lawns. Use three hard cel-shaded bands, readable silhouettes, consistent pixel density and one shared palette of at most 31 opaque colors plus transparency, without dithering or photographic PBR. Remove all people, temporary inauguration barricades, event signage, their feet and cast shadows. Preserve the building's recognizable proportions. Recompose, never stretch. No text, watermark or UI. Style and palette require approval.",
+    "cleanup": "Edit the original White House photograph. Remove every foreground uniformed person and all temporary blue/red/gold inauguration barricades across the bottom, including their supports, event lettering, logos and cast shadows. Also remove small people visible near the house. Reconstruct uninterrupted pavement and road where they stood, with no silhouettes, ghost feet or residual signage. Retain the permanent black iron fence, White House, fountain, lawn, trees, double-globe lamp and flags as architectural scenery. This cleaned image is an intermediate reference, not a final flattened stage. Keep the original separately.",
+    "sky": "From the original White House reference, extract/repaint a complete opaque 960x640 daytime lightbox. Keep the blue sky, white cloud rhythm and distant Washington Monument silhouette. Remove the White House, nearby trees, fountain, lawn detail, permanent fence, lamp, flags, all people and temporary barricades, including shadows; inpaint their footprints with continuous sky, haze and a restrained low-contrast landscape underlay. The Monument belongs only to this static layer and must not appear in moving geometry. Recompose/outpaint without stretching, cutout holes or landmark ghosts. Apply the approved arcade style and shared palette. No sunset substitution, detailed foreground, text, watermark or alpha.",
+    "geometry": "Edit a separate copy of the cleaned White House reference, not the sky output: remove the sky from the image and replace it with a solid blue sky. Use one uniform sampled RGB swatch, with no cloud, gradient or shadow. Remove the distant Washington Monument assigned to the static lightbox. Preserve the White House facade and columns, fountain, lawn, hedges, nearby trees, permanent iron fence and double-globe lamp. Remove all people and temporary inauguration barricades, signage and shadows. Verify sky gaps between branches and fence bars with explicit segmentation masks; do not globally key legitimate blue colors or assume generated alpha. Exclude street and protected combat floor from geometry generation. Retain swatch, original edit, masks and crops. The blue backdrop must never become mesh geometry.",
+    "tripo": "Create independently selectable meshes from approved White House object masks/crops using a verified multi-object or segmentation capability. Separate the north-facade building and portico, fountain basin, lawn sections, hedges, nearby trees, permanent iron-fence modules and double-globe lamp with useful pivots. Match relative proportions and source composition. Exclude sky, the static Washington Monument, all people, temporary inauguration barricades, event signage, blue backdrop planes and combat floor. Reject a fused scene slab. Keep simple colors for local three-band cel shading. This is a brief, not an API payload; verify account support before submitting and obtain permission before per-object generation if native multi-object generation is unavailable.",
+    "props": "Export independent reusable permanent iron-fence modules, double-globe lamp, hedge modules and decorative flag sprites consistent with the approved White House stage palette and fighter pixel density. Use verified transparent cutouts and explicit pivots. Keep flags separate for possible later animation; do not claim automatic animation. No people, temporary barricades, event lettering, backdrop, attached floor or external cast shadow. Every placement must end above y=544; leave the flat combat street unobstructed."
+  }
+}

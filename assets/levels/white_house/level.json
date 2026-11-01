@@ -1,0 +1,940 @@
+{
+  "schema_version": 1,
+  "workflow_version": 1,
+  "viewport": [
+    960,
+    640
+  ],
+  "world_width": 2400,
+  "camera_travel": 960,
+  "play_area_fraction": 0.2,
+  "decoration_zone_fraction": 0.3,
+  "feet_baseline_fraction": 0.9,
+  "palette_colors_including_transparency": 32,
+  "sky": {
+    "image": "sky.png",
+    "factor": 0.0,
+    "z": -100
+  },
+  "palette": "palette.json",
+  "layers": [
+    {
+      "id": "far_background",
+      "factor": 0.2,
+      "z": -30,
+      "image": "far_background.png"
+    },
+    {
+      "id": "midground",
+      "factor": 0.5,
+      "z": -20,
+      "image": "midground.png"
+    },
+    {
+      "id": "ground",
+      "factor": 1.0,
+      "z": -10,
+      "image": "ground.png"
+    },
+    {
+      "id": "foreground",
+      "factor": 1.15,
+      "z": 10,
+      "image": "foreground.png"
+    }
+  ],
+  "props": [
+    {
+      "id": "hedge_0",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        724,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_1",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        843,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_2",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        962,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_3",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        1081,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_4",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        1200,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_5",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        1319,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_6",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        1438,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "hedge_7",
+      "image": "props/hedge.png",
+      "layer": "midground",
+      "size": [
+        129,
+        42
+      ],
+      "position": [
+        1557,
+        276
+      ],
+      "pivot": [
+        64,
+        40
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_left_far_0",
+      "image": "props/tree_left_far.png",
+      "layer": "midground",
+      "size": [
+        338,
+        334
+      ],
+      "position": [
+        683,
+        30
+      ],
+      "pivot": [
+        168,
+        298
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_left_back_0",
+      "image": "props/tree_left_back.png",
+      "layer": "midground",
+      "size": [
+        256,
+        300
+      ],
+      "position": [
+        360,
+        62
+      ],
+      "pivot": [
+        130,
+        272
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_right_back_0",
+      "image": "props/tree_right_back.png",
+      "layer": "midground",
+      "size": [
+        222,
+        348
+      ],
+      "position": [
+        1853,
+        60
+      ],
+      "pivot": [
+        110,
+        322
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_right_edge_0",
+      "image": "props/tree_right_edge.png",
+      "layer": "midground",
+      "size": [
+        262,
+        328
+      ],
+      "position": [
+        1670,
+        86
+      ],
+      "pivot": [
+        130,
+        300
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_left_near_0",
+      "image": "props/tree_left_near.png",
+      "layer": "midground",
+      "size": [
+        196,
+        242
+      ],
+      "position": [
+        642,
+        164
+      ],
+      "pivot": [
+        98,
+        226
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_right_near_0",
+      "image": "props/tree_right_near.png",
+      "layer": "midground",
+      "size": [
+        112,
+        182
+      ],
+      "position": [
+        1504,
+        226
+      ],
+      "pivot": [
+        56,
+        168
+      ],
+      "collision": false
+    },
+    {
+      "id": "tree_right_far_0",
+      "image": "props/tree_right_far.png",
+      "layer": "midground",
+      "size": [
+        262,
+        296
+      ],
+      "position": [
+        1558,
+        120
+      ],
+      "pivot": [
+        132,
+        276
+      ],
+      "collision": false
+    },
+    {
+      "id": "fountain_0",
+      "image": "props/fountain.png",
+      "layer": "midground",
+      "size": [
+        464,
+        113
+      ],
+      "position": [
+        969,
+        285
+      ],
+      "pivot": [
+        232,
+        111
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_0",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        0,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_1",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        96,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_2",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        192,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_3",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        288,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_4",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        384,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_5",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        480,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_6",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        576,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_7",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        672,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_8",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        768,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_9",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        864,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_10",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        960,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_11",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1056,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_12",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1152,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_13",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1248,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_14",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1344,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_15",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1440,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_16",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1536,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_17",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1632,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_18",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1728,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_19",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1824,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_20",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        1920,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_21",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        2016,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_22",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        2112,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_23",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        2208,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "fence_24",
+      "image": "props/fence.png",
+      "layer": "midground",
+      "size": [
+        96,
+        124
+      ],
+      "position": [
+        2304,
+        324
+      ],
+      "pivot": [
+        48,
+        122
+      ],
+      "collision": false
+    },
+    {
+      "id": "lamp_0",
+      "image": "props/lamp.png",
+      "layer": "midground",
+      "size": [
+        37,
+        179
+      ],
+      "position": [
+        1594,
+        265
+      ],
+      "pivot": [
+        18,
+        177
+      ],
+      "collision": false
+    },
+    {
+      "id": "flag_0",
+      "image": "props/flag.png",
+      "layer": "far_background",
+      "size": [
+        46,
+        71
+      ],
+      "position": [
+        1200,
+        54
+      ],
+      "pivot": [
+        23,
+        70
+      ],
+      "collision": false
+    },
+    {
+      "id": "street_lamp_0",
+      "image": "props/street_lamp.png",
+      "layer": "midground",
+      "size": [
+        54,
+        271
+      ],
+      "position": [
+        486,
+        235
+      ],
+      "pivot": [
+        27,
+        269
+      ],
+      "collision": false
+    },
+    {
+      "id": "street_lamp_1",
+      "image": "props/street_lamp.png",
+      "layer": "midground",
+      "size": [
+        54,
+        271
+      ],
+      "position": [
+        876,
+        235
+      ],
+      "pivot": [
+        27,
+        269
+      ],
+      "collision": false
+    },
+    {
+      "id": "street_lamp_2",
+      "image": "props/street_lamp.png",
+      "layer": "midground",
+      "size": [
+        54,
+        271
+      ],
+      "position": [
+        1456,
+        235
+      ],
+      "pivot": [
+        27,
+        269
+      ],
+      "collision": false
+    },
+    {
+      "id": "street_lamp_3",
+      "image": "props/street_lamp.png",
+      "layer": "midground",
+      "size": [
+        54,
+        271
+      ],
+      "position": [
+        1846,
+        235
+      ],
+      "pivot": [
+        27,
+        269
+      ],
+      "collision": false
+    }
+  ],
+  "review": {
+    "style": false,
+    "sky_clean": false,
+    "composition": false,
+    "in_game": false
+  },
+  "foreground_layout": {
+    "scene_scale": 0.85,
+    "scene_y_offset": -14,
+    "fountain_scale": 1.8,
+    "sidewalk_top": 448,
+    "lane_top": 512,
+    "road_top": 512,
+    "feet_baseline": 576,
+    "street_lights": {
+      "positions": [
+        486,
+        876,
+        1456,
+        1846
+      ],
+      "base_y": 506,
+      "size": [
+        66,
+        290
+      ]
+    },
+    "reason": "User requested a larger fountain and a wider road and sidewalk to separate the garden scene from the fighters.",
+    "street_lights_reason": "User reported the foreground poles drawing in front of the fighters; streetlights now stand on the sidewalk plane (midground) behind them.",
+    "house_grounding": {
+      "drop": 14,
+      "fill_top": 246,
+      "body_rows": 10,
+      "fill": [
+        70,
+        84,
+        105
+      ],
+      "shadow": [
+        48,
+        60,
+        79
+      ],
+      "reason": "User reported the house floating: sky showed through the open portico and foundation gaps above the hedges. Drop the house and flag behind the hedge row and close those gaps with a recessed porch shade."
+    }
+  }
+}

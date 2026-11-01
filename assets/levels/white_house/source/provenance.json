@@ -1,0 +1,2874 @@
+{
+  "workflow_version": 1,
+  "inputs": {
+    "reference": {
+      "file": "source\\reference.png",
+      "sha256": "2162fb0a289bb4da32ef667baaf06dab993ebdbc25025887773a0b5372de1eff"
+    },
+    "style_reference": {
+      "file": "source\\style_reference.png",
+      "sha256": "50b816a3592aba0e1cf4cdb12071a63ee10c12cf69cec52d976cd0e619b1eb23"
+    }
+  },
+  "generation": [
+    {
+      "method": "nano_banana_tripo_blender",
+      "provider": "Tripo V3",
+      "tasks": {
+        "cleanup": {
+          "task_id": "c77043e9-6536-41eb-95b1-54774fdb1431",
+          "endpoint": "/generation/image-to-image",
+          "request_sha256": "13338dd0755bd0e9d5138ebed0c487b6090859ffc64383436d15f058289c3cd7",
+          "request": {
+            "input": {
+              "uploaded_input_sha256": "2162fb0a289bb4da32ef667baaf06dab993ebdbc25025887773a0b5372de1eff"
+            },
+            "model": "banana",
+            "aspect_ratio": "3:2",
+            "prompt": "Edit the original White House photograph. Remove every foreground uniformed person and all temporary blue/red/gold inauguration barricades across the bottom, including their supports, event lettering, logos and cast shadows. Also remove small people visible near the house. Reconstruct uninterrupted pavement and road where they stood, with no silhouettes, ghost feet or residual signage. Retain the permanent black iron fence, White House, fountain, lawn, trees, double-globe lamp and flags as architectural scenery. This cleaned image is an intermediate reference, not a final flattened stage. Keep the original separately."
+          },
+          "status": "success",
+          "credits_consumed": 5.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "generated_image_url"
+          ],
+          "outputs": {
+            "generated_image_url": {
+              "file": "source\\cleanup_generated_image.png",
+              "sha256": "4c70edeba475fbef8feef812c1dbb235a6f57623bf0ae009c6e741ce372a3435"
+            }
+          }
+        },
+        "sky": {
+          "task_id": "73de10fd-9920-4eb8-ba31-bd464c3336b1",
+          "endpoint": "/generation/image-to-image",
+          "request_sha256": "420ebf733119eac654643d337b2ada06e2c822c2f7be48d4cec52d06da38607e",
+          "request": {
+            "input": {
+              "uploaded_input_sha256": "2162fb0a289bb4da32ef667baaf06dab993ebdbc25025887773a0b5372de1eff"
+            },
+            "model": "banana",
+            "aspect_ratio": "3:2",
+            "prompt": "From the original White House reference, extract/repaint a complete opaque 960x640 daytime lightbox. Keep the blue sky, white cloud rhythm and distant Washington Monument silhouette. Remove the White House, nearby trees, fountain, lawn detail, permanent fence, lamp, flags, all people and temporary barricades, including shadows; inpaint their footprints with continuous sky, haze and a restrained low-contrast landscape underlay. The Monument belongs only to this static layer and must not appear in moving geometry. Recompose/outpaint without stretching, cutout holes or landmark ghosts. Apply the approved arcade style and shared palette. No sunset substitution, detailed foreground, text, watermark or alpha."
+          },
+          "status": "success",
+          "credits_consumed": 5.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "generated_image_url"
+          ],
+          "outputs": {
+            "generated_image_url": {
+              "file": "source\\sky_generated_image.png",
+              "sha256": "37a10b5760721ee7702190071c8c90a5ecec1262330cefc924adf4bac2549bf5"
+            }
+          }
+        },
+        "sky_repaint": {
+          "task_id": "b43c96e1-6382-4bd1-9648-74baef969c67",
+          "endpoint": "/generation/image-to-image",
+          "request_sha256": "29f24e9acc83374191300678d9deaf013e6005ba986aff89a91b864034086ae7",
+          "request": {
+            "model": "banana2",
+            "aspect_ratio": "3:2",
+            "size": "1K",
+            "prompt": "Replace this photograph with ONLY a daytime sky lightbox for a 1990s arcade fighting game. Blue sky and broad white clouds fill the entire frame from top to bottom. Near the bottom, a single small distant Washington Monument silhouette and a faint hazy skyline. REMOVE THE WHITE HOUSE COMPLETELY. REMOVE ALL TREES, FENCES, PEOPLE, LAMPS, GRASS, FOUNTAIN, PAVEMENT AND ROAD. No building ghosts, no collage, no duplicate monument, no foreground. Crisp saturated pixel art, clean hard-edged color bands, no photograph, no gradients or text. Sky remains visible behind where the house used to be. 3:2 landscape.",
+            "input": {
+              "uploaded_input_sha256": "2162fb0a289bb4da32ef667baaf06dab993ebdbc25025887773a0b5372de1eff"
+            }
+          },
+          "status": "success",
+          "credits_consumed": 10.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "generated_image_url"
+          ],
+          "outputs": {
+            "generated_image_url": {
+              "file": "source\\sky_repaint_generated_image.png",
+              "sha256": "90b2e75c45e2b24a81af65aa4963dbe3e15af1871aaec33b023410c472de6732"
+            }
+          }
+        },
+        "geometry": {
+          "task_id": "38c66fb1-1cfe-4a1c-8779-1623ae9ac835",
+          "endpoint": "/generation/image-to-image",
+          "request_sha256": "c4417e7e45e8bc946c175fee21a20bbebaff426ae20b1fc7e5f982c68bbbfae7",
+          "request": {
+            "model": "banana2",
+            "size": "1K",
+            "aspect_ratio": "3:2",
+            "prompt": "image[1] is the White House scene. image[2] is ONLY the arcade art-style reference; DO NOT DRAW THE CHARACTER. Repaint image[1] as bright saturated 90s arcade cel-shaded environment art, crisp shapes, no photorealism. Keep the recognizable White House north facade, columns and portico, trees, vivid green lawn, fountain, permanent black iron fence and double-globe lamp. REMOVE EVERY PERSON and ALL temporary inauguration barricades and event signage. Remove the distant Washington Monument. REMOVE THE SKY AND REPLACE IT WITH ONE COMPLETELY UNIFORM SOLID PURE BLUE SWATCH including the gaps in branches and fence bars. No cloud, gradient or shadow on that blue. Delete the sidewalk and road at the bottom; solid blue there too. No floor slab, text, logos or watermarks. Preserve the architecture's proportions and front-facing landscape composition. Each scene object must have a crisp silhouette ready for segmentation.",
+            "inputs": [
+              {
+                "uploaded_input_sha256": "4c70edeba475fbef8feef812c1dbb235a6f57623bf0ae009c6e741ce372a3435"
+              },
+              {
+                "uploaded_input_sha256": "e21d7d95217524860dea852779b65a37ac613e0fba4d1b82e83dcbc7a1661738"
+              }
+            ]
+          },
+          "status": "success",
+          "credits_consumed": 10.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "generated_image_url"
+          ],
+          "outputs": {
+            "generated_image_url": {
+              "file": "source\\geometry_generated_image.png",
+              "sha256": "ce01d55041d962bb1a4c2719b2c24122c89c9ffc3458091d0b045bf9cce24bfd"
+            }
+          }
+        },
+        "scene": {
+          "task_id": "cc5dfc24-52b5-4b9e-b860-7371ec6c138f",
+          "endpoint": "/mesh/smartsegment",
+          "request_sha256": "29109b6e843530974d409a365d07615b5869cdc573b0503a540629fbdd784c5e",
+          "request": {
+            "seg_type": "image",
+            "granularity": "fine",
+            "hint": "Separate White House building and columned portico, fountain basin, lawn, hedges, each tree, iron fence modules and double-globe lamp. Exclude transparent background and sky; no road or floor slab. Independently selectable scenery objects for an arcade stage.",
+            "input": {
+              "uploaded_input_sha256": "2591206f01a5b6c6deb6a7a94fe751641aab06bcc7626b798b2424d7a0452bca"
+            }
+          },
+          "status": "success",
+          "credits_consumed": 85.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "prompt",
+            "mask_url",
+            "seg_task_id",
+            "model_task_id",
+            "seg_model_url"
+          ],
+          "outputs": {
+            "mask_url": {
+              "file": "source\\scene_mask.png",
+              "sha256": "ca902029d50c9d2ad46976077ffea449a53de76ddc2093b1ebbfe6e41c4983bf"
+            },
+            "seg_model_url": {
+              "file": "source\\scene_seg_model.glb",
+              "sha256": "10d276a3588467a07f9a9d3783b79cc563b5c4580d52f07b0145f56fb76d8036"
+            }
+          },
+          "related_task_ids": {
+            "seg_task_id": "7da49b49-710f-4767-a3b7-d967d637ace9",
+            "model_task_id": "9ccb01c7-f3ee-4a97-b679-b27d57909427"
+          }
+        },
+        "scene_texture": {
+          "task_id": "ed092696-213f-443a-8800-8aead1fa1500",
+          "endpoint": "/models/texture",
+          "request_sha256": "cc73592aa5cf47f173ae56d282cedaa8c8edc69391fddfd9d6cd47d5fd47bcef",
+          "request": {
+            "model": "v3.5-20260815",
+            "texture_quality": "standard",
+            "pbr": false,
+            "delight": true,
+            "texture_alignment": "original_image",
+            "texture_seed": 4311,
+            "input": {
+              "uploaded_input_sha256": "10d276a3588467a07f9a9d3783b79cc563b5c4580d52f07b0145f56fb76d8036"
+            },
+            "texture_prompt": {
+              "image": {
+                "file_token": {
+                  "uploaded_input_sha256": "2591206f01a5b6c6deb6a7a94fe751641aab06bcc7626b798b2424d7a0452bca"
+                }
+              }
+            }
+          },
+          "status": "success",
+          "credits_consumed": 10.0,
+          "progress": 100,
+          "error_code": null,
+          "output_fields": [
+            "model_url",
+            "rendered_image_url"
+          ],
+          "related_task_ids": {},
+          "outputs": {
+            "model_url": {
+              "file": "source\\scene_texture_model.glb",
+              "sha256": "7282e3fe57f61781ecfd62a622fbacb398343a7eb0bbafe75e65dd39c1c93c2e"
+            },
+            "rendered_image_url": {
+              "file": "source\\scene_texture_rendered_image.png",
+              "sha256": "cddf55ef1e5835d9a43dfe96bfb16abc61b643c88cf18e4e64ddf388475d59ec"
+            }
+          }
+        }
+      },
+      "assembly_tool": "scripts/white_house_stage.py",
+      "assembly_tool_sha256": "656535822bf8b134726635406f97a921bde19ba2c7f9db9f2d5e3e5e84056159",
+      "recipe_sha256": "74e4c9fff76d318eb99e11fcbcdbacc348d4f69570c70640862269f3c6cd94f7",
+      "notes": "Sky and cleaned references are image-model outputs. The house is rendered from segmented Tripo meshes. The revised yard uses independently masked reference-textured 2.5D Blender cards to preserve the generated design, not newly generated or fully reconstructed 3D yard meshes. Trees and the iron fence are deterministic procedural pixel art (scripts/stage_pixel_props.py), not Tripo, Blender or image-model output."
+    }
+  ],
+  "render_settings": {
+    "blender": "4.5.3 LTS",
+    "engine": "BLENDER_EEVEE_NEXT",
+    "camera": {
+      "projection": "orthographic",
+      "position": [
+        1200,
+        -5000,
+        320
+      ],
+      "target": [
+        1200,
+        0,
+        320
+      ],
+      "world_frame": [
+        2400,
+        640
+      ],
+      "render_scale": 1.0
+    },
+    "shader": "3D house: diffuse -> Shader to RGB -> three constant bands. 2.5D yard: alpha-preserving reference-color emission; shared palette.",
+    "bands": [
+      0.65,
+      0.84,
+      1.0
+    ],
+    "sun_energy": 2,
+    "dithering": false,
+    "meshes": [
+      {
+        "name": "White_House",
+        "collection": "far_background",
+        "source_part": "tripo_part_1",
+        "polygons": 40000,
+        "matrix_world": [
+          [
+            -0.00014107681636232883,
+            892.5000610351562,
+            0.0,
+            1200.0
+          ],
+          [
+            -1050.0,
+            -0.00011991529754595831,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            892.5,
+            404.1570739746094
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "North_Portico",
+        "collection": "far_background",
+        "source_part": "tripo_part_8",
+        "polygons": 40000,
+        "matrix_world": [
+          [
+            -0.0001410768018104136,
+            892.4999389648438,
+            0.0,
+            1200.0
+          ],
+          [
+            -1049.9998779296875,
+            -0.00011991528299404308,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1095.533935546875,
+            387.0579528808594
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Reference_Textured_lawn",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 1,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            180.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            110.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Wide_Flat_Sidewalk",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            2400.0,
+            0.0,
+            0.0,
+            1200.0
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Long_Joint",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            2400.0,
+            0.0,
+            0.0,
+            1200.0
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            159.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            120.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.001",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            360.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.002",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            600.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.003",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            840.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.004",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1080.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.005",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1320.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.006",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1560.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.007",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1800.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.008",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2040.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Sidewalk_Paving_Joint.009",
+        "collection": "midground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            2280.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            64.0,
+            160.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Protected_Flat_Street",
+        "collection": "ground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            2400.0,
+            0.0,
+            0.0,
+            1200.0
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            128.0,
+            64.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Straight_Curb",
+        "collection": "ground",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            2400.0,
+            0.0,
+            0.0,
+            1200.0
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            5.0,
+            125.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Reference_Textured_lamp",
+        "collection": "prop_lamp",
+        "source_part": null,
+        "polygons": 1,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            180.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            110.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Reference_Textured_fountain",
+        "collection": "prop_fountain",
+        "source_part": null,
+        "polygons": 1,
+        "matrix_world": [
+          [
+            1.5299999713897705,
+            0.0,
+            0.0,
+            -636.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.5299999713897705,
+            -41.63999938964844
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Reference_Textured_hedge",
+        "collection": "prop_hedge",
+        "source_part": null,
+        "polygons": 1,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            180.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            110.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Rooftop_Flagpole",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            1.7000000476837158,
+            0.0,
+            0.0,
+            1200.85009765625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            68.0,
+            563.9000244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            597.050048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.001",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            595.3499755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.002",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            593.6500244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.003",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            591.9500122070312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.004",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            590.25
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.005",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            588.550048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.006",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            586.8499755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.007",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            585.1500244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.008",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            583.4500122070312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.009",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            581.75
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.010",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            580.050048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.011",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            578.3499755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Stripe.012",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            40.80000305175781,
+            0.0,
+            0.0,
+            1222.0999755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -2.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.7000000476837158,
+            576.6500244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Canton",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            18.700000762939453,
+            0.0,
+            0.0,
+            1211.050048828125
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -4.0
+          ],
+          [
+            0.0,
+            0.0,
+            11.90000057220459,
+            591.9500122070312
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1203.824951171875
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            595.7750244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.001",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1207.2249755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            595.7750244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.002",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1210.625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            595.7750244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.003",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1214.0250244140625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            595.7750244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.004",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1217.425048828125
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            595.7750244140625
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.005",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1203.824951171875
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            593.2249755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.006",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1207.2249755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            593.2249755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.007",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1210.625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            593.2249755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.008",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1214.0250244140625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            593.2249755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.009",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1217.425048828125
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            593.2249755859375
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.010",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1203.824951171875
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            590.675048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.011",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1207.2249755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            590.675048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.012",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1210.625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            590.675048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.013",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1214.0250244140625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            590.675048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.014",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1217.425048828125
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            590.675048828125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.015",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1203.824951171875
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            588.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.016",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1207.2249755859375
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            588.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.017",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1210.625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            588.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.018",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1214.0250244140625
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            588.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Flag_Star.019",
+        "collection": "prop_flag",
+        "source_part": null,
+        "polygons": 6,
+        "matrix_world": [
+          [
+            0.8500000238418579,
+            0.0,
+            0.0,
+            1217.425048828125
+          ],
+          [
+            0.0,
+            2.0,
+            0.0,
+            -6.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.8500000238418579,
+            588.125
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "Reference_Textured_street_lamp",
+        "collection": "prop_street_lamp",
+        "source_part": null,
+        "polygons": 1,
+        "matrix_world": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    ]
+  },
+  "production": {
+    "requested_method": "image_model_tripo_blender",
+    "status": "generated_pending_artistic_review",
+    "blockers": [
+      "Style, sky cleanliness, composition and in-game human reviews remain pending."
+    ],
+    "api_preflight": {
+      "base_url": "https://openapi.tripo3d.ai/v3",
+      "authentication": "verified_via_read_only_balance_endpoint",
+      "image_edit_endpoint": "/generation/image-to-image",
+      "image_edit_model": "banana",
+      "image_edit_cost_credits_per_task": 5,
+      "planned_first_batch": [
+        "cleanup",
+        "sky",
+        "geometry"
+      ],
+      "planned_first_batch_cost_credits": 15,
+      "documented_segmentation_endpoint": "/mesh/smartsegment",
+      "documented_image_smartsegment_cost_credits": 85,
+      "account_segmentation_access": "not_verified",
+      "documentation": [
+        "https://developers.tripo3d.ai/en/docs/generation-image-to-image",
+        "https://developers.tripo3d.ai/en/docs/mesh-smartsegment",
+        "https://developers.tripo3d.ai/en/pricing"
+      ]
+    },
+    "permissions": {
+      "upload_white_house_reference_to_tripo": true,
+      "upload_single_bruiser_style_frame_to_tripo": true,
+      "paid_image_edit_batch": true,
+      "paid_mesh_generation": true,
+      "automatic_paid_retries": false
+    },
+    "reference_edit": "Remove people and temporary inauguration barricades; retain the permanent iron fence.",
+    "remote_submissions": 6,
+    "mesh_task_ids": [
+      "cc5dfc24-52b5-4b9e-b860-7371ec6c138f",
+      "ed092696-213f-443a-8800-8aead1fa1500"
+    ]
+  },
+  "yard_revision": {
+    "method": "reference_textured_2_5d_blender",
+    "reference": "geometry_generated_image.png",
+    "reference_sha256": "ce01d55041d962bb1a4c2719b2c24122c89c9ffc3458091d0b045bf9cce24bfd",
+    "approved_images": {
+      "sky.png": {
+        "source": "approved_sky.png",
+        "sha256": "a6733622ae84d3bb6a69497e92067c0983e0522a4b4f1b64a209d3ddc6434a71"
+      },
+      "far_background.png": {
+        "source": "approved_far_background.png",
+        "sha256": "be11e67a74654bab69dad461a4b4881fc74abb5f3acb46d4091b0d18015ac779"
+      },
+      "ground.png": {
+        "source": "approved_ground.png",
+        "sha256": "84f04db8fa687a58eab2de5cdf78bbb60d067c0ba849e64221caea9ed83b9f9e"
+      },
+      "props/flag.png": {
+        "source": "approved_flag.png",
+        "sha256": "83858edd8ddd2cdc02f44f0c253e08ad9df7a3a2bb261c0d392ca6a95b14370d"
+      }
+    },
+    "approved_flag": {
+      "id": "flag_0",
+      "image": "props/flag.png",
+      "layer": "far_background",
+      "size": [
+        54,
+        84
+      ],
+      "position": [
+        1200,
+        64
+      ],
+      "pivot": [
+        27,
+        82
+      ],
+      "collision": false
+    },
+    "reason": "The original Tripo yard distorted the fountain and foliage. Retain the cached meshes, but replace yard exports with separate reference-textured Blender cards; not a new 3D yard generation.",
+    "components": {
+      "hedge": {
+        "image": "yard_cards/hedge.png",
+        "mask": "yard_cards/hedge_mask.png",
+        "source_box": [
+          385,
+          384,
+          531,
+          431
+        ],
+        "size": [
+          146,
+          47
+        ],
+        "position": [
+          850,
+          343
+        ]
+      },
+      "fountain": {
+        "image": "yard_cards/fountain.png",
+        "mask": "yard_cards/fountain_mask.png",
+        "source_box": [
+          425,
+          424,
+          781,
+          510
+        ],
+        "size": [
+          304,
+          74
+        ],
+        "position": [
+          1048,
+          380
+        ],
+        "repair": "Paint out fence pixels occluding the lower brown surround."
+      },
+      "lamp": {
+        "image": "yard_cards/lamp.png",
+        "mask": "yard_cards/lamp_mask.png",
+        "source_box": [
+          1094,
+          427,
+          1167,
+          749
+        ],
+        "size": [
+          51,
+          224
+        ],
+        "position": [
+          1660,
+          316
+        ],
+        "repair": "Remove the reference tree trunk, vines and stray fringe behind the lamp; fill enclosed pinholes."
+      },
+      "street_lamp": {
+        "image": "yard_cards/street_lamp.png",
+        "mask": "yard_cards/lamp_mask.png",
+        "source_box": [
+          1094,
+          427,
+          1167,
+          749
+        ],
+        "size": [
+          66,
+          290
+        ],
+        "position": [
+          486,
+          216
+        ],
+        "method": "larger reusable reference streetlight on the sidewalk plane, midground parallax behind the fighters; no collision"
+      },
+      "lawn": {
+        "image": "yard_cards/lawn.png",
+        "size": [
+          2400,
+          184
+        ],
+        "position": [
+          0,
+          360
+        ],
+        "method": "locally painted flat lawn backing; no reference collision terrain"
+      }
+    },
+    "render_scale": 1.0
+  },
+  "foreground_layout": {
+    "scene_scale": 0.85,
+    "scene_y_offset": -14,
+    "fountain_scale": 1.8,
+    "sidewalk_top": 448,
+    "lane_top": 512,
+    "road_top": 512,
+    "feet_baseline": 576,
+    "street_lights": {
+      "positions": [
+        486,
+        876,
+        1456,
+        1846
+      ],
+      "base_y": 506,
+      "size": [
+        66,
+        290
+      ]
+    },
+    "reason": "User requested a larger fountain and a wider road and sidewalk to separate the garden scene from the fighters.",
+    "street_lights_reason": "User reported the foreground poles drawing in front of the fighters; streetlights now stand on the sidewalk plane (midground) behind them.",
+    "house_grounding": {
+      "drop": 14,
+      "fill_top": 246,
+      "body_rows": 10,
+      "fill": [
+        70,
+        84,
+        105
+      ],
+      "shadow": [
+        48,
+        60,
+        79
+      ],
+      "reason": "User reported the house floating: sky showed through the open portico and foundation gaps above the hedges. Drop the house and flag behind the hedge row and close those gaps with a recessed porch shade."
+    }
+  },
+  "pixel_art": {
+    "method": "deterministic_procedural_pixel_art",
+    "reason": "Playtest feedback: the reference-card trees were clipped by their source boxes and their thin vector branches did not match the chunky cel-shaded stage, and the fence was too small next to the fighters. Paint complete, palette-locked 2 px pixel-art trees and a larger tiling iron fence instead. Bare reference saplings become small leafy trees; overscan duplicates become distinct variants.",
+    "light": [
+      -0.55,
+      -0.7,
+      0.45
+    ],
+    "fence": {
+      "pixel": 2,
+      "module": [
+        48,
+        62
+      ],
+      "bar_spacing": 4,
+      "curb_rows": 4,
+      "rails": [
+        8,
+        52
+      ],
+      "iron": 0,
+      "iron_lit": 1,
+      "curb": [
+        3,
+        29,
+        28
+      ],
+      "base_y": 448
+    },
+    "trees": {
+      "tree_left_far": {
+        "seed": 101,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          30,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            -2,
+            -42,
+            16,
+            11
+          ]
+        ],
+        "limbs": [
+          [
+            -2,
+            -40,
+            -34,
+            -66,
+            8,
+            3
+          ],
+          [
+            -1,
+            -42,
+            34,
+            -72,
+            8,
+            3
+          ],
+          [
+            -2,
+            -42,
+            2,
+            -88,
+            7,
+            3
+          ],
+          [
+            -24,
+            -58,
+            -50,
+            -64,
+            4,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -96
+            ],
+            "radius": [
+              66,
+              46
+            ],
+            "clump": 21
+          },
+          {
+            "center": [
+              -48,
+              -72
+            ],
+            "radius": [
+              30,
+              22
+            ],
+            "clump": 16
+          },
+          {
+            "center": [
+              48,
+              -76
+            ],
+            "radius": [
+              30,
+              22
+            ],
+            "clump": 16
+          }
+        ]
+      },
+      "tree_left_back": {
+        "seed": 202,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          24,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            1,
+            -36,
+            12,
+            8
+          ]
+        ],
+        "limbs": [
+          [
+            1,
+            -34,
+            -24,
+            -60,
+            6,
+            2
+          ],
+          [
+            1,
+            -34,
+            26,
+            -58,
+            6,
+            2
+          ],
+          [
+            1,
+            -36,
+            0,
+            -80,
+            5,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -86
+            ],
+            "radius": [
+              56,
+              44
+            ],
+            "clump": 20
+          },
+          {
+            "center": [
+              -36,
+              -62
+            ],
+            "radius": [
+              24,
+              18
+            ],
+            "clump": 14
+          }
+        ]
+      },
+      "tree_left_near": {
+        "seed": 303,
+        "tint": "lime",
+        "shadow": [
+          0,
+          0,
+          20,
+          3
+        ],
+        "stems": [
+          [
+            -3,
+            0,
+            -8,
+            -50,
+            6,
+            4
+          ],
+          [
+            2,
+            0,
+            6,
+            -54,
+            6,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            -60,
+            5,
+            3
+          ]
+        ],
+        "limbs": [
+          [
+            -8,
+            -50,
+            -30,
+            -76,
+            4,
+            2
+          ],
+          [
+            6,
+            -54,
+            30,
+            -78,
+            4,
+            2
+          ],
+          [
+            0,
+            -58,
+            -4,
+            -92,
+            3,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -92
+            ],
+            "radius": [
+              50,
+              34
+            ],
+            "clump": 17
+          },
+          {
+            "center": [
+              -30,
+              -76
+            ],
+            "radius": [
+              22,
+              17
+            ],
+            "clump": 13
+          },
+          {
+            "center": [
+              30,
+              -78
+            ],
+            "radius": [
+              22,
+              17
+            ],
+            "clump": 13
+          }
+        ],
+        "scale": 0.85
+      },
+      "tree_right_far": {
+        "seed": 404,
+        "tint": "green",
+        "shadow": [
+          0,
+          0,
+          44,
+          3
+        ],
+        "stems": [
+          [
+            -24,
+            0,
+            -22,
+            -60,
+            9,
+            6
+          ],
+          [
+            22,
+            -4,
+            20,
+            -58,
+            8,
+            5
+          ]
+        ],
+        "limbs": [
+          [
+            -22,
+            -58,
+            -40,
+            -80,
+            4,
+            2
+          ],
+          [
+            -22,
+            -58,
+            -8,
+            -86,
+            4,
+            2
+          ],
+          [
+            20,
+            -56,
+            40,
+            -84,
+            4,
+            2
+          ],
+          [
+            20,
+            -56,
+            8,
+            -90,
+            4,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              -30,
+              -102
+            ],
+            "radius": [
+              40,
+              38
+            ],
+            "clump": 18
+          },
+          {
+            "center": [
+              28,
+              -110
+            ],
+            "radius": [
+              42,
+              40
+            ],
+            "clump": 18
+          },
+          {
+            "center": [
+              0,
+              -134
+            ],
+            "radius": [
+              32,
+              22
+            ],
+            "clump": 16
+          }
+        ],
+        "scale": 0.85
+      },
+      "tree_right_back": {
+        "seed": 505,
+        "tint": "deep",
+        "shadow": [
+          0,
+          0,
+          22,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            0,
+            -40,
+            11,
+            7
+          ]
+        ],
+        "limbs": [
+          [
+            0,
+            -38,
+            -22,
+            -62,
+            5,
+            2
+          ],
+          [
+            0,
+            -38,
+            22,
+            -66,
+            5,
+            2
+          ],
+          [
+            0,
+            -40,
+            0,
+            -96,
+            5,
+            2
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -100
+            ],
+            "radius": [
+              48,
+              54
+            ],
+            "clump": 20
+          }
+        ]
+      },
+      "tree_right_near": {
+        "seed": 606,
+        "tint": "lime",
+        "shadow": [
+          0,
+          0,
+          14,
+          2
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            0,
+            -40,
+            5,
+            3
+          ]
+        ],
+        "limbs": [
+          [
+            0,
+            -36,
+            -12,
+            -52,
+            3,
+            1.5
+          ],
+          [
+            0,
+            -38,
+            12,
+            -56,
+            3,
+            1.5
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -62
+            ],
+            "radius": [
+              25,
+              25
+            ],
+            "clump": 12
+          }
+        ],
+        "scale": 0.9
+      },
+      "tree_right_edge": {
+        "seed": 707,
+        "tint": "green",
+        "shadow": [
+          0,
+          0,
+          32,
+          3
+        ],
+        "stems": [
+          [
+            0,
+            0,
+            -1,
+            -50,
+            14,
+            10
+          ]
+        ],
+        "limbs": [
+          [
+            -1,
+            -48,
+            -36,
+            -80,
+            7,
+            3
+          ],
+          [
+            -1,
+            -48,
+            36,
+            -84,
+            7,
+            3
+          ],
+          [
+            -1,
+            -50,
+            2,
+            -110,
+            6,
+            3
+          ]
+        ],
+        "crowns": [
+          {
+            "center": [
+              0,
+              -112
+            ],
+            "radius": [
+              64,
+              56
+            ],
+            "clump": 22
+          },
+          {
+            "center": [
+              -44,
+              -82
+            ],
+            "radius": [
+              26,
+              20
+            ],
+            "clump": 16
+          },
+          {
+            "center": [
+              44,
+              -86
+            ],
+            "radius": [
+              26,
+              20
+            ],
+            "clump": 16
+          }
+        ],
+        "scale": 0.85
+      }
+    },
+    "tree_placements": [
+      [
+        "tree_left_back",
+        490,
+        334
+      ],
+      [
+        "tree_left_far",
+        851,
+        328
+      ],
+      [
+        "tree_right_back",
+        1963,
+        382
+      ],
+      [
+        "tree_left_near",
+        740,
+        390
+      ],
+      [
+        "tree_right_near",
+        1560,
+        394
+      ],
+      [
+        "tree_right_edge",
+        1800,
+        386
+      ],
+      [
+        "tree_right_far",
+        1690,
+        396
+      ]
+    ],
+    "tree_depth_reason": "User reported trees standing on the fence plane; near trees moved back onto the lawn behind the fence with a slight perspective scale-down.",
+    "tool": "scripts/stage_pixel_props.py",
+    "tool_sha256": "821a405545a7c4d375502192854facc98ce5b03f778d02be4ac4e81bf8659704",
+    "remote_services": []
+  }
+}

@@ -21,6 +21,21 @@ Add an entry to `moves` in `character.json`: `input {stance, button}`, `speed`, 
 ## Add a stage
 Create `stages/<id>/stage.json` (copy an existing one). Layers can use procedural art or an `image`. Keep the combat lane flat (y ≥ 544).
 
+Image layers accept an optional `offset: [x, y]` in artwork pixels and use
+nearest filtering. For reference-level artwork, set the initial x offset to
+`-(world_width - 960) / 2 + camera_travel * ratio / 2`; Godot's existing
+parallax background supplies the camera motion, so do not subtract it again.
+Set the stage's gameplay `width` to `960 + camera_travel` and its `floor_y`
+to the manifest's feet baseline. Reusable prop images can be separate layer
+entries with the owning layer's ratio and an offset including their position.
+Include `assets/levels/**/*.json` and stage PNGs when configuring an export.
+
+Every fighter draws a programmatic `FighterShadow` (`scripts/fight/fighter_shadow.gd`)
+on the stage's `floor_y`, so stages need no baked contact shadows. Its width follows
+the current hurtbox (never narrower than the standing stance, so it widens when
+knocked down) and it shrinks and fades while airborne. Keep hurtboxes scaled
+with `sprite_scale` so the shadow matches the sprite.
+
 ## Controls
 P1: WASD + J punch / K kick / U heavy punch / I heavy kick / L block. P2: arrows + `,` `.` `;` `'` `/`. Esc pauses.
 Gamepad (device 0 = P1, device 1 = P2): left stick or D-pad, X punch, A kick, Y heavy punch, RB heavy kick, B block. Heavy moves are `heavy_punch` / `heavy_kick` (input button `heavy_punch`/`heavy_kick`); Bruiser's reuse the Punching clip (slowed) and the roundhouse clip.
