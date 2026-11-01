@@ -2,6 +2,7 @@
 
 Blender: --background --python scripts\\white_house_stage.py -- render
 Python:  python scripts\\white_house_stage.py compile
+Python:  python scripts\\white_house_stage.py stage   (rewrite stage.json only; no renders needed)
 No remote generation or paid calls are performed by this assembly tool.
 """
 
@@ -816,31 +817,7 @@ def compile():
             stale.unlink()
             stale.with_name(stale.name + ".import").unlink(missing_ok=True)
     write(JOB / "level.json", manifest)
-    stage_layers = [{"name": "sky", "ratio": 0.0, "image": "res://assets/levels/white_house/sky.png"}]
-    for layer in manifest["layers"]:
-        origin = round(-(2400 - 960) / 2 + 960 * layer["factor"] / 2)
-        entry = {"name": layer["id"], "ratio": layer["factor"],
-                 "image": f"res://assets/levels/white_house/{layer['image']}", "offset": [origin, 0]}
-        if layer["id"] == "foreground":
-            entry["front"] = True
-        stage_layers.append(entry)
-        for prop in placements:
-            if prop["layer"] == layer["id"]:
-                prop_entry = {
-                    "name": prop["id"], "ratio": layer["factor"],
-                    "image": f"res://assets/levels/white_house/{prop['image']}",
-                    "offset": [origin + prop["position"][0], prop["position"][1]],
-                }
-                if layer["id"] == "foreground":
-                    prop_entry["front"] = True
-                stage_layers.append(prop_entry)
-    stage_dir = ROOT / "stages" / "white_house"
-    stage_dir.mkdir(exist_ok=True)
-    write(stage_dir / "stage.json", {
-        "id": "white_house", "name": "White House",
-        "description": "Bright White House lawn and fountain. Production art awaiting artistic review.",
-        "width": 1920, "floor_y": 576, "layers": stage_layers,
-    })
+    write_stage(manifest, recipe)
     provenance = read(SOURCE / "provenance.json")
     tasks = read(SOURCE / "provider_tasks.json")
     uploads = read(SOURCE / "uploads.json")
@@ -892,14 +869,86 @@ def compile():
     print("Compiled White House layers, shared palette, reusable props and selectable stage.")
 
 
+def ground_ratio(parallax, y):
+    """Camera ratio for scenery touching the ground at screen row y, snapped to depth bands."""
+    far, near, step = parallax["far"], parallax["near"], parallax["step"]
+    ratio = far["ratio"] + (y - far["y"]) * (near["ratio"] - far["ratio"]) / (near["y"] - far["y"])
+    ratio = min(max(ratio, far["ratio"]), 1.0 - step)
+    return round(round(ratio / step) * step, 4)
+
+
+def write_stage(manifest, recipe):
+    """Write stages/white_house/stage.json from the compiled level manifest.
+
+    With the recipe's `parallax` section, the named flat layer is split into lawn and
+    sidewalk bands and each of its props scrolls at a depth derived from its ground
+    contact row (position + pivot), so the yard has many parallax speeds instead of one.
+    """
+    from PIL import Image
+    import numpy as np
+
+    layout = recipe.get("foreground_layout")
+    parallax = recipe.get("parallax")
+    width, view = manifest["world_width"], manifest["viewport"][0]
+
+    def origin(ratio):
+        return round(-(width - view) / 2 + view * ratio / 2)
+
+    def entry(name, ratio, image, position, front, region=None):
+        value = {"name": name, "ratio": ratio,
+                 "image": f"res://assets/levels/white_house/{image}",
+                 "offset": [origin(ratio) + position[0], position[1]]}
+        if region:
+            value["region"] = region
+        if front:
+            value["front"] = True
+        return value
+
+    stage_layers = [{"name": "sky", "ratio": 0.0, "image": "res://assets/levels/white_house/sky.png"}]
+    for layer in manifest["layers"]:
+        front = layer["id"] == "foreground"
+        props = [prop for prop in manifest["props"] if prop["layer"] == layer["id"]]
+        if not (parallax and layout and layer["id"] == parallax["layer"]):
+            stage_layers.append(entry(layer["id"], layer["factor"], layer["image"], (0, 0), front))
+            stage_layers += [entry(prop["id"], layer["factor"], prop["image"], prop["position"], front)
+                             for prop in props]
+            continue
+        alpha = np.asarray(Image.open(JOB / layer["image"]).convert("RGBA").getchannel("A")) > 0
+        sidewalk_top = layout["sidewalk_top"]
+        bands = {}
+        for band, top, bottom in (("lawn", 0, sidewalk_top),
+                                  ("sidewalk", sidewalk_top, layout["lane_top"])):
+            rows = np.nonzero(alpha[top:bottom].any(axis=1))[0] + top
+            if not len(rows):
+                raise ValueError(f"{layer['id']} has no {band} band to split")
+            bands[band] = ground_ratio(parallax, (int(rows.min()) + int(rows.max()) + 1) / 2)
+            stage_layers.append(entry(f"{layer['id']}_{band}", bands[band], layer["image"],
+                                      (0, 0), front, [0, top, width, bottom - top]))
+        for prop in props:
+            contact = prop["position"][1] + prop["pivot"][1]
+            # Props standing on the sidewalk move with it so they never skate.
+            ratio = bands["sidewalk"] if contact > sidewalk_top else ground_ratio(parallax, contact)
+            stage_layers.append(entry(prop["id"], ratio, prop["image"], prop["position"], front))
+    stage_dir = ROOT / "stages" / "white_house"
+    stage_dir.mkdir(exist_ok=True)
+    write(stage_dir / "stage.json", {
+        "id": "white_house", "name": "White House",
+        "description": "Bright White House lawn and fountain. Production art awaiting artistic review.",
+        "width": 1920, "floor_y": 576, "layers": stage_layers,
+    })
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("phase", choices=["prepare-yard", "render", "compile"])
+    parser.add_argument("phase", choices=["prepare-yard", "render", "compile", "stage"])
     arguments = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:]
     args = parser.parse_args(arguments)
     if args.phase == "render":
         render()
     elif args.phase == "prepare-yard":
         prepare_yard()
+    elif args.phase == "stage":
+        write_stage(read(JOB / "level.json"), read(SOURCE / "assembly_recipe.json"))
+        print("Wrote stages/white_house/stage.json from the compiled level manifest.")
     else:
         compile()

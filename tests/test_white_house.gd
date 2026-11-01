@@ -42,6 +42,13 @@ func _run() -> void:
 		assert(art._texture != null, "Missing stage texture: " + str(layer.image))
 		var offset: Array = layer.get("offset", [0, 0])
 		assert(art._texture_offset == Vector2(offset[0], offset[1]))
+		var region: Array = layer.get("region", [])
+		if not region.is_empty():
+			assert(art._region == Rect2(region[0], region[1], region[2], region[3]))
+	var ratios := {}
+	for layer in stage.layers:
+		ratios[float(layer.ratio)] = true
+	assert(ratios.size() >= 9, "White House needs many parallax depth bands")
 	var arguments := OS.get_cmdline_user_args()
 	if not arguments.is_empty():
 		var directory: String = arguments[0]

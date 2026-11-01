@@ -130,7 +130,7 @@ adjustment displays the garden/house at 85% scale, enlarges the fountain to abou
 153% of its previous size, and expands the foreground to y=448..639:
 a 64 px decorative sidewalk followed by 128 px of protected fighting road
 (y=512..639). Four larger reusable streetlights stand on the sidewalk plane
-(midground parallax 0.5, drawn over the fence but behind the fighters) and end
+(sidewalk parallax band, drawn over the fence but behind the fighters) and end
 before the road. The lamp sprite is cleaned of the reference tree trunk, vines
 and fringe that stood behind it. The trees nearest the fence stand back on the
 lawn (bases at least 40 px above the fence line) with a slight perspective
@@ -144,6 +144,16 @@ retains the permanent iron fence, fountain, rooftop flag and a screen-locked
 distant Monument, with reusable fence, lamp, fountain, hedge and flag sprites.
 Its shared palette has 31 opaque colors plus transparency. The 2400 px artwork
 supports 960 px of camera travel; all scenery ends above the widened flat lane.
+
+The level manifest keeps the four locked workflow layers, but the Godot runtime
+(`stages\white_house\stage.json`) splits the yard into depth bands using the
+recipe's `parallax` section. Each yard prop scrolls at a ratio interpolated from
+where it touches the ground (0.3 at the hedge line to 0.7 at the fence, in 0.05
+steps). The flat midground image is drawn as two `region` crops: the lawn (≈0.45)
+and the sidewalk (0.8, shared by the streetlights so they never skate). Together
+with the house (0.2), road (1.0) and foreground (1.15), this gives ten moving
+scroll speeds. Rebuild only `stage.json` from the committed manifest with
+`python scripts\white_house_stage.py stage`; `compile` also runs this step.
 
 Cached GLBs, `source\stage.blend`, raw render passes and provider upload handles
 stay local and are git-ignored; input references, masks, task provenance and the

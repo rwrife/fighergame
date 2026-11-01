@@ -67,14 +67,17 @@ class WhiteHouseYardTests(unittest.TestCase):
         self.assertGreaterEqual(min(bottoms), int(np.nonzero(lawn)[0].min()) - 1)
         self.assertGreater(min(bottoms), lowest_hedge_top, "House base must sit behind the hedge row")
         hedges = [prop for prop in props if prop["id"].startswith("hedge_")]
-        hedge_left = min(prop["position"][0] for prop in hedges)
-        hedge_right = max(prop["position"][0] + prop["size"][0] for prop in hedges)
+        stage = {layer["name"]: layer for layer in json.loads(
+            (JOB.parents[2] / "stages" / "white_house" / "stage.json").read_text())["layers"]}
+        house_ratio = stage["far_background"]["ratio"]
         for camera in (0, 480, 960):
             with self.subTest(camera=camera):
-                house_screen = (-624 - camera * 0.2 + columns.min(), -624 - camera * 0.2 + columns.max())
-                hedge_screen = (-480 - camera * 0.5 + hedge_left, -480 - camera * 0.5 + hedge_right)
-                self.assertLessEqual(hedge_screen[0], house_screen[0])
-                self.assertGreaterEqual(hedge_screen[1], house_screen[1])
+                house_left = stage["far_background"]["offset"][0] - camera * house_ratio
+                house_screen = (house_left + columns.min(), house_left + columns.max())
+                hedge_screen = [(stage[prop["id"]]["offset"][0] - camera * stage[prop["id"]]["ratio"],
+                                 prop["size"][0]) for prop in hedges]
+                self.assertLessEqual(min(x for x, _ in hedge_screen), house_screen[0])
+                self.assertGreaterEqual(max(x + w for x, w in hedge_screen), house_screen[1])
 
     def test_fountain_is_compact_and_level(self):
         image = Image.open(JOB / "props" / "fountain.png").convert("RGBA")
@@ -109,11 +112,11 @@ class WhiteHouseYardTests(unittest.TestCase):
         lamps = [layer for layer in stage["layers"] if layer["name"].startswith("street_lamp_")]
         self.assertEqual(len(lamps), len(self.recipe["foreground_layout"]["street_lights"]["positions"]))
         self.assertFalse(any("foreground_lamp" in name for name in names))
-        midground = next(layer for layer in stage["layers"] if layer["name"] == "midground")
+        sidewalk = next(layer for layer in stage["layers"] if layer["name"] == "midground_sidewalk")
         for lamp in lamps:
             with self.subTest(lamp=lamp["name"]):
                 self.assertFalse(lamp.get("front", False))
-                self.assertEqual(lamp["ratio"], midground["ratio"])
+                self.assertEqual(lamp["ratio"], sidewalk["ratio"], "Streetlights must not skate")
                 self.assertGreater(names.index(lamp["name"]),
                                    max(i for i, name in enumerate(names) if name.startswith("fence_")))
         layout = self.recipe["foreground_layout"]
@@ -124,6 +127,51 @@ class WhiteHouseYardTests(unittest.TestCase):
                 self.assertEqual(prop["layer"], "midground")
                 self.assertGreater(base, layout["sidewalk_top"])
                 self.assertLessEqual(base, layout["lane_top"])
+
+    def test_yard_scrolls_in_ordered_depth_bands_with_full_coverage(self):
+        root = JOB.parents[2]
+        stage = json.loads((root / "stages" / "white_house" / "stage.json").read_text())
+        layers = {layer["name"]: layer for layer in stage["layers"]}
+        manifest = json.loads((JOB / "level.json").read_text(encoding="utf-8"))
+        moving = {layer["ratio"] for layer in stage["layers"] if layer["ratio"] > 0}
+        self.assertGreaterEqual(len(moving), 8, "Yard needs many distinct parallax speeds")
+        self.assertNotIn("midground", layers, "Flat midground must be split into depth bands")
+        lawn, sidewalk = layers["midground_lawn"], layers["midground_sidewalk"]
+        house, ground = layers["far_background"]["ratio"], layers["ground"]["ratio"]
+        self.assertLess(house, lawn["ratio"])
+        self.assertLess(lawn["ratio"], sidewalk["ratio"])
+        self.assertLess(sidewalk["ratio"], ground)
+        layout = self.recipe["foreground_layout"]
+        self.assertEqual(lawn["region"][1] + lawn["region"][3], layout["sidewalk_top"])
+        self.assertEqual(sidewalk["region"][1], layout["sidewalk_top"])
+        self.assertEqual(sidewalk["region"][1] + sidewalk["region"][3], layout["lane_top"])
+        yard = [prop for prop in manifest["props"] if prop["layer"] == "midground"]
+        contacts = [(prop["position"][1] + prop["pivot"][1], layers[prop["id"]]["ratio"])
+                    for prop in yard]
+        for (near_y, near_ratio) in contacts:
+            for (far_y, far_ratio) in contacts:
+                if far_y < near_y:
+                    self.assertLessEqual(far_ratio, near_ratio, "Nearer scenery must not move slower")
+        order = [layer["name"] for layer in stage["layers"]]
+        drawn = [layers[prop["id"]]["ratio"] for prop in sorted(yard, key=lambda p: order.index(p["id"]))]
+        self.assertEqual(drawn, sorted(drawn), "Faster (nearer) props must draw over slower ones")
+        for layer in stage["layers"]:
+            if layer["ratio"] == 0:
+                continue
+            image = Image.open(root / layer["image"].removeprefix("res://"))
+            x0 = 0
+            x1 = image.width
+            if "region" in layer:
+                x0, x1 = layer["region"][0], layer["region"][0] + layer["region"][2]
+            alpha = np.asarray(image.convert("RGBA").getchannel("A"))
+            columns = np.nonzero(alpha[:, x0:x1].any(axis=0))[0]
+            if layer["name"] in ("ground", "midground_lawn", "midground_sidewalk"):
+                for camera in (0, 960):
+                    with self.subTest(layer=layer["name"], camera=camera):
+                        left = layer["offset"][0] + x0 + columns.min() - camera * layer["ratio"]
+                        right = layer["offset"][0] + x0 + columns.max() + 1 - camera * layer["ratio"]
+                        self.assertLessEqual(left, 0)
+                        self.assertGreaterEqual(right, 960)
 
     def test_lamp_sprites_exclude_the_reference_tree_trunk_and_vines(self):
         palette = [tuple(color) for color in self.recipe["palette"]]
