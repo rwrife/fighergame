@@ -21,6 +21,7 @@ var title := ""
 var sprite_scale := 2.0
 var frame_size := 160
 var feet_inset := 2 # transparent pixel rows below the feet in each frame
+var recover_from_knockdown := true
 var stats := {}
 var hurtboxes := {}
 var animations := {}
@@ -28,6 +29,7 @@ var fallbacks := {}
 var moves := {}
 var sprite_frames := SpriteFrames.new()
 var sprite_offsets := {} # animation -> sprite offset that puts the feet on the origin
+var frame_offsets := {} # animation -> optional per-frame baked root-motion correction
 var playback_speed := {} # animation -> speed multiplier from character.json
 var placeholder_animations: Array[StringName] = []
 var missing_animations: Array[StringName] = []
@@ -51,6 +53,7 @@ func _build(data: Dictionary) -> void:
 	sprite_scale = float(data.get("sprite_scale", 2.0))
 	frame_size = int(data.get("frame_size", 160))
 	feet_inset = int(data.get("feet_inset", 2))
+	recover_from_knockdown = bool(data.get("recover_from_knockdown", true))
 	stats = {
 		"health": 1000, "walk_speed": 220.0, "back_speed": 170.0, "jump_speed": 1000.0,
 		"gravity": 2600.0, "jump_drift": 0.0,
@@ -76,13 +79,35 @@ func _build(data: Dictionary) -> void:
 			first = clampi(int(entry.get("frames", [0, last])[0]), 0, last)
 			last = clampi(int(entry.get("frames", [0, last])[1]), first, last)
 			playback_speed[key] = float(entry.get("speed", 1.0))
+			if entry.has("frame_offsets"):
+				var offsets: Variant = entry.frame_offsets
+				if not offsets is Array or offsets.size() != last - first + 1:
+					errors.append("%s: frame_offsets must match the played frame count" % key)
+					continue
+				var converted: Array[Vector2] = []
+				for offset in offsets:
+					if not offset is Array or offset.size() != 2 \
+							or not (offset[0] is float or offset[0] is int) \
+							or not (offset[1] is float or offset[1] is int):
+						errors.append("%s: frame_offsets must contain numeric [x, y] pairs" % key)
+						break
+					if not is_finite(float(offset[0])) or not is_finite(float(offset[1])):
+						errors.append("%s: frame_offsets must be finite" % key)
+						break
+					converted.append(Vector2(offset[0], offset[1]))
+				if converted.size() != offsets.size():
+					continue
+				frame_offsets[key] = converted
 		sprite_frames.add_animation(key)
 		sprite_frames.set_animation_speed(key, sheet.fps)
 		sprite_frames.set_animation_loop(key, sheet.loop)
 		for i in range(first, last + 1):
 			sprite_frames.add_frame(key, sheet.frames[i])
-		sprite_offsets[key] = Vector2(float(entry.get("offset_x", 0)) if entry is Dictionary else 0.0,
-				-(sheet.frame_height / 2.0 - sheet.feet_inset))
+		var offset := Vector2(0, -(sheet.frame_height / 2.0 - sheet.feet_inset))
+		if entry is Dictionary:
+			offset.x = float(entry.get("offset_x", 0))
+			offset.y = float(entry.get("offset_y", offset.y))
+		sprite_offsets[key] = offset
 		if sheet.placeholder:
 			placeholder_animations.append(key)
 	for required in REQUIRED_ANIMATIONS:
@@ -137,6 +162,13 @@ func find_move(stance: String, button: String) -> Dictionary:
 func get_hurtbox(kind: String) -> Rect2:
 	var box: Array = hurtboxes.get(kind, DEFAULT_HURTBOXES.standing)
 	return Rect2(box[0], box[1], box[2], box[3])
+
+
+func get_sprite_offset(animation: StringName, frame: int) -> Vector2:
+	var offset: Vector2 = sprite_offsets.get(animation, Vector2.ZERO)
+	if frame_offsets.has(animation):
+		offset += frame_offsets[animation][frame]
+	return offset
 
 
 func portrait() -> Texture2D:

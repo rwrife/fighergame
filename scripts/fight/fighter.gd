@@ -15,7 +15,6 @@ var data: CharacterData
 var input := FighterInput.new()
 var opponent: Fighter
 var floor_y := 596.0
-var _base_offset := Vector2.ZERO
 var min_x := 0.0
 var max_x := 1920.0
 var facing := 1
@@ -46,6 +45,7 @@ func setup(character: CharacterData, player_input: FighterInput) -> void:
 	sprite.scale = Vector2.ONE * data.sprite_scale
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.animation_finished.connect(_on_animation_finished)
+	sprite.frame_changed.connect(_apply_offset)
 	add_child(sprite)
 	_play(&"standing_idle")
 
@@ -103,7 +103,7 @@ func tick(delta: float) -> void:
 			if _stun <= 0.0:
 				_to_neutral()
 		State.DOWN:
-			if not ko and state_time >= WAKEUP_TIME:
+			if not ko and data.recover_from_knockdown and state_time >= WAKEUP_TIME:
 				_to_neutral()
 		_:
 			pass
@@ -205,7 +205,8 @@ func _face_opponent() -> void:
 
 
 func _apply_offset() -> void:
-	sprite.offset = Vector2(_base_offset.x * facing, _base_offset.y)
+	var offset := data.get_sprite_offset(sprite.animation, sprite.frame)
+	sprite.offset = Vector2(offset.x * facing, offset.y)
 
 func _ground_control() -> void:
 	if _held(&"block"):
@@ -271,9 +272,8 @@ func _play(animation_id: StringName, speed := 1.0) -> void:
 	if resolved == &"":
 		return
 	_anim_id = animation_id
-	_base_offset = data.sprite_offsets.get(resolved, Vector2.ZERO)
-	_apply_offset()
 	sprite.play(resolved)
+	_apply_offset()
 
 
 func _to_neutral() -> void:
@@ -287,10 +287,14 @@ func _to_neutral() -> void:
 
 func _on_animation_finished() -> void:
 	match state:
+		State.JUMP:
+			if is_airborne() and data.get_animation(&"air_idle") != &"":
+				_play(&"air_idle")
+				sprite.pause()
 		State.ATTACK:
 			if is_airborne():
 				move = {}
-				_enter(State.JUMP, &"jump")
+				_enter(State.JUMP, &"air_idle" if data.get_animation(&"air_idle") != &"" else &"jump")
 				sprite.pause()
 				sprite.frame = sprite.sprite_frames.get_frame_count(sprite.animation) - 1
 			else:

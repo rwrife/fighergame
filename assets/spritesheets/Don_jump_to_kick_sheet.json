@@ -1,0 +1,24 @@
+{
+  "image": "Don_jump_to_kick_sheet.png",
+  "fps": 6,
+  "loop": false,
+  "renderer": "cel-shaded",
+  "frame_width": 346,
+  "frame_height": 346,
+  "frame_count": 2,
+  "palette_colors": 32,
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 346,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    }
+  ]
+}

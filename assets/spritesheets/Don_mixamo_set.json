@@ -1,0 +1,46 @@
+{
+  "source": "Mixamo with locally baked adaptations",
+  "camera": {
+    "center": [
+      -0.10352887958288193,
+      0.07865551114082336,
+      0.5317004919052124
+    ],
+    "ortho_scale": 1.4038695096969604,
+    "azimuth": -30.0,
+    "minimum": [
+      -0.7375285625457764,
+      -0.5721455812454224,
+      -0.053829580545425415
+    ],
+    "maximum": [
+      0.4496139585971832,
+      0.7761393189430237,
+      1.1172305345535278
+    ]
+  },
+  "clips": {
+    "standing_idle": "Don_standing_idle_sheet.json",
+    "crouched_idle": "Don_crouched_idle_sheet.json",
+    "standing_punch": "Don_standing_punch_sheet.json",
+    "crouched_punch": "Don_crouched_punch_sheet.json",
+    "standing_kick": "Don_standing_kick_sheet.json",
+    "crouched_kick": "Don_crouched_kick_sheet.json",
+    "jump_punch": "Don_jump_punch_sheet.json",
+    "jump_kick": "Don_jump_kick_sheet.json",
+    "heavy_punch": "Don_heavy_punch_sheet.json",
+    "heavy_kick": "Don_heavy_kick_sheet.json",
+    "standing_block": "Don_standing_block_sheet.json",
+    "block_idle": "Don_block_idle_sheet.json",
+    "jump": "Don_jump_sheet.json",
+    "knocked_back_air": "Don_knocked_back_air_sheet.json",
+    "fall_on_back": "Don_fall_on_back_sheet.json",
+    "stand_to_crouch": "Don_stand_to_crouch_sheet.json",
+    "crouch_to_stand": "Don_crouch_to_stand_sheet.json",
+    "block_to_stand": "Don_block_to_stand_sheet.json",
+    "jump_to_punch": "Don_jump_to_punch_sheet.json",
+    "punch_to_jump": "Don_punch_to_jump_sheet.json",
+    "jump_to_kick": "Don_jump_to_kick_sheet.json",
+    "kick_to_jump": "Don_kick_to_jump_sheet.json"
+  }
+}

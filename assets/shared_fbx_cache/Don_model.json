@@ -1,0 +1,15 @@
+{
+  "character": "Don",
+  "reference": "assets/references/Don_tpose.png",
+  "reference_sha256": "ceed40d53e9174980b4780c54692947349d7aa578b3b6e97c99da297c8e008ce",
+  "model": "Don_base.fbx",
+  "model_sha256": "c7a9fe13c8eada6949f4187cda38fa8b267b48b0c4a8123dcf489235b1bd2632",
+  "polygon_count": 19974,
+  "polygon_limit": 20000,
+  "blender_version": "4.5.3 LTS",
+  "tripo_tasks": {
+    "generation": "6936fe61-86c6-48ee-8639-25c31c0ed933",
+    "conversion": "4317558a-3ff1-43c2-b254-2073d7113b69"
+  },
+  "rigged": false
+}
