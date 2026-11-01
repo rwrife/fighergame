@@ -12,7 +12,7 @@ func _run() -> void:
 	assert(don.errors.is_empty(), str(don.errors))
 	assert(don.missing_animations.is_empty(), str(don.missing_animations))
 	assert(don.placeholder_animations.is_empty())
-	assert(not don.recover_from_knockdown)
+	assert(don.recover_from_knockdown and don.get_animation(&"get_up") == &"get_up")
 	assert(don.get_animation(&"hit_stun") != &"")
 	assert(don.get_animation(&"walk_forward") == &"standing_idle")
 	assert(don.sprite_frames.get_animation_speed(&"standing_idle") == 12.0)
@@ -179,10 +179,17 @@ func _run() -> void:
 		a.facing = 1
 	a.reset(Vector2(800, a.floor_y), 1)
 	a.receive_hit(b.data.moves.heavy_kick.hitboxes[0], b)
-	await create_timer(2.0).timeout
-	assert(a.state == Fighter.State.DOWN, "Don must not invent a get-up recovery")
-	assert(a.sprite.animation == &"fall_on_back")
-	assert(a.sprite.frame == don.sprite_frames.get_frame_count(&"fall_on_back") - 1)
+	while a.state != Fighter.State.DOWN:
+		await process_frame
+	while a._anim_id != &"get_up":
+		assert(a.state == Fighter.State.DOWN and not a.can_be_hit())
+		await process_frame
+	assert(a.state_time >= Fighter.WAKEUP_TIME)
+	while a.state == Fighter.State.DOWN:
+		assert(a.sprite.animation == &"get_up" and not a.can_be_hit())
+		await process_frame
+	assert(a.state == Fighter.State.IDLE and a.sprite.animation == &"standing_idle",
+		"Don gets up after a non-KO knockdown")
 	fight._restart_match()
 	assert(a.state == Fighter.State.IDLE and a.health == 1000 and a.controls_enabled)
 	fight.free()

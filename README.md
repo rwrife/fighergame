@@ -432,7 +432,7 @@ generated `.blend`; they are skipped until those inputs are present.
 ## Don's complete locally retargeted set
 
 `assets\spritesheets\Don_*_sheet.png` and their matching JSON files contain
-all 15 required moves, plus seven skeletal transition bridges. Standing idle
+all 15 required moves, a `get_up` recovery, plus seven skeletal transition bridges. Standing idle
 uses 12 FPS; other moves use 6 FPS. All frames are rendered natively at
 346 x 346 with the same orthographic camera, ground alignment, 32-color palette
 including transparency, and hard alpha without a baked outline.
@@ -442,7 +442,11 @@ cached T-pose model, binds automatic Blender skin weights, and bakes the supplie
 Mixamo clips. Crouched/aerial attacks, the mirrored slow back punch, held standing
 `block_idle`, and the final back-fall settle are explicit local adaptations,
 not additional downloaded clips. `Don_sources.json` records source hashes and
-each adaptation. The fall remains down; no get-up animation is added.
+each adaptation. The fall blends into the raw Mixamo fall and settles flat on his
+back: the spine chain is laid down and his arms and legs rest along the floor, and
+every downed frame's lowest pixel is pinned to the floor line.
+`get_up` uses the Mixamo "Getting Up" clip, bridged from that settled pose and
+blended into his guard.
 
 Raw baked FBXs are kept in the ignored `assets\animations\mixamo\Don` folder,
 and the editable `assets\animations\Don_mixamo.blend` is also ignored. Keep these
@@ -457,8 +461,8 @@ Punches preserve the source upper-body world rotations and capture full extensio
 normal kicks preserve the source kicking-leg rotations on a stable supporting
 stance, so they extend towards the opponent rather than backwards. The standing
 light kick and crouched low kick mirror that rear-leg source onto the stance's
-front (left) leg, turn it out from the hip towards the opponent, and snap back
-through its chamber while the rear foot stays planted.
+front (left) leg, turn it out slightly (9 degrees) from the hip towards the
+opponent, and snap back through its chamber while the rear foot stays planted.
 Shared origins and baked per-frame root corrections prevent feet/pose jumps and
 keep Godot physics from applying the rendered jump travel twice. Aerial attacks
 recover to the matching airborne pose, not a standing frame.
@@ -466,19 +470,19 @@ Gameplay plays jump takeoff only up to the tucked apex pose, then pauses
 `air_idle` until physics reports landing. The lab's full jump sheet still includes
 the source landing/recovery frames for inspection.
 
-No get-up animation is invented: Don stays down after a non-KO knockdown. Use
-**R** to reset training, or the existing pause/rematch controls. Launch directly
+After a non-KO knockdown Don stays down for `WAKEUP_TIME` (1.1 s), then plays
+`get_up` (invulnerable) and returns to his idle. Launch directly
 into Don versus a Bruiser training dummy with:
 
 ```powershell
 godot --path . --script tests\play_don.gd
 ```
 
-Rebuild with the nine source files named in `SOURCES` in `scripts\don_sprites.py`:
+Rebuild with the ten source files named in `SOURCES` in `scripts\don_sprites.py`:
 
 ```powershell
 & $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- prepare
-& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- render --size 346 --azimuth -30
+& $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- render --size 346 --azimuth -90
 .\.venv\Scripts\python.exe scripts\spritesheet.py mixamo-sheet --character Don --clip-set temp\Don_mixamo\manifest.json --fps 6 --colors 32 --outline-px 0
 & $env:BLENDER_EXE -b --factory-startup --python-exit-code 1 -P scripts\don_sprites.py -- game-offsets
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_don_sprites.py"
@@ -489,10 +493,13 @@ godot --headless --path . --script tests\test_don_game.gd
 
 Preparation creates `temp\.gdignore` so Godot does not import intermediate FBXs.
 Use your Godot executable instead of `godot` if it is not on PATH. The Don lab
-check loads all 22 sheets and every frame; omit `--headless` and append
+check loads all 23 sheets and every frame; omit `--headless` and append
 `-- <output-directory>` to also capture representative lab screenshots.
 
-The -30-degree camera shows Don's face and torso in his turned fighting guard.
+The -90-degree side camera looks across Don's forward axis, so his bladed guard,
+head and strikes all face screen-right (the game's unflipped facing), while his
+chest still reads in three-quarter view. The
+airborne knockback travels backwards along his own axis so it reads on screen.
 Restart the Godot animation lab to discover the new sheets. Regenerate gameplay
 offsets after rerendering so they remain matched to the shared camera and poses.
 

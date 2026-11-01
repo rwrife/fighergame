@@ -43,7 +43,10 @@ class DonSpritesTest(unittest.TestCase):
             "stand_to_crouch", "crouch_to_stand", "block_to_stand",
             "jump_to_punch", "punch_to_jump", "jump_to_kick", "kick_to_jump",
         } <= self.sheets.keys())
-        self.assertNotIn("get_up", self.sheets)
+        self.assertIn("get_up", self.sheets)
+
+    def test_get_up_starts_from_fall_end(self):
+        self.assert_matching(self.frames("fall_on_back")[-1], self.frames("get_up")[0])
 
     def test_dimensions_timing_palette_and_every_frame(self):
         shared_palette = None

@@ -13,7 +13,8 @@
     "Standing Block React Large.fbx": "31dd5abb8b2ea500a6d5b0f6ca70792987565fdfe1f0e6d11823c96482a984a2",
     "Jumping.fbx": "4b300a20dfc8d228af4aba208ce5bb395193fb0e33570cbbd12ecf5c141722dd",
     "Stomach Hit.fbx": "9a533ecb18bbf2d817e6a3e4b28b8cc75bb965628b8d3843c94d669010124638",
-    "Falling Down.fbx": "72f9f1c6399eff3a4a17cd6536f268c6a1064cce20223146b5db6a44a4cf61d0"
+    "Falling Down.fbx": "72f9f1c6399eff3a4a17cd6536f268c6a1064cce20223146b5db6a44a4cf61d0",
+    "Getting Up.fbx": "bb49cc6a78ed6ab477217cd2db04693beb23a04d79e5f67a0f3a4746a8ad7521"
   },
   "clips": {
     "standing_idle": {
@@ -162,7 +163,18 @@
         "Stomach Hit.fbx",
         "Jumping.fbx"
       ],
-      "adaptation": "Mixamo back fall bridged from airborne knockback and settled flat on the back; no get-up"
+      "adaptation": "Mixamo back fall bridged from airborne knockback, released into the source limbs and settled flat on the back"
+    },
+    "get_up": {
+      "action": "Don_get_up",
+      "loop": false,
+      "fps": 6,
+      "source_clips": [
+        "Getting Up.fbx",
+        "Falling Down.fbx",
+        "Fighting Idle.fbx"
+      ],
+      "adaptation": "Mixamo get-up from the settled back fall, recovering to the guard over the downed position"
     },
     "stand_to_crouch": {
       "action": "Don_stand_to_crouch",
@@ -241,20 +253,20 @@
   "blender_version": "4.5.3 LTS",
   "camera": {
     "center": [
-      -0.10352887958288193,
-      0.07865551114082336,
-      0.5317004919052124
+      -0.10968856513500214,
+      0.15117508172988892,
+      0.47633451223373413
     ],
-    "ortho_scale": 1.4038695096969604,
-    "azimuth": -30.0,
+    "ortho_scale": 1.5913054943084717,
+    "azimuth": -90.0,
     "minimum": [
-      -0.7375285625457764,
+      -0.6689910888671875,
       -0.5721455812454224,
-      -0.053829580545425415
+      -0.16456148028373718
     ],
     "maximum": [
       0.4496139585971832,
-      0.7761393189430237,
+      0.8744957447052002,
       1.1172305345535278
     ]
   }
