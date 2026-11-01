@@ -2,7 +2,7 @@
   "id": "bruiser",
   "name": "Bruiser",
   "title": "The Golden Glove",
-  "sprite_scale": 1.6,
+  "sprite_scale": 1.065,
   "frame_size": 160,
   "feet_inset": 2,
   "stats": {
@@ -14,31 +14,32 @@
     "jump_drift": 240
   },
   "hurtboxes": {
-    "standing": [-35, -235, 70, 235],
-    "crouching": [-40, -170, 80, 170],
-    "air": [-35, -225, 70, 200],
-    "down": [-120, -60, 240, 60]
+    "standing": [-42, -282, 84, 282],
+    "crouching": [-48, -204, 96, 204],
+    "air": [-42, -270, 84, 240],
+    "down": [-144, -72, 288, 72]
   },
   "animations": {
-    "standing_idle": {"sheet": "Bruiser_idle_mixamo", "offset_x": 14},
-    "crouched_idle": {"sheet": "Bruiser_crouched_idle", "offset_x": 14},
-    "standing_punch": {"sheet": "Bruiser_punch_mixamo", "frames": [3, 8], "offset_x": 14},
-    "crouched_punch": {"sheet": "Bruiser_crouched_punch", "offset_x": 14},
-    "standing_kick": {"sheet": "Bruiser_standing_kick", "frames": [3, 10], "offset_x": 14},
-    "crouched_kick": {"sheet": "Bruiser_crouched_kick", "offset_x": 14},
-    "standing_block": {"sheet": "Bruiser_standing_block", "offset_x": 14},
-    "block_idle": {"sheet": "Bruiser_block_idle", "offset_x": 14},
-    "jump": {"sheet": "Bruiser_jump_mixamo", "frames": [3, 9], "speed": 1.15, "offset_x": 14},
-    "jump_punch": {"sheet": "Bruiser_jump_punch", "offset_x": 14},
-    "jump_kick": {"sheet": "Bruiser_jump_kick", "offset_x": 14},
-    "knocked_back_air": {"sheet": "Bruiser_knocked_back_air", "offset_x": 14},
-    "fall_on_back": {"sheet": "Bruiser_fall_on_back", "offset_x": 14},
-    "hit_stun": {"sheet": "Bruiser_hit_stun", "offset_x": 14},
-    "stand_to_crouch": {"sheet": "Bruiser_stand_to_crouch", "offset_x": 14},
-    "crouch_to_stand": {"sheet": "Bruiser_crouch_to_stand", "offset_x": 14},
-    "get_up": {"sheet": "Bruiser_get_up", "offset_x": 14},
-    "block_hit": {"sheet": "Bruiser_block_hit", "offset_x": 14},
-    "roundhouse_kick": {"sheet": "Bruiser_roundhouse_kick", "frames": [2, 10], "offset_x": 14}
+    "standing_idle": {"sheet": "Bruiser_idle_mixamo", "offset_x": 25},
+    "crouched_idle": {"sheet": "Bruiser_crouched_idle", "offset_x": 25},
+    "standing_punch": {"sheet": "Bruiser_punch_mixamo", "frames": [2, 6], "offset_x": 25},
+    "heavy_punch": {"sheet": "Bruiser_punch_mixamo", "frames": [0, 6], "offset_x": 25},
+    "crouched_punch": {"sheet": "Bruiser_crouched_punch", "offset_x": 25},
+    "standing_kick": {"sheet": "Bruiser_standing_kick", "frames": [2, 7], "offset_x": 25},
+    "crouched_kick": {"sheet": "Bruiser_crouched_kick", "offset_x": 25},
+    "standing_block": {"sheet": "Bruiser_standing_block", "offset_x": 25},
+    "block_idle": {"sheet": "Bruiser_block_idle", "offset_x": 25},
+    "jump": {"sheet": "Bruiser_jump_mixamo", "frames": [2, 8], "speed": 1.15, "offset_x": 25},
+    "jump_punch": {"sheet": "Bruiser_jump_punch", "offset_x": 25},
+    "jump_kick": {"sheet": "Bruiser_jump_kick", "offset_x": 25},
+    "knocked_back_air": {"sheet": "Bruiser_knocked_back_air", "offset_x": 25},
+    "fall_on_back": {"sheet": "Bruiser_fall_on_back", "frames": [5, 13], "speed": 2.4, "offset_x": 25},
+    "hit_stun": {"sheet": "Bruiser_hit_stun", "offset_x": 25},
+    "stand_to_crouch": {"sheet": "Bruiser_stand_to_crouch", "offset_x": 25},
+    "crouch_to_stand": {"sheet": "Bruiser_crouch_to_stand", "offset_x": 25},
+    "get_up": {"sheet": "Bruiser_get_up", "offset_x": 25},
+    "block_hit": {"sheet": "Bruiser_block_hit", "offset_x": 25},
+    "heavy_kick": {"sheet": "Bruiser_heavy_kick", "frames": [2, 10], "offset_x": 25}
   },
   "animation_fallbacks": {
     "walk_forward": "standing_idle",
@@ -48,40 +49,53 @@
   "moves": {
     "standing_punch": {
       "input": {"stance": "standing", "button": "punch"},
-      "speed": 1.6,
-      "damage": 60, "hitstun": 0.30, "blockstun": 0.20, "pushback": 220,
-      "hitboxes": [{"frames": [2, 3], "rect": [30, -190, 70, 50]}]
+      "speed": 2.4,
+      "damage": 45, "hitstun": 0.24, "blockstun": 0.16, "pushback": 160,
+      "hitboxes": [{"frames": [1, 2], "rect": [36, -228, 66, 60]}]
+    },
+    "heavy_punch": {
+      "input": {"stance": "standing", "button": "heavy_punch"},
+      "speed": 1.5,
+      "damage": 130, "hitstun": 0.50, "blockstun": 0.30, "pushback": 420,
+      "hitboxes": [{"frames": [3, 4], "rect": [36, -228, 150, 66]}]
     },
     "crouched_punch": {
       "input": {"stance": "crouching", "button": "punch"},
-      "speed": 1.6,
+      "speed": 2.4,
       "damage": 40, "hitstun": 0.28, "blockstun": 0.18, "pushback": 180,
-      "hitboxes": [{"frames": [2, 3], "rect": [40, -145, 95, 45]}]
+      "hitboxes": [{"frames": [2, 3], "rect": [48, -174, 114, 54]}]
     },
     "standing_kick": {
       "input": {"stance": "standing", "button": "kick"},
-      "speed": 1.4,
-      "damage": 90, "hitstun": 0.40, "blockstun": 0.26, "pushback": 320,
-      "hitboxes": [{"frames": [2, 3], "rect": [40, -175, 105, 55]}]
+      "speed": 2.4,
+      "damage": 55, "hitstun": 0.28, "blockstun": 0.18, "pushback": 200,
+      "hitboxes": [{"frames": [2, 3], "rect": [42, -204, 96, 66]}]
+    },
+    "heavy_kick": {
+      "input": {"stance": "standing", "button": "heavy_kick"},
+      "speed": 1.8,
+      "damage": 140, "hitstun": 0.50, "blockstun": 0.30, "pushback": 450,
+      "launch": true, "knockback": 320,
+      "hitboxes": [{"frames": [2, 4], "rect": [36, -216, 162, 72]}]
     },
     "crouched_kick": {
       "input": {"stance": "crouching", "button": "kick"},
-      "speed": 1.4,
+      "speed": 1.9,
       "damage": 70, "hitstun": 0.40, "blockstun": 0.22, "pushback": 200,
       "launch": true, "knockback": 260,
-      "hitboxes": [{"frames": [2, 3], "rect": [40, -100, 110, 50]}]
+      "hitboxes": [{"frames": [2, 3], "rect": [48, -120, 132, 60]}]
     },
     "jump_punch": {
       "input": {"stance": "air", "button": "punch"},
-      "speed": 1.4,
+      "speed": 1.8,
       "damage": 70, "hitstun": 0.35, "blockstun": 0.22, "pushback": 220,
-      "hitboxes": [{"frames": [2, 3], "rect": [40, -190, 95, 55]}]
+      "hitboxes": [{"frames": [2, 3], "rect": [48, -228, 114, 66]}]
     },
     "jump_kick": {
       "input": {"stance": "air", "button": "kick"},
-      "speed": 1.4,
+      "speed": 1.8,
       "damage": 90, "hitstun": 0.40, "blockstun": 0.25, "pushback": 300,
-      "hitboxes": [{"frames": [2, 3], "rect": [40, -170, 105, 60]}]
+      "hitboxes": [{"frames": [2, 3], "rect": [48, -204, 126, 72]}]
     }
   }
 }

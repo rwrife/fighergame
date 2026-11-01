@@ -22,15 +22,15 @@ func _run() -> void:
 	var frames: SpriteFrames = lab.sprite.sprite_frames
 	assert(frames.has_animation(&"Bruiser_idle_mixamo"))
 	assert(not frames.has_animation(&"Bruiser_idle"), "Archived AI sheets must stay out of the picker.")
-	assert(frames.get_frame_count(&"Bruiser_idle_mixamo") == 27)
-	assert(frames.get_animation_speed(&"Bruiser_idle_mixamo") == 8.0)
+	assert(frames.get_frame_count(&"Bruiser_idle_mixamo") == 40)
+	assert(frames.get_animation_speed(&"Bruiser_idle_mixamo") == 12.0)
 	assert(frames.get_animation_loop(&"Bruiser_idle_mixamo"))
 	assert(not frames.get_animation_loop(&"Bruiser_jump_mixamo"))
 	assert(not frames.get_animation_loop(&"Bruiser_punch_mixamo"))
 	var first := frames.get_frame_texture(&"Bruiser_idle_mixamo", 0) as AtlasTexture
-	assert(first.region == Rect2(0, 0, 192, 192))
-	var last := frames.get_frame_texture(&"Bruiser_idle_mixamo", 26) as AtlasTexture
-	assert(last.region == Rect2(4992, 0, 192, 192))
+	assert(first.region == Rect2(0, 0, 346, 346))
+	var last := frames.get_frame_texture(&"Bruiser_idle_mixamo", 39) as AtlasTexture
+	assert(last.region == Rect2(13494, 0, 346, 346))
 	assert(lab.sprite.is_playing())
 	await create_timer(0.25).timeout
 	assert(lab.sprite.frame > 0, "Playback must advance through the idle frames.")
@@ -41,13 +41,13 @@ func _run() -> void:
 	assert(lab.sprite.frame == 0, "Paused playback must hold its frame.")
 	lab._step_frame()
 	assert(lab.sprite.frame == 1)
-	lab.sprite.frame = 26
+	lab.sprite.frame = 39
 	lab._step_frame()
 	assert(lab.sprite.frame == 0)
 	frames.set_animation_loop(&"Bruiser_idle_mixamo", false)
-	lab.sprite.frame = 26
+	lab.sprite.frame = 39
 	lab._step_frame()
-	assert(lab.sprite.frame == 26)
+	assert(lab.sprite.frame == 39)
 	lab._select_animation(idle_index)
 	assert(lab.sprite.frame == 0)
 	assert(lab.sprite.is_playing())
@@ -60,7 +60,7 @@ func _run() -> void:
 	facing[0].button_pressed = true
 	assert(lab.sprite.flip_h)
 	lab._process(0.0)
-	assert("4.0 FPS" in lab.status_label.text)
+	assert("6.0 FPS" in lab.status_label.text)
 	assert(lab.sprite.position == lab.stage.size / 2.0)
 	lab.free()
 	print("Animation lab smoke check passed.")

@@ -8,6 +8,7 @@ const REQUIRED_ANIMATIONS: Array[StringName] = [
 	&"standing_idle", &"crouched_idle", &"standing_punch", &"crouched_punch",
 	&"standing_kick", &"crouched_kick", &"standing_block", &"block_idle",
 	&"jump", &"jump_punch", &"jump_kick", &"knocked_back_air", &"fall_on_back",
+	&"heavy_punch", &"heavy_kick",
 ]
 const DEFAULT_HURTBOXES := {
 	"standing": [-30, -150, 60, 150], "crouching": [-34, -100, 68, 100],

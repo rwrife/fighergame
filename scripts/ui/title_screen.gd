@@ -16,27 +16,26 @@ var _time := 0.0
 
 
 func _ready() -> void:
-	Arcade.backdrop(self)
-	var title := Arcade.label(self, Game.TITLE, 96, Arcade.YELLOW)
-	title.position = Vector2(0, 70)
-	title.custom_minimum_size = Vector2(960, 0)
-	var sub := Arcade.label(self, "PLACEHOLDER EDITION", 28, Arcade.CYAN)
-	sub.position = Vector2(0, 190)
-	sub.custom_minimum_size = Vector2(960, 0)
+	var art := TextureRect.new()
+	art.texture = load("res://assets/ui/title_screen.jpg")
+	art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	add_child(art)
 
 	_prompt = Arcade.label(self, "PRESS ENTER", 40, Arcade.WHITE)
 	_prompt.position = Vector2(0, 470)
 	_prompt.custom_minimum_size = Vector2(960, 0)
 
 	for i in ITEMS.size():
-		var item := Arcade.label(self, ITEMS[i][0], 44)
-		item.position = Vector2(0, 280 + i * 62)
+		var item := Arcade.label(self, ITEMS[i][0], 36)
+		item.position = Vector2(0, 410 + i * 46)
 		item.custom_minimum_size = Vector2(960, 0)
 		item.visible = false
 		_menu_labels.append(item)
 
-	var help := Arcade.label(self, "P1: WASD + J/K/L    P2: ARROWS + , . /    ENTER: select    ESC: back", 18, Arcade.WHITE)
-	help.position = Vector2(0, 590)
+	var help := Arcade.label(self, "P1: WASD + J/K/L    P2: ARROWS + , . /    ENTER: select    ESC: back", 16, Arcade.WHITE)
+	help.position = Vector2(0, 612)
 	help.custom_minimum_size = Vector2(960, 0)
 	_refresh()
 

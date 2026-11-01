@@ -3,12 +3,12 @@ extends RefCounted
 ## Input source for a Fighter. This base class is an idle dummy; subclass it
 ## (HumanInput, a future AIInput, a replay player...) and override poll().
 
-const BUTTONS: Array[StringName] = [&"punch", &"kick"]
+const BUTTONS: Array[StringName] = [&"punch", &"kick", &"heavy_punch", &"heavy_kick"]
 const BUFFER_TIME := 0.12
 
 var held := {&"left": false, &"right": false, &"up": false, &"down": false,
-		&"punch": false, &"kick": false, &"block": false}
-var _buffered := {&"punch": 0.0, &"kick": 0.0, &"up": 0.0}
+		&"punch": false, &"kick": false, &"heavy_punch": false, &"heavy_kick": false, &"block": false}
+var _buffered := {&"punch": 0.0, &"kick": 0.0, &"heavy_punch": 0.0, &"heavy_kick": 0.0, &"up": 0.0}
 
 
 func poll(delta: float) -> void:

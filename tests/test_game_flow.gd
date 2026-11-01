@@ -15,7 +15,7 @@ func _run() -> void:
 	assert(bruiser.errors.is_empty(), str(bruiser.errors))
 	assert(bruiser.missing_animations.is_empty(), "missing: " + str(bruiser.missing_animations))
 	for animation in CharacterData.REQUIRED_ANIMATIONS:
-		assert(is_equal_approx(bruiser.sprite_frames.get_animation_speed(animation), 8.0) or animation == &"standing_idle")
+		assert(is_equal_approx(bruiser.sprite_frames.get_animation_speed(animation), 6.0) or animation == &"standing_idle")
 	for move_name in ["standing_punch", "crouched_punch", "standing_kick", "crouched_kick", "jump_punch", "jump_kick"]:
 		assert(bruiser.moves.has(move_name), move_name)
 	assert(not bruiser.find_move("standing", "punch").is_empty())

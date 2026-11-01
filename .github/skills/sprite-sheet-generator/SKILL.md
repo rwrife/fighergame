@@ -1,6 +1,6 @@
 ---
 name: sprite-sheet-generator
-description: Creates bright deterministic cel-shaded fighting-game sprites at 8 FPS from cached 3D models and animation, with a 20,000-polygon budget for newly generated Tripo models.
+description: Creates bright deterministic cel-shaded fighting-game sprites at 6 FPS (standing idle at 12 FPS) from cached 3D models and animation, with a 20,000-polygon budget for newly generated Tripo models.
 ---
 
 # Skill: SpriteSheetGenerator
@@ -32,14 +32,14 @@ animation, or Blender rather than fabricating output.
 Cleanup must target only the current character/move's temporary directory.
 
 For a complete new character, follow the minimum animation set, source and
-transition requirements in the repository's `AGENTS.md`. The three Bruiser clips
+transition requirements in the repository's `AGENTS.md`, including the two attack tiers (fast short-range normal punch/kick, plus slow `heavy_punch` and roundhouse `heavy_kick`). The three Bruiser clips
 are a demo, not a complete character. The reference-art skill is included at
 `.github\skills\reference-art-generator\SKILL.md`; read it before generating new
 reference art. Clarify `block_idle` if its intended pose is unclear.
 
-For sprites from an existing animated FBX, use `render --fps 8 --colors 32
+For sprites from an existing animated FBX, use `render --fps 6 --size 346 --colors 32
 --azimuth 30 --sprite-size 160`. It preserves FBX colors with a bright four-band
-shader and a modest saturation/value boost, adds a one-pixel outline, and compiles
+shader and a modest saturation/value boost, uses a hard alpha cutout with no baked outline (opt in with `--outline-px N`), and compiles
 a shared palette with real transparency. No AI service is used in this stage.
 Output uses `_retro_sheet` so the AI sheet remains intact. See
 `demos\bruiser_idle.html` for the side-by-side idle comparison.
@@ -52,7 +52,7 @@ The files under `assets\animations\mixamo` and `*_mixamo.blend` are local and
 ignored. `scripts\mixamo_demo.py` specifically retargets the three supplied
 idle/jump/punch clips onto textured Bruiser with shared framing; it is not a
 general-purpose retargeter for the complete character set.
-Compile with `spritesheet.py mixamo-sheet --clip-set temp\Bruiser_mixamo\manifest.json --fps 8 --colors 32`.
+Compile with `spritesheet.py mixamo-sheet --clip-set temp\Bruiser_mixamo\manifest.json --fps 6 --colors 32` (render with `mixamo_demo.py --fps 6 --size 346`; use `--fps 12` for standing idle).
 `demos\bruiser_moves.html` tests queued transitions and a matched AI/shader punch.
 Do not regenerate the historical AI punch. See README for shader rebuild commands
 and historical ComfyUI setup lessons, which are not current rendering prerequisites.
@@ -64,11 +64,11 @@ Configure these parameters before execution:
 *   `ANIMATION_TYPE`: String (e.g., "idle", "roundhouse_kick").
 *   `SHARED_CACHE_DIR`: Directory path (e.g., `./assets/shared_fbx_cache/`) to store and retrieve base 3D models to prevent redundant API calls.
 *   `TARGET_FPS`: Integer (Default: **8**) for retro timing. Resample source motion
-    at 8 FPS to preserve its duration, rather than just slowing a 12 FPS sheet.
+    at 6 FPS to preserve its duration, rather than just slowing a 12 FPS sheet.
 *   `PALETTE_COLORS`: Integer (Default: 32) for quantization.
 *   `MODEL_FACE_LIMIT`: **20,000 polygons maximum** for newly generated Tripo models.
 *   `RENDER_STYLE`: Bright, vivid cel-shading, readable midtones, four hard shading
-    bands, dark one-pixel outlines, transparent background. Avoid muddy shading.
+    bands, no baked black outline, transparent background. Avoid muddy shading.
 
 ## 2. Delegation & Execution Workflow
 
@@ -94,7 +94,7 @@ Configure these parameters before execution:
 *   **Output:** Save the combined animated skeleton mesh as `{CHARACTER_NAME}_{ANIMATION_TYPE}.fbx`.
 
 ### Step 3: Deterministic Cel-Shaded Rendering (Headless Blender)
-*   Import the baked animated character and sample at **8 FPS**. Render at native
+*   Import the baked animated character and sample at **6 FPS** (standing idle: **12 FPS**). Render at native
     sprite resolution; do not render smooth video and resize it into pixel art.
 *   Preserve material base-color textures, with saturation/value at 1.10 and
     four normal-based lighting bands: 0.60, 0.78, 0.93, 1.00.
@@ -107,7 +107,7 @@ Configure these parameters before execution:
 *   Author a shared guard pose and entry/exit poses. Blend mismatched skeletal
     poses in Blender, then bake and render the bridge with the same shader.
     Never alpha-crossfade 2D sprites: it produces double limbs and ghosting.
-*   At 8 FPS, each frame is 125 ms. Prefer direct matching-pose cuts; use a
+*   At 6 FPS, each frame is about 167 ms (standing idle uses 12 FPS, 83 ms, so the breathing loop stays smooth). Prefer direct matching-pose cuts; use a
     one-frame bridge where necessary and reserve longer bridges for deliberate
     recovery. Do not add a fixed two-frame delay to every attack.
 *   Runtime transitions should follow startup/active/recovery and jump/landing
@@ -124,7 +124,7 @@ Configure these parameters before execution:
 ### Step 5: Post-Processing & Sheet Compilation
 *   Use the repository's Pillow compiler.
 *   **Actions:**
-    1. Threshold alpha and add a one-pixel outline. Reject empty frames and
+    1. Threshold alpha (no outline unless `--outline-px` is set). Reject empty frames and
        opaque corners. Never remove white highlights with a chroma key.
     2. Quantize to one shared `PALETTE_COLORS` palette across the entire move set,
        with dithering disabled, so transitions do not change character colors.

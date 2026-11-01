@@ -12,13 +12,15 @@ const SCENES := {
 const MODE_VERSUS := "versus"
 const MODE_TRAINING := "training"
 const BINDINGS := {
-	1: {"left": KEY_A, "right": KEY_D, "up": KEY_W, "down": KEY_S, "punch": KEY_J, "kick": KEY_K, "block": KEY_L},
+	1: {"left": KEY_A, "right": KEY_D, "up": KEY_W, "down": KEY_S, "punch": KEY_J, "kick": KEY_K, "heavy_punch": KEY_U, "heavy_kick": KEY_I, "block": KEY_L},
 	2: {"left": KEY_LEFT, "right": KEY_RIGHT, "up": KEY_UP, "down": KEY_DOWN,
-			"punch": KEY_COMMA, "kick": KEY_PERIOD, "block": KEY_SLASH},
+			"punch": KEY_COMMA, "kick": KEY_PERIOD, "heavy_punch": KEY_SEMICOLON,
+			"heavy_kick": KEY_APOSTROPHE, "block": KEY_SLASH},
 }
 const PAD_BUTTONS := {
 	"left": JOY_BUTTON_DPAD_LEFT, "right": JOY_BUTTON_DPAD_RIGHT, "up": JOY_BUTTON_DPAD_UP,
 	"down": JOY_BUTTON_DPAD_DOWN, "punch": JOY_BUTTON_X, "kick": JOY_BUTTON_A, "block": JOY_BUTTON_B,
+	"heavy_punch": JOY_BUTTON_Y, "heavy_kick": JOY_BUTTON_RIGHT_SHOULDER,
 }
 
 var characters := {}

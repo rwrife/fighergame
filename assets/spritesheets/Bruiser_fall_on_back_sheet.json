@@ -1,126 +1,96 @@
 {
   "image": "Bruiser_fall_on_back_sheet.png",
-  "fps": 8,
+  "fps": 6,
   "loop": false,
   "renderer": "cel-shaded",
-  "frame_width": 192,
-  "frame_height": 192,
-  "frame_count": 19,
+  "frame_width": 346,
+  "frame_height": 346,
+  "frame_count": 14,
   "palette_colors": 32,
   "frames": [
     {
       "x": 0,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 192,
+      "x": 346,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 384,
+      "x": 692,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 576,
+      "x": 1038,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 768,
+      "x": 1384,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 960,
+      "x": 1730,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 1152,
+      "x": 2076,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 1344,
+      "x": 2422,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 1536,
+      "x": 2768,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 1728,
+      "x": 3114,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 1920,
+      "x": 3460,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 2112,
+      "x": 3806,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 2304,
+      "x": 4152,
       "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     },
     {
-      "x": 2496,
+      "x": 4498,
       "y": 0,
-      "width": 192,
-      "height": 192
-    },
-    {
-      "x": 2688,
-      "y": 0,
-      "width": 192,
-      "height": 192
-    },
-    {
-      "x": 2880,
-      "y": 0,
-      "width": 192,
-      "height": 192
-    },
-    {
-      "x": 3072,
-      "y": 0,
-      "width": 192,
-      "height": 192
-    },
-    {
-      "x": 3264,
-      "y": 0,
-      "width": 192,
-      "height": 192
-    },
-    {
-      "x": 3456,
-      "y": 0,
-      "width": 192,
-      "height": 192
+      "width": 346,
+      "height": 346
     }
   ]
 }
