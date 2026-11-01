@@ -37,7 +37,7 @@
     "hit_stun": {"sheet": "Bruiser_hit_stun", "offset_x": 25},
     "stand_to_crouch": {"sheet": "Bruiser_stand_to_crouch", "offset_x": 25},
     "crouch_to_stand": {"sheet": "Bruiser_crouch_to_stand", "offset_x": 25},
-    "get_up": {"sheet": "Bruiser_get_up", "offset_x": 25},
+    "get_up": {"sheet": "Bruiser_get_up", "offset_x": 25, "speed": 2.0},
     "block_hit": {"sheet": "Bruiser_block_hit", "offset_x": 25},
     "heavy_kick": {"sheet": "Bruiser_heavy_kick", "frames": [2, 10], "offset_x": 25}
   },

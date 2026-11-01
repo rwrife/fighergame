@@ -52,7 +52,7 @@ func _run() -> void:
 				output.path_join(String(name) + "_lab.png")
 			) == OK)
 		count += 1
-	assert(count == 22, "All 15 Don moves and seven bridges must load.")
+	assert(count == 23, "All 15 Don moves, get_up and seven bridges must load.")
 	lab.free()
-	print("PASS Don animation lab: all 22 sheets and every frame loaded.")
+	print("PASS Don animation lab: all 23 sheets and every frame loaded.")
 	quit()

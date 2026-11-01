@@ -45,7 +45,8 @@ else:
     plan = json.loads((ROOT / "temp" / "Don_mixamo" / "plan.json").read_text())
     manifest = json.loads((ROOT / "temp" / "Don_mixamo" / "manifest.json").read_text())
     character = json.loads((ROOT / "characters" / "don" / "character.json").read_text())
-    camera_right = Vector((math.cos(math.radians(-30)), math.sin(math.radians(-30)), 0))
+    camera_right = Vector((math.cos(math.radians(manifest["camera"]["azimuth"])),
+                           math.sin(math.radians(manifest["camera"]["azimuth"])), 0))
     for name, side, frame in [
         ("standing_punch", "Left", 11), ("crouched_punch", "Left", 11),
         ("jump_punch", "Left", 11), ("heavy_punch", "Right", 41),

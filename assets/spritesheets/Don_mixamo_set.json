@@ -2,20 +2,20 @@
   "source": "Mixamo with locally baked adaptations",
   "camera": {
     "center": [
-      -0.10352887958288193,
-      0.07865551114082336,
-      0.5317004919052124
+      -0.10968856513500214,
+      0.15117508172988892,
+      0.47633451223373413
     ],
-    "ortho_scale": 1.4038695096969604,
-    "azimuth": -30.0,
+    "ortho_scale": 1.5913054943084717,
+    "azimuth": -90.0,
     "minimum": [
-      -0.7375285625457764,
+      -0.6689910888671875,
       -0.5721455812454224,
-      -0.053829580545425415
+      -0.16456148028373718
     ],
     "maximum": [
       0.4496139585971832,
-      0.7761393189430237,
+      0.8744957447052002,
       1.1172305345535278
     ]
   },
@@ -35,6 +35,7 @@
     "jump": "Don_jump_sheet.json",
     "knocked_back_air": "Don_knocked_back_air_sheet.json",
     "fall_on_back": "Don_fall_on_back_sheet.json",
+    "get_up": "Don_get_up_sheet.json",
     "stand_to_crouch": "Don_stand_to_crouch_sheet.json",
     "crouch_to_stand": "Don_crouch_to_stand_sheet.json",
     "block_to_stand": "Don_block_to_stand_sheet.json",

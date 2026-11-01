@@ -6,7 +6,7 @@ extends Node2D
 enum State { IDLE, WALK, CROUCH, JUMP, ATTACK, BLOCK, HITSTUN, BLOCKSTUN, LAUNCHED, DOWN }
 
 const FRICTION := 2400.0
-const WAKEUP_TIME := 1.1 # placeholder until a get-up animation exists
+const WAKEUP_TIME := 1.1 # time on the ground before get_up plays
 const CHIP_FRACTION := 0.1
 const NEUTRAL := {&"left": false, &"right": false, &"up": false, &"down": false,
 		&"punch": false, &"kick": false, &"heavy_punch": false, &"heavy_kick": false, &"block": false}
@@ -106,8 +106,11 @@ func tick(delta: float) -> void:
 			if _stun <= 0.0:
 				_to_neutral()
 		State.DOWN:
-			if not ko and data.recover_from_knockdown and state_time >= WAKEUP_TIME:
-				_to_neutral()
+			if not ko and data.recover_from_knockdown and state_time >= WAKEUP_TIME and _anim_id != &"get_up":
+				if data.get_animation(&"get_up") != &"":
+					_play(&"get_up")
+				else:
+					_to_neutral()
 		_:
 			pass
 	_move_body(delta)
@@ -305,6 +308,9 @@ func _on_animation_finished() -> void:
 				_to_neutral()
 		State.BLOCK:
 			_play(&"block_idle")
+		State.DOWN:
+			if _anim_id == &"get_up":
+				_to_neutral()
 
 
 func _move_body(delta: float) -> void:

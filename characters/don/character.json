@@ -4,7 +4,7 @@
   "title": "The Self-Proclaimed Ruler",
   "sprite_scale": 1.2,
   "frame_size": 346,
-  "recover_from_knockdown": false,
+  "recover_from_knockdown": true,
   "stats": {
     "health": 1000,
     "walk_speed": 210,
@@ -42,74 +42,74 @@
   "animations": {
     "standing_idle": {
       "sheet": "Don_standing_idle",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "crouched_idle": {
       "sheet": "Don_crouched_idle",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "standing_punch": {
       "sheet": "Don_standing_punch",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "crouched_punch": {
       "sheet": "Don_crouched_punch",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "standing_kick": {
       "sheet": "Don_standing_kick",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "crouched_kick": {
       "sheet": "Don_crouched_kick",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "standing_block": {
       "sheet": "Don_standing_block",
       "speed": 2.0,
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "block_idle": {
       "sheet": "Don_block_idle",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "jump": {
       "sheet": "Don_jump",
       "speed": 2.6,
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
           -0.0,
           0.0
         ],
         [
-          -5.5533,
-          -12.8404
+          2.5784,
+          -11.3279
         ],
         [
-          -8.2049,
-          -37.6855
+          3.172,
+          -33.2467
         ],
         [
-          4.4439,
-          -0.4532
+          2.1267,
+          -0.3998
         ],
         [
-          5.1032,
-          48.3777
+          4.3658,
+          42.6794
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ],
       "frames": [
@@ -123,279 +123,331 @@
         5,
         5
       ],
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "jump_punch": {
       "sheet": "Don_jump_punch",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "jump_kick": {
       "sheet": "Don_jump_kick",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "knocked_back_air": {
       "sheet": "Don_knocked_back_air",
       "speed": 2.0,
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          14.508,
-          54.2316
+          17.4441,
+          47.8438
         ],
         [
-          17.8862,
-          54.5614
+          21.2504,
+          48.1347
         ],
         [
-          17.1027,
-          55.3762
+          20.3491,
+          48.8536
         ],
         [
-          18.5252,
-          55.8253
+          21.0537,
+          49.2498
         ],
         [
-          23.2051,
-          55.62
+          24.5437,
+          49.0687
         ],
         [
-          29.2757,
-          54.1346
+          29.0294,
+          47.7582
         ],
         [
-          35.1799,
-          52.0834
+          33.7853,
+          45.9486
         ]
       ]
     },
     "fall_on_back": {
       "sheet": "Don_fall_on_back",
       "speed": 3.2,
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          35.1799,
-          52.0834
+          33.7853,
+          72
         ],
         [
-          35.1826,
-          48.7178
+          34.9824,
+          47
         ],
         [
-          40.4507,
-          35.2668
+          42.9718,
+          41
         ],
         [
-          56.0201,
-          18.0475
+          56.1418,
+          37
         ],
         [
-          78.8617,
+          73.8065,
+          39
+        ],
+        [
+          88.6906,
+          29
+        ],
+        [
+          100.3835,
+          3
+        ],
+        [
+          110.2292,
+          4
+        ],
+        [
+          112.8986,
           0
         ],
         [
-          98.6328,
-          0
-        ],
-        [
-          114.7065,
-          0
-        ],
-        [
-          126.958,
-          0
-        ],
-        [
-          131.8706,
-          0
-        ],
-        [
-          133.6164,
-          -2
-        ],
-        [
-          132.1167,
+          114.2418,
           -3
         ],
         [
-          128.5271,
-          -5
+          112.2481,
+          -7
         ],
         [
-          125.3906,
-          -9
+          108.9773,
+          -15
         ],
         [
-          124.1435,
-          -13
+          105.9078,
+          -24
         ],
         [
-          123.5747,
-          -4
+          104.8784,
+          -27
         ],
         [
-          123.5747,
-          -1
+          104.7475,
+          -35
         ],
         [
-          123.5747,
+          104.7475,
+          -6
+        ],
+        [
+          104.7475,
           0
         ],
         [
-          123.5747,
+          104.7475,
+          1
+        ]
+      ]
+    },
+    "get_up": {
+      "sheet": "Don_get_up",
+      "speed": 1.5,
+      "offset_x": -32.8702,
+      "offset_y": -104,
+      "frame_offsets": [
+        [
+          104.7475,
+          1
+        ],
+        [
+          104.7475,
+          0
+        ],
+        [
+          104.7475,
+          1
+        ],
+        [
+          104.9464,
+          0
+        ],
+        [
+          110.1518,
+          0
+        ],
+        [
+          104.5839,
+          0
+        ],
+        [
+          105.8703,
+          0
+        ],
+        [
+          104.1567,
+          0
+        ],
+        [
+          102.1558,
+          0
+        ],
+        [
+          103.5891,
+          0
+        ],
+        [
+          104.4707,
           0
         ]
       ]
     },
     "heavy_punch": {
       "sheet": "Don_heavy_punch",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "heavy_kick": {
       "sheet": "Don_heavy_kick",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "stand_to_crouch": {
       "sheet": "Don_stand_to_crouch",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "crouch_to_stand": {
       "sheet": "Don_crouch_to_stand",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "block_to_stand": {
       "sheet": "Don_block_to_stand",
-      "offset_x": -31.7902,
-      "offset_y": -131
+      "offset_x": -32.8702,
+      "offset_y": -104
     },
     "jump_to_punch": {
       "sheet": "Don_jump_to_punch",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "punch_to_jump": {
       "sheet": "Don_punch_to_jump",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "jump_to_kick": {
       "sheet": "Don_jump_to_kick",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     },
     "kick_to_jump": {
       "sheet": "Don_kick_to_jump",
-      "offset_x": -31.7902,
-      "offset_y": -131,
+      "offset_x": -32.8702,
+      "offset_y": -104,
       "frame_offsets": [
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ],
         [
-          7.5618,
-          52.0834
+          5.651,
+          45.9486
         ]
       ]
     }
@@ -502,7 +554,7 @@
           ],
           "rect": [
             28,
-            -220,
+            -180,
             150,
             84
           ]

@@ -9,7 +9,7 @@ import sys
 
 import bpy
 import numpy as np
-from mathutils import Matrix, Vector
+from mathutils import Matrix, Quaternion, Vector
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from capture_frames import cel_shade
@@ -27,6 +27,7 @@ SOURCES = {
     "jump": "Jumping.fbx",
     "hit": "Stomach Hit.fbx",
     "fall": "Falling Down.fbx",
+    "getup": "Getting Up.fbx",
 }
 REQUIRED = {
     "standing_idle", "crouched_idle", "standing_punch", "crouched_punch",
@@ -71,21 +72,58 @@ def ground_pose(rig, meshes, pose):
     return result
 
 
-def lying_on_back(rig, meshes, pose):
-    apply_pose(rig, pose)
-    names = bone_names(rig)
-    hip = rig.pose.bones[names["Hips"]]
-    spine = rig.pose.bones[names["Head"]].head - hip.head
-    horizontal = Vector((spine.x, spine.y, 0))
-    if horizontal.length < 1e-6:
-        raise ValueError("The Mixamo fall has no backwards direction")
-    rotation = spine.rotation_difference(horizontal.normalized()).to_matrix().to_4x4()
-    matrix = Matrix.Translation(hip.head) @ rotation @ Matrix.Translation(-hip.head) @ hip.matrix
-    result = {name: basis.copy() for name, basis in pose.items()}
-    result[hip.name] = hip.bone.convert_local_to_pose(
-        matrix, hip.bone.matrix_local, invert=True,
+def rotate_bone(result, bone, rotation):
+    matrix = (Matrix.Translation(bone.head) @ rotation.to_matrix().to_4x4()
+              @ Matrix.Translation(-bone.head) @ bone.matrix)
+    result[bone.name] = bone.bone.convert_local_to_pose(
+        matrix, bone.bone.matrix_local, parent_matrix=bone.parent.matrix,
+        parent_matrix_local=bone.parent.bone.matrix_local, invert=True,
     )
+
+
+def lying_on_back(rig, meshes, pose):
+    # Lower only the spine chain so the head rests at hip height; rotating the hips
+    # instead would lift the outstretched legs off the floor.
+    names = bone_names(rig)
+    result = {name: basis.copy() for name, basis in pose.items()}
+    chain = [names[name] for name in ("Spine", "Spine1", "Spine2")]
+    for index, name in enumerate(chain):
+        apply_pose(rig, result)
+        bone = rig.pose.bones[name]
+        hip = rig.pose.bones[names["Hips"]].head
+        upper = rig.pose.bones[names["Head"]].head - bone.head
+        level = Vector((upper.x, upper.y, 0))
+        if level.length < 1e-6:
+            raise ValueError("The Mixamo fall has no backwards direction")
+        level = level.normalized() * math.sqrt(max(upper.length ** 2 - (hip.z - bone.head.z) ** 2, 0))
+        level.z = hip.z - bone.head.z
+        rotation = upper.rotation_difference(level)
+        rotate_bone(result, bone, Quaternion(rotation.axis, rotation.angle / (len(chain) - index)))
+    # The source fall ends propped on a hand with the knees raised, which grounds the
+    # hand and leaves the back and legs hovering. Rest every limb along the floor.
+    apply_pose(rig, result)
+    feet = rig.pose.bones[names["Hips"]].head - rig.pose.bones[names["Head"]].head
+    feet = Vector((feet.x, feet.y, 0)).normalized()
+    for side in ("Left", "Right"):
+        for name, fallback, tilt in (
+            ("UpLeg", feet, 6), ("Leg", feet, 0),
+            ("Arm", feet, 0), ("ForeArm", feet, 0),
+        ):
+            apply_pose(rig, result)
+            bone = rig.pose.bones[names[side + name]]
+            direction = bone.tail - bone.head
+            flat = Vector((direction.x, direction.y, 0))
+            if flat.length < .3 * direction.length:
+                flat = fallback.copy()
+            angle = math.radians(tilt)
+            target = flat.normalized() * math.cos(angle) + Vector((0, 0, -math.sin(angle)))
+            rotate_bone(result, bone, direction.rotation_difference(target))
     return ground_pose(rig, meshes, result)
+
+
+def smoothstep(value):
+    value = min(max(value, 0.0), 1.0)
+    return value * value * (3 - 2 * value)
 
 
 def interpolate(a, b, amount):
@@ -366,12 +404,12 @@ def prepare(args):
         ("jump_punch", "punch", airborne), ("jump_kick", "kick", airborne),
     ]:
         # Grounded light kicks use the stance's front (left) leg, so mirror the rear-leg
-        # source and turn it out from the hip to extend towards the opponent on screen.
+        # source and turn it out slightly from the hip to extend straight at the opponent.
         front = name in ("standing_kick", "crouched_kick")
         source_poses = ([mirror_pose(rig, pose) for pose in motion[source]] if front
                         else motion[source])
         poses = [attack_pose(rig, pose, baseline, source, "Left" if front else "Right",
-                             math.radians(35) if front else 0.0)
+                             math.radians(9) if front else 0.0)
                  for pose in source_poses]
         peak = strike_peak(rig, source_poses, "LeftFoot") if front else peaks[source]
         chamber = interpolate(baseline, poses[max(0, peak - 5)], .7)
@@ -412,7 +450,8 @@ def prepare(args):
     add("jump", jump, False, ["jump", "guard"], "Mixamo jump with takeoff, elevation and landing/recovery")
     knock = adapted(motion["hit"], airborne, hip, recovery=False)
     for index, pose in enumerate(knock):
-        pose[hip].translation.x -= height * .15 * index / (len(knock) - 1)
+        # Don faces -Y, so +Y carries him straight back, away from the opponent.
+        pose[hip].translation += root_inverse @ Vector((0, height * .15 * index / (len(knock) - 1), 0))
     add("knocked_back_air", knock, False, ["hit", "jump"],
         "Mixamo hit reaction on the airborne jump pose, with backwards root travel")
     fall = adapted(motion["fall"], guard, hip, recovery=False)
@@ -422,12 +461,29 @@ def prepare(args):
         pose[hip].translation += root_rotation.inverted() @ Vector((
             horizontal_offset.x, horizontal_offset.y, horizontal_offset.z * (1 - weight),
         ))
-        if index < 8:
-            fall[index] = interpolate(knock[-1], pose, index / 7)
+        # Release the guard's bent limbs into the source fall so Don lands stretched out.
+        raw = {name: matrix.copy() for name, matrix in motion["fall"][index].items()}
+        raw[hip] = Matrix.LocRotScale(pose[hip].translation, raw[hip].to_quaternion(), None)
+        fall[index] = interpolate(pose, raw, smoothstep(index / (len(fall) * .6)))
+    for index in range(8):
+        fall[index] = interpolate(knock[-1], fall[index], index / 7)
     final = lying_on_back(rig, meshes, fall[-1])
     fall.extend(interpolate(fall[-1], final, index / 18) for index in range(1, 19))
     add("fall_on_back", fall, False, ["fall", "hit", "jump"],
-        "Mixamo back fall bridged from airborne knockback and settled flat on the back; no get-up")
+        "Mixamo back fall bridged from airborne knockback, released into the source limbs and settled flat on the back")
+    getup = resample(motion["getup"], 46)
+    lying = root_rotation @ (final[hip].translation - getup[0][hip].translation)
+    shift = root_rotation.inverted() @ Vector((lying.x, lying.y, 0))
+    for pose in getup:
+        pose[hip].translation += shift
+    standing = {name: matrix.copy() for name, matrix in guard.items()}
+    standing_offset = root_rotation @ (getup[-1][hip].translation - guard[hip].translation)
+    standing[hip].translation += root_rotation.inverted() @ Vector((standing_offset.x, standing_offset.y, 0))
+    rise = [interpolate(final, getup[0], index / 10) for index in range(10)] + getup
+    for index in range(18):
+        rise[-18 + index] = interpolate(rise[-18 + index], standing, smoothstep((index + 1) / 18))
+    add("get_up", rise, False, ["getup", "fall", "guard"],
+        "Mixamo get-up from the settled back fall, recovering to the guard over the downed position")
     for name, first, last, source in [
         ("stand_to_crouch", guard, crouch, ["guard", "crouch"]),
         ("crouch_to_stand", crouch, guard, ["crouch", "guard"]),
@@ -627,18 +683,18 @@ def game_offsets(args):
         rig.animation_data.action = bpy.data.actions[plan["clips"][clip]["action"]]
         entry["offset_x"] = round(offset_x, 4)
         entry["offset_y"] = offset_y
-        if name not in airborne and name != "fall_on_back":
+        if name not in airborne and name not in ("fall_on_back", "get_up"):
             continue
-        floor_bounds = bottoms(entry["sheet"]) if name == "fall_on_back" else None
+        floor_bounds = bottoms(entry["sheet"]) if name in ("fall_on_back", "get_up") else None
         offsets = []
         for index in range(first, last + 1):
             set_frame(source_frames[index])
             displacement = rig.matrix_world @ rig.pose.bones[hip].head - baseline
             x = -displacement.dot(right) * pixels_per_unit
             y = displacement.z * pixels_per_unit
-            if name == "fall_on_back":
-                y = max(0, y)
-                y = min(y, ground - floor_bounds[index])
+            if floor_bounds is not None:
+                # Every downed/get-up pose is grounded: rest its lowest pixel on the floor line.
+                y = ground - floor_bounds[index]
             offsets.append([round(x, 4), round(y, 4)])
         entry["frame_offsets"] = offsets
     character_path.write_text(json.dumps(character, indent=2) + "\n", encoding="utf-8")
@@ -650,7 +706,7 @@ def main():
     parser.add_argument("stage", choices=("prepare", "render", "game-offsets"))
     parser.add_argument("--output", type=Path, default=ROOT / "temp" / "Don_mixamo")
     parser.add_argument("--size", type=int, default=346)
-    parser.add_argument("--azimuth", type=float, default=-30)
+    parser.add_argument("--azimuth", type=float, default=-90)
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:])
     if bpy.app.version[:2] != (4, 5):
         raise ValueError("Don sprites require Blender 4.5 LTS")
