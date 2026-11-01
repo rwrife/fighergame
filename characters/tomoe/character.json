@@ -1,0 +1,616 @@
+{
+  "id": "tomoe",
+  "name": "Tomoe",
+  "title": "Warrior Princess - Preview",
+  "asset_status": "candidate_with_known_pose_warnings",
+  "asset_warnings": [
+    "Grouped fingers and guard clearance need refinement."
+  ],
+  "sprite_scale": 1.290591,
+  "frame_size": 346,
+  "recover_from_knockdown": false,
+  "stats": {
+    "health": 1000,
+    "walk_speed": 225,
+    "back_speed": 175,
+    "jump_speed": 1000,
+    "gravity": 2600,
+    "jump_drift": 230
+  },
+  "hurtboxes": {
+    "standing": [
+      -34.165,
+      -248.784,
+      82.749,
+      248.784
+    ],
+    "crouching": [
+      -53.141,
+      -198.628,
+      102.518,
+      198.628
+    ],
+    "air": [
+      -59.382,
+      -228.609,
+      89.455,
+      114.919
+    ],
+    "down": [
+      -94.845,
+      -59.367,
+      196.17,
+      59.367
+    ]
+  },
+  "animations": {
+    "standing_idle": {
+      "sheet": "Tomoe_standing_idle",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "crouched_idle": {
+      "sheet": "Tomoe_crouched_idle",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "standing_punch": {
+      "sheet": "Tomoe_standing_punch",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "crouched_punch": {
+      "sheet": "Tomoe_crouched_punch",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "standing_kick": {
+      "sheet": "Tomoe_standing_kick",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "crouched_kick": {
+      "sheet": "Tomoe_crouched_kick",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "standing_block": {
+      "sheet": "Tomoe_standing_block",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "speed": 2.0
+    },
+    "block_idle": {
+      "sheet": "Tomoe_block_idle",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "jump": {
+      "sheet": "Tomoe_jump",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -5.7953,
+          -13.405
+        ],
+        [
+          -8.5628,
+          -39.3429
+        ],
+        [
+          4.6394,
+          -0.4731
+        ],
+        [
+          5.3286,
+          50.5052
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ],
+      "frames": [
+        0,
+        5
+      ],
+      "speed": 2.6
+    },
+    "air_idle": {
+      "sheet": "Tomoe_jump",
+      "frames": [
+        5,
+        5
+      ],
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "jump_punch": {
+      "sheet": "Tomoe_jump_punch",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "jump_kick": {
+      "sheet": "Tomoe_jump_kick",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "knocked_back_air": {
+      "sheet": "Tomoe_knocked_back_air",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          13.1695,
+          56.6166
+        ],
+        [
+          14.7161,
+          56.9609
+        ],
+        [
+          11.9168,
+          57.8115
+        ],
+        [
+          11.4208,
+          58.2804
+        ],
+        [
+          14.3259,
+          58.066
+        ],
+        [
+          18.6831,
+          56.5153
+        ],
+        [
+          22.4705,
+          54.3739
+        ]
+      ]
+    },
+    "fall_on_back": {
+      "sheet": "Tomoe_fall_on_back",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          22.4705,
+          90
+        ],
+        [
+          22.4738,
+          55
+        ],
+        [
+          27.976,
+          50
+        ],
+        [
+          44.2328,
+          39
+        ],
+        [
+          68.0822,
+          38
+        ],
+        [
+          88.7254,
+          14
+        ],
+        [
+          105.5079,
+          11
+        ],
+        [
+          118.3002,
+          0
+        ],
+        [
+          123.429,
+          -2
+        ],
+        [
+          125.2518,
+          -5
+        ],
+        [
+          123.6856,
+          -7
+        ],
+        [
+          119.9374,
+          -9
+        ],
+        [
+          116.6622,
+          -15
+        ],
+        [
+          115.3601,
+          -20
+        ],
+        [
+          114.7663,
+          -22
+        ],
+        [
+          114.7663,
+          -17
+        ],
+        [
+          114.7663,
+          -8
+        ],
+        [
+          114.7663,
+          0
+        ]
+      ],
+      "speed": 2.5
+    },
+    "heavy_punch": {
+      "sheet": "Tomoe_heavy_punch",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "heavy_kick": {
+      "sheet": "Tomoe_heavy_kick",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "stand_to_crouch": {
+      "sheet": "Tomoe_stand_to_crouch",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "crouch_to_stand": {
+      "sheet": "Tomoe_crouch_to_stand",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "block_to_stand": {
+      "sheet": "Tomoe_block_to_stand",
+      "offset_x": -25.2561,
+      "offset_y": -119
+    },
+    "jump_to_punch": {
+      "sheet": "Tomoe_jump_to_punch",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "punch_to_jump": {
+      "sheet": "Tomoe_punch_to_jump",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "jump_to_kick": {
+      "sheet": "Tomoe_jump_to_kick",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    },
+    "kick_to_jump": {
+      "sheet": "Tomoe_kick_to_jump",
+      "offset_x": -25.2561,
+      "offset_y": -119,
+      "frame_offsets": [
+        [
+          7.8953,
+          54.3739
+        ],
+        [
+          7.8953,
+          54.3739
+        ]
+      ]
+    }
+  },
+  "animation_fallbacks": {
+    "walk_forward": "standing_idle",
+    "walk_back": "standing_idle",
+    "hit_stun": "standing_block",
+    "crouch_hit_stun": "crouched_idle"
+  },
+  "moves": {
+    "standing_punch": {
+      "input": {
+        "stance": "standing",
+        "button": "punch"
+      },
+      "speed": 3.0,
+      "damage": 45,
+      "hitstun": 0.24,
+      "blockstun": 0.16,
+      "pushback": 160,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            39.653,
+            -231.089,
+            26.067,
+            29.323
+          ]
+        }
+      ]
+    },
+    "standing_kick": {
+      "input": {
+        "stance": "standing",
+        "button": "kick"
+      },
+      "speed": 3.0,
+      "damage": 55,
+      "hitstun": 0.28,
+      "blockstun": 0.18,
+      "pushback": 200,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            59.445,
+            -147.529,
+            26.448,
+            50.154
+          ]
+        }
+      ]
+    },
+    "heavy_punch": {
+      "input": {
+        "stance": "standing",
+        "button": "heavy_punch"
+      },
+      "speed": 2.0,
+      "damage": 130,
+      "hitstun": 0.5,
+      "blockstun": 0.3,
+      "pushback": 420,
+      "hitboxes": [
+        {
+          "frames": [
+            7,
+            8
+          ],
+          "rect": [
+            41.598,
+            -236.193,
+            36.628,
+            36.137
+          ]
+        }
+      ]
+    },
+    "heavy_kick": {
+      "input": {
+        "stance": "standing",
+        "button": "heavy_kick"
+      },
+      "speed": 1.5,
+      "damage": 140,
+      "hitstun": 0.5,
+      "blockstun": 0.3,
+      "pushback": 450,
+      "launch": true,
+      "knockback": 320,
+      "hitboxes": [
+        {
+          "frames": [
+            5,
+            5
+          ],
+          "rect": [
+            118.653,
+            -179.741,
+            36.137,
+            36.137
+          ]
+        }
+      ]
+    },
+    "crouched_punch": {
+      "input": {
+        "stance": "crouching",
+        "button": "punch"
+      },
+      "speed": 3.0,
+      "damage": 40,
+      "hitstun": 0.28,
+      "blockstun": 0.18,
+      "pushback": 180,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            38.446,
+            -186.91,
+            26.067,
+            29.323
+          ]
+        }
+      ]
+    },
+    "crouched_kick": {
+      "input": {
+        "stance": "crouching",
+        "button": "kick"
+      },
+      "speed": 2.5,
+      "damage": 65,
+      "hitstun": 0.32,
+      "blockstun": 0.2,
+      "pushback": 220,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            63.032,
+            -86.859,
+            26.448,
+            50.154
+          ]
+        }
+      ]
+    },
+    "jump_punch": {
+      "input": {
+        "stance": "air",
+        "button": "punch"
+      },
+      "speed": 2.0,
+      "damage": 70,
+      "hitstun": 0.35,
+      "blockstun": 0.22,
+      "pushback": 220,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            38.327,
+            -229.559,
+            26.067,
+            29.323
+          ]
+        }
+      ]
+    },
+    "jump_kick": {
+      "input": {
+        "stance": "air",
+        "button": "kick"
+      },
+      "speed": 2.0,
+      "damage": 85,
+      "hitstun": 0.4,
+      "blockstun": 0.25,
+      "pushback": 300,
+      "hitboxes": [
+        {
+          "frames": [
+            2,
+            3
+          ],
+          "rect": [
+            11.271,
+            -152.247,
+            51.016,
+            41.732
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -37,17 +37,152 @@ review gates or authorize setting them to true.
 
 # Character and sprite-sheet generation
 
-New characters can be created using the reference art skill to establish their
-design, then the `sprite-sheet-generator` skill to produce their animated sprite
-sheets. Read `.github\skills\sprite-sheet-generator\SKILL.md` and `README.md`
-before running the pipeline.
+For a supplied character reference, execute one agent-led workflow:
+**source image -> game-style action shot -> action-shot-derived T-pose ->
+Tripo model (at most 20,000 polygons) -> Blender rigging and local Mixamo FBX
+retargeting/baking -> deterministic sprite sheets -> technical and visual
+validation in Godot**. Invoke `reference-art-generator`, then
+`sprite-sheet-generator` without asking the user to run the next skill.
+Show each stage's actual output and wait for the user's preview decision before
+advancing. Read both skills and `README.md` before execution.
+
+This is the required agent procedure, not a claim that `spritesheet.py run`
+implements the whole chain. That command does not generate the styled action
+shot, retrieve Mixamo clips, generally retarget arbitrary characters, or judge
+visual correctness. Use existing tooling where applicable and implement missing
+local preparation/validation only within the assigned character's scope.
+
+### Execution and authorization contract
+
+Before starting, verify the supplied image decodes, current Tripo API access,
+Blender 4.5 LTS, Godot, and a complete, legitimately obtained local Mixamo FBX
+source set (including sources for documented adaptations). Prefer the local
+source library; do not require new Mixamo uploads or browser interaction when
+cached clips suffice. Never substitute Tripo presets for missing Mixamo sources.
+For a new character, default `block_idle` to a held **standing** guard, distinct
+from the one-shot `standing_block` entry. Preserve an explicitly requested pose.
+
+#### Required environment and animation preflight
+
+Complete these checks before the first image upload or paid generation; do not
+wait until Blender preparation to discover missing inputs.
+
+- Resolve the active repository root with `git rev-parse --show-toplevel`.
+  Require a readable `.env` at that root, not in the skill folder or another
+  checkout. Parse it as dotenv data, never execute it. Verify `TRIPO_API_KEY`
+  and `BLENDER_EXE` exist and are nonempty after parsing optional quotes; reject
+  obvious example/placeholder values. Do not silently use inherited environment
+  variables to mask missing required file settings.
+- Verify `.env` is git-ignored and not tracked. Never print its contents, key
+  values, authorization headers or credentials in subprocess output/reports.
+  Resolve `BLENDER_EXE` to an existing executable and verify it runs Blender
+  4.5 LTS; run `spritesheet.py doctor` with the repository virtual-environment
+  Python as the existing tooling check. Verify Godot separately. Check Tripo
+  authentication/account access with a current documented, non-generating
+  request; never spend credits merely to test a key. File presence alone is not
+  proof of valid configuration.
+- Inventory local Mixamo FBXs and map every required move/transition to an exact
+  source file/action or a documented adaptation from those sources. Shared
+  source clips are allowed; 15 required animations do not mean 15 source files.
+  Require each selected path to be a readable, nonempty `.fbx`, record its hash,
+  and verify that raw licensed files and editable animation projects are ignored
+  and untracked. A filename/extension alone is not proof of animation content.
+- Import each distinct selected FBX in a clean headless Blender scene. Require
+  a usable armature, the bones needed by its target mapping, and actual animation
+  keyframes with a valid frame range. Enumerate imported actions/takes and
+  verify the selected one exists; reject empty, corrupt, static-only or
+  incompatible sources. Record source timing and retargeting compatibility;
+  confirm the imported motion matches its assigned move during visual review.
+  Source FBXs may be without skin; the target Tripo mesh is bound separately.
+- Record sanitized preflight outcomes in the local job report. On failure,
+  report missing setting **names**, executable/file paths, affected moves and
+  import/access errors without secret values. Stop before remote work until
+  every prerequisite passes; do not fabricate animations, substitute Tripo
+  presets, download files or change credentials without applicable permission.
+
+Obtain one scoped authorization before remote work: the specific source and
+derived images/models that may be uploaded, Tripo as destination, paid stages,
+a credit/spend ceiling, and the number of paid correction attempts allowed.
+Permission to edit these instructions is not permission to upload or spend.
+Check current prices and capabilities; if the cost cannot be bounded, stop before
+submission. Still pass `--allow-paid-api` to supported paid commands. A flag is
+not user consent, and workflow authorization cannot override a tool's separate
+confirmation requirements.
+
+With prerequisites and authorization satisfied, make artistic choices, run the
+stages, inspect results and show the stage previews described below.
+Allow at most two local correction passes per failed stage; paid corrections
+require explicit coverage by the remaining authorized attempts and budget.
+Resume saved tasks rather than resubmit on timeouts or uncertain responses.
+Stop with the failed stage, evidence and exact missing prerequisite when tools,
+access, sources, authorization or correction limits block progress; never claim
+success or use user approval as a substitute for agent review.
+
+### Stage previews and continue/retry decisions
+
+Default character generation to **preview-and-review mode**. A user can explicitly
+request unattended mode for a run; only then omit the preview decision waits,
+while retaining all technical/agent visual checks and authorization limits.
+Show previews even in unattended mode, but do not ask for routine approvals.
+
+Publish actual saved outputs with `publish_chat_update` attachments, or use an
+appropriate available viewer/canvas. Identify the stage, what passed/failed,
+remaining budget and any meaningful design or motion deviations. Do not present
+prompts, task-success responses, metadata, or one still as a substitute for a
+missing image, model view or animation preview.
+
+| Stage | Preview before continuing |
+|-------|---------------------------|
+| Preflight | Source image and sanitized prerequisite/source coverage results; do not upload until preflight and scoped authorization pass. |
+| Action shot | Full generated action shot beside the supplied source, with identity/costume/style findings. |
+| T-pose | Full generated T-pose beside the accepted action shot, with pose/identity findings. |
+| Tripo model | Front/side/back renders of the actual downloaded model, textures/silhouette findings and measured total polygon count. |
+| Blender rig and baked animation | Front/side mesh-and-skeleton overlays and isolated hip/knee/ankle, shoulder/elbow and spine bends before full baking; then normal-speed playback and frame-steppable contact sheets for every required move and transition. Group clips in one stage review if all are available; name individual clips for targeted retries. |
+| Compiled sprite sheets | Actual compiled frames on light/dark backgrounds, full-move playback, loop/transition previews and timing/palette/transparency results. |
+| Playable Godot character | Real in-engine lab/gameplay captures showing the character, both facings, representative combat, movement and hitbox alignment; state any remaining failures. |
+
+After publishing each stage preview, always use `ask_user` with
+**Retry this stage**, **Stop**, and **Continue to the next step**. Wait for the answer; do not submit
+the next paid task or start downstream work while the decision is pending.
+Show all three choices even when visual review finds defects. Distinguish
+quality warnings (pose/style/identity concerns) from hard blockers (missing or
+unreadable inputs, invalid file formats, failed API tasks, unavailable tools,
+over-budget meshes, missing permissions or exhausted spending limits).
+The user may continue with a usable preview despite quality warnings; record
+their exact decision and carry the unresolved warnings into downstream checks.
+Do not relabel a failed quality check as passed merely because Continue was
+selected. Hard blockers still prevent execution: explain them in the prompt,
+and if Continue is selected while they remain, report the blocked next stage
+instead of bypassing safety, fabricating results or spending outside permission.
+Unavailable previews are blockers, not assumed acceptance.
+
+The user can explicitly revise artistic requirements or direct a costume/style
+correction into a named next stage. Record that decision and keep the unresolved
+criterion visible until the corrected output is reviewed; do not falsely mark
+the original output compliant. User-directed continuation allows an exploratory
+model from a readable reference with pose warnings; inspect the actual mesh and
+retain those warnings for rigging/deformation review. This does not waive hard
+technical or safety constraints, or prove the final character is complete.
+
+Continue to the next step records acceptance of that exact output/hash and advances to the next
+stage. Retry keeps the rejected output and evidence, corrects only that stage
+(or its identified upstream cause), and presents a new preview. Invalidate
+acceptance and recheck affected downstream outputs after any upstream change.
+A retry decision does not expand upload scope, budget or paid-attempt limits;
+report exhausted limits instead of submitting another charge. Stop preserves
+accepted outputs and resumable task state without generating further assets.
 
 ## Reference art
 
 Use the reference art skill to generate a consistent character identity reference
 and an orthographic T-pose suitable for mesh generation and rigging. Preserve the
-original design image as the identity reference for all rendered animations.
-Keep proportions, costume details, and colors consistent across the full set.
+supplied source unchanged and retain its hash. Use it as the image-to-image input
+for the action shot, not merely as inspiration for a text-only generation.
+The accepted action shot becomes the styled identity reference and the direct
+image-to-image input for the T-pose. Compare the T-pose, model and every rendered
+animation against that identity while keeping the source available to detect
+unintended design drift. Keep proportions, costume details, and colors consistent
+across the full set.
 
 The reference art skill is included at
 `.github\skills\reference-art-generator\SKILL.md`. Read it before generating
@@ -94,9 +229,9 @@ re-rendering when only timing needs to change. Characters render at about
 `sprite_scale` 1.065 for 346 px frames (same on-screen size as 192 px at 1.92); when scaling a sprite, scale hurtboxes
 and hitbox rects by the same factor.
 
-Keep `block_idle` as an explicit requirement distinct from `standing_block`.
-Before generating it, clarify the intended pose if the request or reference does
-not establish whether it is a held blocking idle or a crouched blocking idle.
+Keep `block_idle` as an explicit looping requirement distinct from the one-shot
+`standing_block` entry. Use the standing-guard default above unless the request
+establishes a different pose; do not pause unattended work to ask about the default.
 
 ## Animation sources and transitions
 
@@ -154,7 +289,42 @@ limits, clean transparency, consistent character identity, seamless idle loops,
 and sensible transition endpoints. Preview sheets in the Godot animation lab.
 Do not describe a character as complete when required animations are missing.
 
+### Agent-owned validation gates
+
+Inspect actual saved images, model views and animation playback; successful API
+tasks, PNG decoding, polygon counts or passing tests alone cannot prove poses or
+motion are correct. Do not infer animation quality from a single screenshot.
+Record `pass`, `fail` or `blocked` for each gate with source/output hashes,
+settings, task IDs, evidence paths, defects and corrections in the character's
+local job report. Never include credentials, expiring URLs or raw licensed FBXs
+in a committed report. These are character agent-review gates, not the separate
+human release gates for reference-derived levels.
+
+| Gate | Required evidence and acceptance criteria |
+|------|-------------------------------------------|
+| Source -> action shot | Compare both images: recognizable identity and costume, intentional arcade stylization, dynamic readable fighting pose, intact anatomy, full visible character and no unwanted text. |
+| Action shot -> T-pose | Compare images: matching styled identity/colors, front orthographic view, straight horizontal arms, symmetric stance, visible separated empty hands/fingers and feet, uncropped body, white background, no weapons or scenery. Reject bent-arm guards and A-poses. |
+| T-pose -> model/rig | Actual total mesh polygons <= 20,000 for new models; inspect front/side/back views, textures and silhouette; test shoulder/elbow/wrist/hip/knee/ankle bends for correct bone mapping, skin weights and deformation. No detached parts or collapsed joints. |
+| Animation semantics | Review every frame and normal-speed playback of every move, plus source motion and startup/active/recovery poses. Punches and kicks extend toward the opponent; heavy punch has wind-up/reach and heavy kick is a roundhouse; guards protect the body; crouches lower it; jumps/aerial attacks remain airborne; knockback enters a back fall that stays down. Reject reversed limbs, intersections, foot skating, jitter and abrupt unintended root jumps. |
+| Loops and transitions | Play idle last-to-first joins and each required state boundary; verify matching poses or baked bridges, planted feet where intended, no double limbs/alpha crossfades, no standing resets during aerial recovery and no invented get-up. |
+| Sheets and Godot | Inspect every frame on light/dark backgrounds and playback in the Godot lab, including mirrored facing. Verify all required sheets, rectangles, FPS/loop flags, shared <= 32-color palette including transparency, hard alpha, shared camera/scale/origin/baseline and no clipping, floor, shadows or stray pixels. Where gameplay is wired, check hitbox timing and that root motion and physics do not apply jump displacement twice. |
+
+Repair the failed upstream cause (reference, mesh/weights, retargeting, motion,
+framing or compilation), then rerun that gate and all affected downstream gates.
+For a back-fall endpoint, establish contact from posterior pelvis and back
+geometry, not the lowest hand, hat, hair or sprite pixel. Check face-up head/chest
+orientation, relaxed limbs, body-support gaps and clearance for every evaluated
+vertex. Correct low hands and accessory/fabric contact in the 3D pose or a
+fall-only baked corrective, without moving the torso above the floor or hiding
+penetration through sprite offsets. Ensure correctives stay inactive in other
+actions, survive FBX export/reimport and remain grounded in both Godot facings.
+Do not hide pose defects with image edits or passing metadata checks. If visual
+inspection or playback is unavailable, mark that gate `blocked`; do not fabricate
+review evidence. Deliver final sheets and metadata only after every required gate
+passes; partial outputs remain explicitly incomplete.
+
 Follow the existing pipeline's permission and safety requirements: never print or
 commit API keys, obtain explicit approval before uploading reference images,
 require `--allow-paid-api` for paid Tripo calls, and clean only the current
-character/move's temporary directory.
+character/move's temporary directory. Retain source hashes, task IDs, accepted
+outputs and review evidence needed for resumption; do not clean these as scratch.

@@ -1,0 +1,48 @@
+{
+  "image": "Tomoe_crouched_punch_sheet.png",
+  "fps": 6,
+  "loop": false,
+  "renderer": "cel-shaded",
+  "frame_width": 346,
+  "frame_height": 346,
+  "frame_count": 6,
+  "palette_colors": 32,
+  "frames": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 346,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 692,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 1038,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 1384,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    },
+    {
+      "x": 1730,
+      "y": 0,
+      "width": 346,
+      "height": 346
+    }
+  ]
+}
